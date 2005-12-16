@@ -23,6 +23,8 @@
 WARNING:
 ============
 x4juli version 0.6 is not meant to be used in production systems!
+We already made intensive use of JUnit tests, findbugs, and checkstyle improvements,
+due to that 0.6 brings a lot of quality.
 To be sure that you can use x4juli from a later stable release, simply
 use Logger.getLogger(Sample.class.getName()) from java.util.logging,
 you will not have to change any code, due to this is recommended use.
