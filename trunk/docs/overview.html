@@ -1,0 +1,89 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<!-- 
+# Copyright 2005, x4juli.org.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+-->
+<html>
+<head>
+<title>Extensions for the Java Util Logging Implementation (x4juli)</title>
+</head>
+
+<body>
+<h2>x4juli</h2>
+<p>
+is a port of main parts of log4j to the <code>java.util.logging</code> API.
+The original JSE Logging API is incomplete
+and therefor still not widely used, even when introduced in JSE 1.4.
+x4juli provides logmanagers, formatters, handlers, and filters to fill the gap.
+<br/>
+x4juli delivers a native implementation of Jakarta Commons Logging and the
+Simple Logging Facade for Java.
+<br/>
+<b>Help from everyone is welcome!</b>
+</br>
+</p>
+
+<p>
+Logging API as a whole was originally done for <ahref="http://logging.apache.org/log4j/">Apache log4j</a>. 
+<b>Juli</b> is a port of main parts of that to complete the 
+<a href="http://java.sun.com/j2se/1.4.2/docs/guide/util/logging/">Java Logging
+APIs</a>. All credits for initial idea, design, implementation,
+documentation belong to the <a href="http://logging.apache.org/site/who-we-are.html">log4j crew</a>. 
+Please use exclusively the <i>appropriate</i> mailing lists for questions, remarks and
+contribution.
+</p>
+
+<h3>Samples</h3>
+<p>
+Please refer to /samples directory in the distribution for samples.
+</p>
+<h3>References</h3>
+<p>
+<table border="1" cellspacing="0" cellpadding="0">
+  <tr>
+    <th scope="col">Link</th>
+    <th scope="col">Description</th>
+  </tr>
+  <tr>
+    <td><a href="http://cvs.apache.org/viewcvs.cgi/jakarta-tomcat-connectors/juli/src/java/org/apache/juli/" title="Original source from Apache Jakarta Tomcat Project">Original source from Apache Jakarta Tomcat Project</a>
+	    <br/>
+		<a href="http://jakarta.apache.org/tomcat/tomcat-5.5-doc/logging.html" title="Tomcat Logging Documentation">Tomcat Logging Documentation</a>
+	</td>
+	<td>The documentation site has an very useful sample config for JULI in Tomcat environment. The java source was the beginning of x4juli. The FileHandler is now deprecated, due to functionallity of the new (Rolling)FileHandler.</td>
+  </tr>
+  <tr>
+    <td><a href="http://jcp.org/en/jsr/detail?id=47" title="JCP - JSR 47 Logging API Specification">JCP - JSR 47 Logging API Specification</a></td>
+    <td>The specification of java.util.logging. For further reading :-)</td>
+  </tr>
+  <tr>
+    <td><a href="http://java.sun.com/j2se/1.4.2/docs/guide/util/logging/" title="Java Logging APIs">Java Logging APIs</a></td>
+    <td>Original documentation for <code>java.util.logging</code>.</td>
+  </tr>
+  <tr>
+    <td><a href="http://logging.apache.org/log4j/docs/" title="log4j Project">log4j Project</a></td>
+    <td>log4j. No more words needed.</td>
+  </tr>
+  <tr>
+    <td><a href="http://jakarta.apache.org/commons/logging/" title="Apache Jakarta Commons Logging">Apache Jakarta Commons Logging</a></td>
+    <td><cite>The Logging package is an ultra-thin bridge between different logging libraries. Commons components may use the Logging API to remove compile-time and run-time dependencies on any particular logging package, and contributors may write Log implementations for the library of their choice.</cite></td>
+  </tr>
+  <tr>
+    <td><a href="http://www.slf4j.org/" title="Simple Logging Facade for Java (SLF4J)">Simple Logging Facade for Java (SLF4J)</a></td>
+    <td><b>Release candidate status.</b> <cite>The Simple Logging Facade for Java or (SLF4J) is intended to serve as a simple facade for various logging APIs allowing to the end-user to plug in the desired implementation at deployment time.</cite></td>
+  </tr>
+</table>
+
+</p>
+</body>
+</html>

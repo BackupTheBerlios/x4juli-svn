@@ -1,0 +1,71 @@
+<!--
+
+ Copyright 2005, x4juli.org.
+ 
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+ 
+      http://www.apache.org/licenses/LICENSE-2.0
+ 
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+
+-->
+
+                           Extensions for the Java Util Logging Implemenation (x4juli)
+                                Version 0.6
+                                Release Notes
+
+WARNING:
+============
+x4juli version 0.6 is not meant to be used in production systems!
+To be sure that you can use x4juli from a later stable release, simply
+use Logger.getLogger(Sample.class.getName()) from java.util.logging,
+you will not have to change any code, due to this is recommended use.
+Alternatively use an logging facade, i.E. Jakarta Commons Logging.
+
+INTRODUCTION:
+============
+
+This document contains the release notes for this version of the x4juli package.  
+It is primarily a service release for downstream users.
+
+The following paragraphs document changes since the previous release
+(version 0.5). The documentation (userguide and javadoc) 
+has also been improved.
+
+
+NEW FEATURES:
+============
+
+[ALL FILES]        
+[Packages]         The package has moved from org.apache.juli to org.x4juli
+                   because it will not be published at Apache. Maybe later :-)
+[X4JuliLogManager] is now compatible with java.util.logging, Jakarta Commons Logging (JCL)
+                   and the Simple Log Facade for Java (SLF4J).
+[SLF4J]            x4juli delivers the slf4j classes as recommended on http://slf4j.org/faq.html#3
+[JCLFactory]       can be used to get an logger with an static compiled approach.
+[build.xml]        has been improved to correspond actual needs.
+[samples]          There is one sample for a standalone application and three samples for use within Tomcat.
+
+BUG FIXES:
+=========
+
+[MANIFEST.MF]      All jars include correct tags.
+[License]          The sl4fj license has been included.
+[RollingFileHandler] works now within an configuration environment
+[I18N]             The x4juli internal logging has now a working i18n output
+
+DEPRECATIONS:
+============
+
+    (These are carried forward from Version 0.5)
+
+[org.apache.juli.FileHandler]        
+                   Deprecated, replaced by org.apache.juli.handlers.FileHandler
+                   or org.apache.juli.handlers.RollingFileHandler.
+                   Class was also made final to make users change to new classes.

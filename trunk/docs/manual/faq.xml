@@ -1,0 +1,453 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
+"http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd">
+<!-- 
+# Copyright 2001-2005 The Apache Software Foundation.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+-->
+<article>
+  <title>x4juli - Extensions for the java.util.logging implementation</title>
+
+  <section>
+    <title>General</title>
+
+    <para></para>
+
+    <section>
+      <title>What is x4juli?</title>
+
+      <para>The Extensions for the java.util.logging implementation (x4juli)
+      provide more handlers, formatters and filters behind java.util.logging.
+      x4juli provides a native implementation for a widely used logging
+      facade, Jakarta Commons Logging and also for the new Simple Logging
+      Facade for Java.</para>
+    </section>
+
+    <section>
+      <title>Is x4juli production ready?</title>
+
+      <para>We are heavily working on tests and fixing bugs, but x4juli has
+      still pre-alpha status (December 2005, x4juli 0.6). Please use it in
+      test environments and give us feedback.</para>
+
+      <para>You want miss any advantages of x4juli for new developments if you
+      are using java.util.logging or one of the mentioned logging
+      facades.</para>
+
+      <para></para>
+
+      <para>Developing a proprietary extension to x4juli is at your own risk.
+      Until a major, production ready release ALL interfaces and classes are
+      subject to change.</para>
+    </section>
+
+    <section>
+      <title>When should x4juli be used?</title>
+
+      <section>
+        <title>Case: You are developing a new (J2SE, J2EE) application</title>
+
+        <para>You can use java.util.logging and be sure that it will run with
+        x4juli.</para>
+      </section>
+
+      <section>
+        <title>Case: You are developing a new API intended to be used inside
+        various environments and applications</title>
+
+        <para>There are two cases:</para>
+
+        <itemizedlist>
+          <listitem>
+            <para>You want to build it for JDK 1.4+, then consider using
+            java.util.logging and you can be sure that it will run with
+            x4juli.</para>
+          </listitem>
+        </itemizedlist>
+
+        <itemizedlist>
+          <listitem>
+            <para>You want to build it for JDK 1.4+ and user's choice for an
+            logging API should be free, you should use an logging facade, i.E.
+            Jakarta Commons,</para>
+
+            <para>still having the chance to use x4juli.</para>
+          </listitem>
+        </itemizedlist>
+
+        <itemizedlist>
+          <listitem>
+            <para>You want to build it compatible for older JDKs than 1.4, you
+            should use an logging facade, i.E. Jakarta Commons</para>
+          </listitem>
+        </itemizedlist>
+      </section>
+
+      <section>
+        <title>Case: You are running an application (with/without an J2EE
+        Container like Tomcat) which uses java.util.logging</title>
+
+        <para>You can use x4juli. See section configuration, samples and
+        tutorials for details.</para>
+      </section>
+
+      <section>
+        <title>Case: You are running an application (with/without an J2EE
+        Container like Tomcat) which uses Jakarta Commons Logging</title>
+
+        <para>You can use x4juli. See section configuration, samples and
+        tutorials for details.</para>
+      </section>
+
+      <section>
+        <title>Case: You are running an application (with/without an J2EE
+        Container like Tomcat) which uses Simple Logging Facade for
+        Java</title>
+
+        <para>You can use x4juli. See section configuration, samples and
+        tutorials for details.</para>
+      </section>
+
+      <section>
+        <title>Case: You are running an application (with/without an J2EE
+        Container like Tomcat) which uses all three mentioned logging APIs
+        (java.util.logging, Jakarta Commons Logging, Simple Logging Facade for
+        Java) in a mix caused by various derived JARs/APIs</title>
+
+        <para>You can use x4juli. See section configuration, samples and
+        tutorials for details.</para>
+      </section>
+
+      <section>
+        <title>Case: You are running an application within an J2EE Container
+        like Tomcat where the application uses log4j</title>
+
+        <para>You can use x4juli for the container environment and you must
+        stay at log4j for the application.</para>
+      </section>
+
+      <section>
+        <title>Case: You are running a standalone application without an J2EE
+        Container environment which is using log4j</title>
+
+        <para>You must use log4j. Enjoy a very good, mature and stable logging
+        API.</para>
+      </section>
+    </section>
+  </section>
+
+  <section>
+    <title>I have experience with log4j. How is the relationship?</title>
+
+    <para>x4juli is a port of the backend part of log4j. It is a full port, so
+    it does not use wrapper classes around the backend, instead it internally
+    extends java.util.logging classes.</para>
+
+    <para></para>
+
+    <table>
+      <title>Terminology</title>
+
+      <tgroup cols="2">
+        <tbody>
+          <row>
+            <entry>log4j</entry>
+
+            <entry>java.util.logging</entry>
+          </row>
+
+          <row>
+            <entry>appender</entry>
+
+            <entry>handler</entry>
+          </row>
+
+          <row>
+            <entry>layout</entry>
+
+            <entry>formatter</entry>
+          </row>
+
+          <row>
+            <entry>filter</entry>
+
+            <entry>filter</entry>
+          </row>
+
+          <row>
+            <entry>logger (depracted: category)</entry>
+
+            <entry>logger</entry>
+          </row>
+
+          <row>
+            <entry>level (depracted: priority)</entry>
+
+            <entry>level</entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+
+    <section>
+      <title>Can I use my log4j configuration for x4juli?</title>
+
+      <para>No. Would be nice if you contribute a two way converter :-)</para>
+    </section>
+  </section>
+
+  <section>
+    <title>I am familiar with Jakarta Commons Logging and/or slf4j. How is the
+    relationship?</title>
+
+    <para>x4juli provides a native implementation for
+    org.apache.commons.logging.Log interface and for the org.slf4j.Logger
+    interface. x4juli uses the standard way of each facade to implement the
+    corresponding factory. In case of Jakarta Commons Logging you still have
+    to use the originally provided jar and put an config entry in the right
+    place (System property or config.file). In case of slf4j you have to do
+    nothing but remove all other sl4fj-xxxxx.jar files from the classpath. See
+    section config for details.</para>
+
+    <para></para>
+  </section>
+
+  <section>
+    <title>Usage and Configuration</title>
+
+    <para></para>
+
+    <section>
+      <title>How do I use the java.util.logging API?</title>
+
+      <para>The following sample shows the basic usage pattern and some
+      features.</para>
+
+      <para>public class SimpleSample { </para>
+
+      <para>private static final Logger LOG =
+      Logger.getLogger(SimpleSample.class.getName()); </para>
+
+      <para>public String someMethod(String foo, int bar) {</para>
+
+      <para> LOG.entering("SimpleSample", "someMethod", new Object[]{foo,
+      String.valueOf(bar)});</para>
+
+      <para> //doing something LOG.finer("Working with demo case");</para>
+
+      <para> try { </para>
+
+      <para>// doing more </para>
+
+      <para>File myFile = new File("demo.txt"); </para>
+
+      <para>FileReader fr = new FileReader(myFile); </para>
+
+      <para>} catch (IOException e) { </para>
+
+      <para>LOG.log(Level.SEVERE, "Error occured accessing file",e); </para>
+
+      <para>} // End of catch block</para>
+
+      <para>String retValue = "Just demo case"; </para>
+
+      <para>LOG.exiting("SimpleSample", "someMethod",retValue); return
+      retValue; </para>
+
+      <para>} // End of Method</para>
+
+      <para>} // End of Class</para>
+
+      <para>First the actual logger is obtained and hold as static reference.
+      The naming convention (as in most logging systems) is to use the full
+      qualified class name for the logger.</para>
+
+      <para>The first log method (LOG.entering ....) is a utiliy method of an
+      logger to log information when entering a new method. Use this with care
+      and just where needed, because your log will be useless if flooded with
+      this information. A good point to log the flow is the business facade of
+      an application.</para>
+
+      <para>The second log method (LOG.finer ...) is an other utility method.
+      You do not need to specifiy the level to log a simple message, it is
+      implied by the method name.</para>
+
+      <para>The third log method (LOG.log(Level.SEVERE ....) is a basic log
+      method: The Level is specified explicit, a message follows, the third
+      parameter logs the exception which is caught.</para>
+
+      <para>The fourth and last method is similar to the first, just differing
+      in the case, it is just for the end of a method.</para>
+    </section>
+
+    <section>
+      <title>Why do you not mention the usage of x4juli in your sample
+      code?</title>
+
+      <para>There is no need for users to import anything of x4juli to use
+      x4juli. x4juli is just an extension to the backend, so you can use it by
+      putting it on the system classpath and use the correct
+      configuration.</para>
+    </section>
+
+    <section>
+      <title>How do I use Jakarta Commons Logging and Simple Logging Facade
+      for Java API?</title>
+
+      <para>This is an x4juli FAQ. Please have a look at the project pages for
+      their documentation regarding usage in user code.</para>
+    </section>
+
+    <section>
+      <title>How do I configure x4juli?</title>
+
+      <para>This is one part different to all other logging frameworks and the
+      one which has to be improved most.</para>
+
+      <para>Currently there is one sample (x4juli-standalone) delivered with
+      x4juli. Please have a look at it for commented configuration.</para>
+
+      <para>At first you have to put the x4juli-x.x.jar on the system
+      classpath. It is not enough(!) to have it on a depending classpath, i.E.
+      in WEB-INF/lib in an webapplication. (This construction was invented by
+      SUN for the java.util.logging API, it is not a construction of the
+      developers of x4juli).</para>
+
+      <para>Second you have to specify that you want to use x4juli for
+      logging: Put parameter
+      -Djava.util.logging.manager=org.apache.juli.X4JuliLogManager on the
+      startup line (in your script, or corresponding config) for the JVM
+      start.</para>
+
+      <para>Third you have to configure your loggers, handlers, formatters,
+      look at the sample directory for a much better config!</para>
+
+      <para>#Declaring your handlers, each handler MUST start with an
+      number!</para>
+
+      <para>#Handlers property must include ALL handlers, even when used with
+      the root config ".handlers" </para>
+
+      <para>handlers = 1system.org.apache.juli.handlers.FileHandler,
+      2testfoo.org.apache.juli.handlers.FileHandler,
+      java.util.logging.ConsoleHandler .handlers =
+      1system.org.apache.juli.handlers.FileHandler,
+      java.util.logging.ConsoleHandler </para>
+
+      <para>#Level of the root Logger </para>
+
+      <para>.level = FINEST</para>
+
+      <para># Handler specific properties. # Describes specific configuration
+      info for Handlers, here you have controll where log goes to and which
+      level is needed.</para>
+
+      <para># Each handler is configured with an formatter, and here you have
+      to specifiy options for the corresponding formatter. </para>
+
+      <para>2testfoo.org.apache.juli.handlers.FileHandler.level = FINEST
+      </para>
+
+      <para>2testfoo.org.apache.juli.handlers.FileHandler.filename =
+      /etc/logs/testfoo.log </para>
+
+      <para>2testfoo.org.apache.juli.handlers.FileHandler.name = 2testfoo
+      </para>
+
+      <para>2testfoo.org.apache.juli.handlers.FileHandler.formatter =
+      org.apache.juli.formatter.PatternFormatter</para>
+
+      <para>2testfoo.org.apache.juli.formatter.PatternFormatter.pattern=[%d{ISO8601}]-[%p][%c]%m[%l]%n
+      </para>
+
+      <para>1system.org.apache.juli.handlers.FileHandler.level = INFO </para>
+
+      <para>1system.org.apache.juli.handlers.FileHandler.filename =
+      /etc/logs/system.log </para>
+
+      <para>1system.org.apache.juli.handlers.FileHandler.name = 1system
+      </para>
+
+      <para>1system.org.apache.juli.handlers.FileHandler.formatter =
+      org.apache.juli.formatter.PatternFormatter</para>
+
+      <para>1system.org.apache.juli.formatter.PatternFormatter.pattern=[%d{ISO8601}]-[%c][%p]%m%n
+      </para>
+
+      <para>java.util.logging.ConsoleHandler.level = WARNING
+      java.util.logging.ConsoleHandler.formatter =
+      java.util.logging.SimpleFormatter</para>
+
+      <para># Logger specific properties, here you can control the different
+      loggers:</para>
+
+      <para>org.foo.sample.level = FINEST org.foo.sample.handlers =
+      2testfoo.org.apache.juli.handlers.FileHandler </para>
+
+      <para>org.foo.sample.child.level=INFO
+      org.foo.another.package.level=SEVERE</para>
+
+      <para></para>
+
+      <para></para>
+    </section>
+
+    <section>
+      <title>How do I configure Jakarta Commons Logging to natively use x4juli
+      ?</title>
+
+      <para>There are two parts: At first you have to take action as described
+      in "How do I configure x4juli?".</para>
+
+      <para>Second part: You have to make Jakarta Commons Logging use the
+      x4juli JCLFactory. There are two possibilities: Specify a system
+      property on your jvm startup (script):
+      -Dorg.apache.commons.logging.LogFactory=org.apache.juli.JCLFactory</para>
+
+      <para>or put in an commons-logging.properties file in your classpath
+      with org.apache.commons.logging.LogFactory=org.apache.juli.JCLFactory
+      property line in the file.</para>
+    </section>
+
+    <section>
+      <title>How do I configure Simple Logging Facade for Java (slf4j) to
+      natively use x4juli ?</title>
+
+      <para>x4juli delivers all necessary classes as specified on
+      http://slf4j.org/faq.html section "Implementing the SLF4J API". You
+      simply have to remove all sl4fj-xxxxx.jar from the classpath.</para>
+    </section>
+
+    <section>
+      <title>How do I configure Jakarta Tomcat to work with x4juli ?</title>
+
+      <para>This description is based on Tomcat 5.5.12. First rename
+      x4juli-x.x.jar to tomcat-juli.jar and put it in
+      {tomcat_installation_directory}/bin (you have to overwrite the existing
+      file).</para>
+
+      <para>Open catalina.sh or catalina.bat (Windows environment) in your
+      favourite editor. Search for tomcat-juli.jar. Replace String
+      "org.apache.juli.ClassLoaderLogManager" (without double quotes) with
+      "org.apache.juli.X4JuliLogManager" (without double quotes). This is also
+      a good place to enable Jakarta Commons Logging native support, add
+      "-Dorg.apache.commons.logging.LogFactory=org.apache.juli.JCLFactory"
+      (with double quotes in catalina.sh, without double quotes in
+      catalina.bat) at the end of the line.</para>
+
+      <para>There are currently three samples delivered with x4juli. Please
+      have a look at them for detailled step-by-step instructions.</para>
+    </section>
+  </section>
+</article>

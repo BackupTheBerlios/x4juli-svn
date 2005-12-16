@@ -1,0 +1,42 @@
+SEVERE - Message 0
+SEVERE - Message 1
+SEVERE - Message 2
+SEVERE - Message 3
+WARNING - Message 4
+INFO - Message 5
+SEVERE - Message 6
+SEVERE - Message 7
+WARNING - Message 8
+INFO - Message 9
+SEVERE - Message 10
+SEVERE - Message 11
+SEVERE - Message 12
+SEVERE - Message 13
+SEVERE - Message 14
+SEVERE - Message 15
+WARNING - Message 16
+INFO - Message 17
+FINER - Message 18
+SEVERE - Message 19
+SEVERE - Message 20
+WARNING - Message 21
+INFO - Message 22
+INFO - Message 23
+java.lang.Exception: Just testing with 23
+	at org.x4juli.MinimumTest.common(X)
+	at org.x4juli.MinimumTest.testSimple(X)
+	at java.lang.reflect.Method.invoke(X)
+	at junit.framework.TestCase.runTest(X)
+	at junit.framework.TestCase.runBare(X)
+	at junit.framework.TestResult$1.protect(X)
+	at junit.framework.TestResult.runProtected(X)
+	at junit.framework.TestResult.run(X)
+	at junit.framework.TestCase.run(X)
+	at junit.framework.TestSuite.runTest(X)
+	at junit.framework.TestSuite.run(X)
+	at junit.framework.TestSuite.runTest(X)
+	at junit.framework.TestSuite.run(X)
+	at junit.textui.TestRunner.doRun(X)
+	at junit.textui.TestRunner.start(X)
+	at junit.textui.TestRunner.main(X)
+INFO - Messages should bear numbers 0 through 23.

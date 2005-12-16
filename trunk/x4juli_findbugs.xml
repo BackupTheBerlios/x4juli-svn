@@ -1,0 +1,110 @@
+<!--
+
+ Copyright 2005, x4juli.org.
+ 
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+ 
+      http://www.apache.org/licenses/LICENSE-2.0
+ 
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+
+-->
+
+<FindBugsFilter>
+
+     <Match class="com.foobar.ClassWithSomeBugsMatched">
+       <BugCode name="DE,UrF,SIC" />
+     </Match>
+
+     <!-- PACKAGE org.x4juli -->
+
+     <!-- Fine grained exception handling not necessary or wanted. -->
+     <Match class="org.x4juli.ClassLoaderLogManager">
+         <Method name="readConfiguration" />
+       <BugCode name="REC" />
+     </Match>
+
+     <!-- False positive: Is already static inner class. -->
+     <Match class="org.x4juli.ClassLoaderLogManager" >
+       <BugCode name="SIC" />
+     </Match>
+     <Match class="org.x4juli.ClassLoaderLogManager$1" >
+       <BugCode name="SIC" />
+     </Match>
+
+     <!-- False positive: Is already static inner class. -->
+     <Match class="org.x4juli.JCLLogManager" >
+       <BugCode name="SIC" />
+     </Match>
+     <Match class="org.x4juli.JCLLogManager$RootLogger" >
+       <BugCode name="SIC" />
+     </Match>
+
+     <!-- False positive: Is already static inner class. -->
+     <Match class="org.x4juli.Slf4JLogManager" >
+       <BugCode name="SIC" />
+     </Match>
+     <Match class="org.x4juli.Slf4JLogManager$RootLogger" >
+       <BugCode name="SIC" />
+     </Match>
+
+     <!-- PACKAGE org.x4juli.formatter -->
+
+     <!-- Warning is correct, but special locale for logging cannot be assumed -->
+     <Match class="org.x4juli.formatter.HTMLFormatter">
+        <Or>
+         <Method name="doFormat" params="org.x4juli.global.spi.ExtendedLogRecord" returns="java.lang.String" />
+         <Method name="getHeader" params="" returns="java.lang.String" />
+        </Or>
+       <BugCode name="Dm" />
+     </Match>
+
+     <!-- PACKAGE org.x4juli.formatter.pattern -->
+
+     <!-- Fine grained exception handling not necessary or wanted. -->
+     <Match class="org.x4juli.formatter.pattern.PatternParser">
+         <Method name="doCcreateConverter" />
+       <BugCode name="REC" />
+     </Match>
+
+
+		<!-- PACKAGE org.x4juli.global.helper -->
+
+     <!-- No dead store, but local constant -->
+     <Match class="org.x4juli.global.helper.OptionConverter">
+         <Method name="toFileSize" />
+       <BugCode name="DLS" />
+     </Match>
+
+     <!-- No dead store, but test for avaibility of class -->
+     <Match class="org.x4juli.global.helper.PlatformInfo">
+         <Method name="isInVisualAge" />
+       <BugCode name="DLS" />
+     </Match>
+
+ 		<!-- PACKAGE org.x4juli.global.helper -->
+
+     <!-- Fine grained exception handling not necessary or wanted. -->
+     <Match class="org.x4juli.global.spi.ThrowableInformation">
+         <Method name="extractStringRep" />
+       <BugCode name="REC" />
+     </Match>
+
+ 		<!-- PACKAGE org.x4juli.handlers -->
+
+     <!-- Fine grained exception handling not necessary or wanted. -->
+     <Match class="org.x4juli.handlers.RollingFileHandler">
+         <Or>
+         <Method name="rollover" />
+         <Method name="configure" />
+         </Or>
+       <BugCode name="REC" />
+     </Match>
+		
+</FindBugsFilter>

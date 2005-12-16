@@ -1,0 +1,22 @@
+[2005-12-16 19:42:14,468]-[FINEST][sample]Logging to logger[sample] using finest-level.[org.x4juli.SimpleTest.testSimple1(SimpleTest.java:53)]
+[2005-12-16 19:42:14,484]-[INFO][sample]Logging to logger[sample] using info-level.[org.x4juli.SimpleTest.testSimple1(SimpleTest.java:54)]
+[2005-12-16 19:42:14,484]-[SEVERE][sample]Logging to logger[sample] using severe-level.[org.x4juli.SimpleTest.testSimple1(SimpleTest.java:55)]
+[2005-12-16 19:42:14,484]-[INFO][sample.child]Logging to logger[sample.child] using info-level.[org.x4juli.SimpleTest.testSimple1(SimpleTest.java:58)]
+[2005-12-16 19:42:14,484]-[SEVERE][sample.child.child]Logging to logger[sample.child.child] using severe-level with an exception.[org.x4juli.SimpleTest.testSimple1(SimpleTest.java:62)]
+java.lang.Exception
+	at org.x4juli.SimpleTest.testSimple1(SimpleTest.java:62)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:324)
+	at junit.framework.TestCase.runTest(TestCase.java:154)
+	at junit.framework.TestCase.runBare(TestCase.java:127)
+	at junit.framework.TestResult$1.protect(TestResult.java:106)
+	at junit.framework.TestResult.runProtected(TestResult.java:124)
+	at junit.framework.TestResult.run(TestResult.java:109)
+	at junit.framework.TestCase.run(TestCase.java:118)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:297)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:672)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:567)
