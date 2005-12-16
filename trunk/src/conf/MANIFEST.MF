@@ -1,5 +1,0 @@
-Extension-Name: org.apache.juli
-Specification-Vendor: Apache Software Foundation
-Specification-Version: 0.5
-Implementation-Vendor: Apache Software Foundation
-Implementation-Version: 0.5
