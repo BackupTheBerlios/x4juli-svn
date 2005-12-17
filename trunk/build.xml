@@ -19,617 +19,617 @@
 <project name="x4juli" default="rebuild" basedir=".">
 
 
-	<!--
+  <!--
         "x4juli" component of the Apache Logging Project
 -->
 
 
-	<!-- ========== Initialize Properties ===================================== -->
+  <!-- ========== Initialize Properties ===================================== -->
 
 
-	<property file="build.properties" />
-	<!-- Component local   -->
+  <property file="build.properties" />
+  <!-- Component local   -->
 
-	<!-- ========== External Dependencies ===================================== -->
-	<taskdef resource="checkstyletask.properties" classpath="${checkstyle.home}/checkstyle-all-4.0.jar" onerror="fail" />
+  <!-- ========== External Dependencies ===================================== -->
+  <taskdef resource="checkstyletask.properties" classpath="${checkstyle.home}/checkstyle-all-4.0.jar" onerror="fail" />
 
-	<taskdef name="findbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask" classpath="${findbugs.home}/lib/findbugs-ant.jar;${findbugs.home}/lib/findbugs.jar;${findbugs.home}/lib/dom4j-full.jar;${findbugs.home}/libbcel.jar" onerror="fail" />
+  <taskdef name="findbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask" classpath="${findbugs.home}/lib/findbugs-ant.jar;${findbugs.home}/lib/findbugs.jar;${findbugs.home}/lib/dom4j-full.jar;${findbugs.home}/libbcel.jar" onerror="fail" />
 
-	<!-- ========== Derived Values ============================================ -->
-
-
-	<!-- ========== Component Declarations ==================================== -->
+  <!-- ========== Derived Values ============================================ -->
 
 
-	<!-- The name of this component -->
-	<property name="component.name" value="x4juli" />
-
-	<!-- The primary package name of this component -->
-	<property name="component.package" value="org.x4juli" />
-
-	<!-- The title of this component -->
-	<property name="component.title" value="Extensions for the Java Util Logging Implementation (x4juli)" />
-
-	<!-- The current version number of this component -->
-	<property name="component.version" value="0.6" />
-
-	<!-- The base directory for compilation targets -->
-	<property name="build.home" value="${basedir}/target" />
-
-	<!-- The base directory for component configuration files -->
-	<property name="conf.home" value="${basedir}/src/conf" />
-
-	<!-- The base directory for distribution targets -->
-	<property name="dist.home" value="${basedir}/dist" />
-
-	<!-- The base directory for component sources -->
-	<property name="source.home" value="${basedir}/src/java" />
-
-	<!-- The base directory for unit test -->
-	<property name="test.home" value="${basedir}/tests" />
-
-	<!-- The base directory for unit test sources -->
-	<property name="test.home.src" value="${test.home}/src/java" />
-
-	<!-- The base directory for samples -->
-	<property name="sample.home" value="${basedir}/samples" />
-
-	<!-- The base directory for sample sources -->
-	<property name="sample.home.src" value="${sample.home}/src/java" />
-
-	<!-- The base directory for building samples -->
-	<property name="build.sample.home" value="${build.home}/samples" />
-
-	<!-- The temp directory for building samples -->
-	<property name="build.sample.temp" value="${build.sample.home}/temp" />
-
-	<!-- The temp directory for building sample classes -->
-	<property name="build.sample.classes" value="${build.sample.temp}/classes" />
-
-	<!-- The final result directory for building samples -->
-	<property name="build.sample.dist" value="${build.sample.home}/dist" />
-
-	<!-- The base directory for component documentation files -->
-	<property name="docs.home" value="${basedir}/docs" />
+  <!-- ========== Component Declarations ==================================== -->
 
 
+  <!-- The name of this component -->
+  <property name="component.name" value="x4juli" />
 
-	<!-- ========== Compiler Defaults ========================================= -->
+  <!-- The primary package name of this component -->
+  <property name="component.package" value="org.x4juli" />
+
+  <!-- The title of this component -->
+  <property name="component.title" value="Extensions for the Java Util Logging Implementation (x4juli)" />
+
+  <!-- The current version number of this component -->
+  <property name="component.version" value="0.6" />
+
+  <!-- The base directory for compilation targets -->
+  <property name="build.home" value="${basedir}/target" />
+
+  <!-- The base directory for component configuration files -->
+  <property name="conf.home" value="${basedir}/src/conf" />
+
+  <!-- The base directory for distribution targets -->
+  <property name="dist.home" value="${basedir}/dist" />
+
+  <!-- The base directory for component sources -->
+  <property name="source.home" value="${basedir}/src/java" />
+
+  <!-- The base directory for unit test -->
+  <property name="test.home" value="${basedir}/tests" />
+
+  <!-- The base directory for unit test sources -->
+  <property name="test.home.src" value="${test.home}/src/java" />
+
+  <!-- The base directory for samples -->
+  <property name="sample.home" value="${basedir}/samples" />
+
+  <!-- The base directory for sample sources -->
+  <property name="sample.home.src" value="${sample.home}/src/java" />
+
+  <!-- The base directory for building samples -->
+  <property name="build.sample.home" value="${build.home}/samples" />
+
+  <!-- The temp directory for building samples -->
+  <property name="build.sample.temp" value="${build.sample.home}/temp" />
+
+  <!-- The temp directory for building sample classes -->
+  <property name="build.sample.classes" value="${build.sample.temp}/classes" />
+
+  <!-- The final result directory for building samples -->
+  <property name="build.sample.dist" value="${build.sample.home}/dist" />
+
+  <!-- The base directory for component documentation files -->
+  <property name="docs.home" value="${basedir}/docs" />
 
 
-	<!-- Should Java compilations set the 'debug' compiler option? -->
-	<property name="compile.debug" value="true" />
 
-	<!-- Should Java compilations set the 'deprecation' compiler option? -->
-	<property name="compile.deprecation" value="true" />
-
-	<!-- Should Java compilations set the 'optimize' compiler option? -->
-	<property name="compile.optimize" value="false" />
-
-	<!-- Which java version has the source code? -->
-	<property name="compile.source.version" value="1.4" />
-
-	<!-- Which java version has the byte code? -->
-	<property name="compile.target.version" value="1.4" />
-
-	<!-- Construct compile classpath -->
-	<path id="compile.classpath">
-		<pathelement location="${junit.jar}" />
-		<pathelement location="${commons-logging.jar}" />
-	</path>
-
-	<!-- Construct sample compile classpath -->
-	<path id="sample.classpath">
-		<pathelement location="${build.home}/classes" />
-		<pathelement location="${commons-logging.jar}" />
-		<pathelement location="${servlet-api.jar}" />
-	</path>
-
-	<!-- ========== Test Execution Defaults =================================== -->
+  <!-- ========== Compiler Defaults ========================================= -->
 
 
-	<!-- Construct unit test classpath (generic tests) -->
-	<path id="test.classpath">
-		<pathelement location="${build.home}/classes" />
-		<pathelement location="${build.home}/tests" />
-		<pathelement location="${junit.jar}" />
-		<pathelement location="${jakarta-oro.jar}"/>
-		<pathelement location="${commons-logging.jar}" />
-		<pathelement location="${conf.home}" />
-	</path>
+  <!-- Should Java compilations set the 'debug' compiler option? -->
+  <property name="compile.debug" value="true" />
 
-	<!-- Should all tests fail if one does? -->
-	<property name="test.failonerror" value="true" />
+  <!-- Should Java compilations set the 'deprecation' compiler option? -->
+  <property name="compile.deprecation" value="true" />
 
-	<!-- The test runner to execute -->
-	<property name="test.runner" value="junit.textui.TestRunner" />
+  <!-- Should Java compilations set the 'optimize' compiler option? -->
+  <property name="compile.optimize" value="false" />
 
-	<!-- ========== Executable Targets ======================================== -->
+  <!-- Which java version has the source code? -->
+  <property name="compile.source.version" value="1.4" />
 
-	<target name="rebuild" depends="clean, build" description="Clean and compile all components" />
+  <!-- Which java version has the byte code? -->
+  <property name="compile.target.version" value="1.4" />
 
-	<target name="build" depends="compile,create-jar, javadoc, checks, test" description="Clean and compile all components" />
+  <!-- Construct compile classpath -->
+  <path id="compile.classpath">
+    <pathelement location="${junit.jar}" />
+    <pathelement location="${commons-logging.jar}" />
+  </path>
 
-	<target name="init" description="Initialize and evaluate conditionals">
-		<echo message="-------- ${component.title} ${component.version} --------" />
-		<filter token="name" value="${component.name}" />
-		<filter token="package" value="${component.package}" />
-		<filter token="version" value="${component.version}" />
-		<echo>
-			ant.file[${ant.file}]
-			ant.version[${ant.version}]
-			ant.java.version[${ant.java.version}]
-		</echo>
-	</target>
+  <!-- Construct sample compile classpath -->
+  <path id="sample.classpath">
+    <pathelement location="${build.home}/classes" />
+    <pathelement location="${commons-logging.jar}" />
+    <pathelement location="${servlet-api.jar}" />
+  </path>
 
-	<target name="clean" description="Clean build and distribution directories">
-		<delete dir="${build.home}" />
-		<delete dir="${dist.home}" />
-	</target>
+  <!-- ========== Test Execution Defaults =================================== -->
 
-	<target name="prepare" depends="init" description="Prepare build directory">
-		<mkdir dir="${build.home}" />
-		<mkdir dir="${build.home}/classes" />
-		<mkdir dir="${build.home}/conf" />
-		<mkdir dir="${build.home}/docs" />
-		<mkdir dir="${build.home}/docs/api" />
-		<mkdir dir="${build.home}/docs/website" />
-		<mkdir dir="${build.home}/docs/manual" />
-		<mkdir dir="${build.home}/tests" />
-	</target>
 
-	<target name="static" depends="prepare" description="Copy static files to build directory">
-		<tstamp />
-		<copy todir="${build.home}/conf" filtering="on">
-			<fileset dir="${conf.home}" includes="*.properties" />
-		</copy>
-	</target>
+  <!-- Construct unit test classpath (generic tests) -->
+  <path id="test.classpath">
+    <pathelement location="${build.home}/classes" />
+    <pathelement location="${build.home}/tests" />
+    <pathelement location="${junit.jar}" />
+    <pathelement location="${jakarta-oro.jar}"/>
+    <pathelement location="${commons-logging.jar}" />
+    <pathelement location="${conf.home}" />
+  </path>
 
-	<target name="warning" depends="jdk1.4-warning" description="Summary task for all initizialiation checks">
-	</target>
+  <!-- Should all tests fail if one does? -->
+  <property name="test.failonerror" value="true" />
 
-	<target name="discovery" depends="init" description="Checking for needed components">
-		<available property="jdk.1.4.present" classname="java.util.logging.Logger" />
-	</target>
+  <!-- The test runner to execute -->
+  <property name="test.runner" value="junit.textui.TestRunner" />
 
-	<target name="jdk1.4-warning" unless="jdk.1.4.present" depends="discovery" description="Checking for JDK 1.4">
-		<echo>
+  <!-- ========== Executable Targets ======================================== -->
+
+  <target name="rebuild" depends="clean, build" description="Clean and compile all components" />
+
+  <target name="build" depends="compile,create-jar, javadoc, checks, test" description="Clean and compile all components" />
+
+  <target name="init" description="Initialize and evaluate conditionals">
+    <echo message="-------- ${component.title} ${component.version} --------" />
+    <filter token="name" value="${component.name}" />
+    <filter token="package" value="${component.package}" />
+    <filter token="version" value="${component.version}" />
+    <echo>
+      ant.file[${ant.file}]
+      ant.version[${ant.version}]
+      ant.java.version[${ant.java.version}]
+    </echo>
+  </target>
+
+  <target name="clean" description="Clean build and distribution directories">
+    <delete dir="${build.home}" />
+    <delete dir="${dist.home}" />
+  </target>
+
+  <target name="prepare" depends="init" description="Prepare build directory">
+    <mkdir dir="${build.home}" />
+    <mkdir dir="${build.home}/classes" />
+    <mkdir dir="${build.home}/conf" />
+    <mkdir dir="${build.home}/docs" />
+    <mkdir dir="${build.home}/docs/api" />
+    <mkdir dir="${build.home}/docs/website" />
+    <mkdir dir="${build.home}/docs/manual" />
+    <mkdir dir="${build.home}/tests" />
+  </target>
+
+  <target name="static" depends="prepare" description="Copy static files to build directory">
+    <tstamp />
+    <copy todir="${build.home}/conf" filtering="on">
+      <fileset dir="${conf.home}" includes="*.properties" />
+    </copy>
+  </target>
+
+  <target name="warning" depends="jdk1.4-warning" description="Summary task for all initizialiation checks">
+  </target>
+
+  <target name="discovery" depends="init" description="Checking for needed components">
+    <available property="jdk.1.4.present" classname="java.util.logging.Logger" />
+  </target>
+
+  <target name="jdk1.4-warning" unless="jdk.1.4.present" depends="discovery" description="Checking for JDK 1.4">
+    <echo>
     *** WARNING ***
     JDK 1.4 not present: Cannot Build Juli
     </echo>
-	</target>
+  </target>
 
-	<!-- ========== Compile Targets ======================================== -->
-	<target name="compile" depends="static, warning, compile-only" description="Compile shareable components">
-	</target>
+  <!-- ========== Compile Targets ======================================== -->
+  <target name="compile" depends="static, warning, compile-only" description="Compile shareable components">
+  </target>
 
-	<target name="compile-only" depends="prepare" description="Compiles the source, without clean">
-		<javac srcdir="${source.home}"
-			   destdir="${build.home}/classes"
-			   debug="${compile.debug}"
-			   source="${compile.source.version}"
-			   target="${compile.target.version}"
-			   deprecation="${compile.deprecation}"
-			   optimize="${compile.optimize}">
-			<classpath refid="compile.classpath" />
-		</javac>
-		<copy todir="${build.home}/classes" filtering="on">
-			<fileset dir="${source.home}" excludes="**/*.java" />
-		</copy>
-	</target>
+  <target name="compile-only" depends="prepare" description="Compiles the source, without clean">
+    <javac srcdir="${source.home}"
+         destdir="${build.home}/classes"
+         debug="${compile.debug}"
+         source="${compile.source.version}"
+         target="${compile.target.version}"
+         deprecation="${compile.deprecation}"
+         optimize="${compile.optimize}">
+      <classpath refid="compile.classpath" />
+    </javac>
+    <copy todir="${build.home}/classes" filtering="on">
+      <fileset dir="${source.home}" excludes="**/*.java" />
+    </copy>
+  </target>
 
-	<target name="create-jar" depends="compile" description="Create x4juli.jar">
-		<mkdir dir="${build.home}/classes/META-INF" />
-		<copy file="LICENSE.txt" todir="${build.home}/classes/META-INF" />
-		<copy file="NOTICE.txt" todir="${build.home}/classes/META-INF" />
-		<copy file="SLF4JLICENSE.txt" todir="${build.home}/classes/META-INF" />
-		<jar destfile="${build.home}/${component.name}-${component.version}.jar"
-			 basedir="${build.home}/classes">
-     	   <manifest>
-		      <attribute name="Manifest-version" value="1.0"/>
-		      <attribute name="Compiled-against-commons-logging-Version" value="${commons-logging.version}"/>
-		      <section name="org/x4juli/">
-		         <attribute name="Implementation-Title" value="${component.name}"/>
-		         <attribute name="Implementation-Version" value="${component.version} ${TODAY}"/>
-		         <attribute name="Implementation-Vendor" value="x4juli.org"/>
-		      </section>
-		      <section name="org/slf4j/">
-		         <attribute name="Specification-Title" value="Simple Logging Facade for Java"/>
-		         <attribute name="Specification-Version" value="${slf4j.version}"/>
-		         <attribute name="Specification-Vendor" value="slf4j.org"/>
-		         <attribute name="Implementation-Title" value="slf4j native x4juli"/>
-		         <attribute name="Implementation-Version" value="${component.version}"/>
-		         <attribute name="Implementation-Vendor" value="x4juli.org"/>
-		      </section>
+  <target name="create-jar" depends="compile" description="Create x4juli.jar">
+    <mkdir dir="${build.home}/classes/META-INF" />
+    <copy file="LICENSE.txt" todir="${build.home}/classes/META-INF" />
+    <copy file="NOTICE.txt" todir="${build.home}/classes/META-INF" />
+    <copy file="SLF4JLICENSE.txt" todir="${build.home}/classes/META-INF" />
+    <jar destfile="${build.home}/${component.name}-${component.version}.jar"
+       basedir="${build.home}/classes">
+         <manifest>
+          <attribute name="Manifest-version" value="1.0"/>
+          <attribute name="Compiled-against-commons-logging-Version" value="${commons-logging.version}"/>
+          <section name="org/x4juli/">
+             <attribute name="Implementation-Title" value="${component.name}"/>
+             <attribute name="Implementation-Version" value="${component.version} ${TODAY}"/>
+             <attribute name="Implementation-Vendor" value="x4juli.org"/>
+          </section>
+          <section name="org/slf4j/">
+             <attribute name="Specification-Title" value="Simple Logging Facade for Java"/>
+             <attribute name="Specification-Version" value="${slf4j.version}"/>
+             <attribute name="Specification-Vendor" value="slf4j.org"/>
+             <attribute name="Implementation-Title" value="slf4j native x4juli"/>
+             <attribute name="Implementation-Version" value="${component.version}"/>
+             <attribute name="Implementation-Vendor" value="x4juli.org"/>
+          </section>
          </manifest>
-			<include name="org/x4juli/**" />
-			<include name="org/slf4j/**" />
-			<include name="META-INF/LICENSE.txt" />
-			<include name="META-INF/NOTICE.txt" />
-			<include name="META-INF/SLF4JLICENSE.txt" />
-		</jar>
-	</target>
+      <include name="org/x4juli/**" />
+      <include name="org/slf4j/**" />
+      <include name="META-INF/LICENSE.txt" />
+      <include name="META-INF/NOTICE.txt" />
+      <include name="META-INF/SLF4JLICENSE.txt" />
+    </jar>
+  </target>
 
-	<target name="compile.tests" depends="compile" description="Compile unit test cases">
-		<javac srcdir="${test.home.src}" destdir="${build.home}/tests" source="${compile.source.version}" target="${compile.target.version}" debug="${compile.debug}" deprecation="${compile.deprecation}" optimize="${compile.optimize}">
-			<classpath refid="test.classpath" />
-		</javac>
-		<copy todir="${build.home}/tests" filtering="on">
-			<fileset dir="${test.home.src}" excludes="**/*.java" />
-		</copy>
-	</target>
+  <target name="compile.tests" depends="compile" description="Compile unit test cases">
+    <javac srcdir="${test.home.src}" destdir="${build.home}/tests" source="${compile.source.version}" target="${compile.target.version}" debug="${compile.debug}" deprecation="${compile.deprecation}" optimize="${compile.optimize}">
+      <classpath refid="test.classpath" />
+    </javac>
+    <copy todir="${build.home}/tests" filtering="on">
+      <fileset dir="${test.home.src}" excludes="**/*.java" />
+    </copy>
+  </target>
 
-	<target name="javadoc" depends="compile" description="Create component Javadoc documentation">
-		<mkdir dir="${dist.home}" />
-		<mkdir dir="${dist.home}/docs" />
-		<mkdir dir="${dist.home}/docs/api" />
-		<javadoc sourcepath="${source.home}" destdir="${dist.home}/docs/api" overview="${docs.home}/overview.html" packagenames="org.x4juli.*" source="${compile.source.version}" author="true" private="true" version="true" doctitle="&lt;h1&gt;${component.title} (Version ${component.version})&lt;/h1&gt;" windowtitle="${component.title} (Version ${component.version})" bottom="${license_html}">
-			<classpath refid="test.classpath" />
-		</javadoc>
-	</target>
+  <target name="javadoc" depends="compile" description="Create component Javadoc documentation">
+    <mkdir dir="${dist.home}" />
+    <mkdir dir="${dist.home}/docs" />
+    <mkdir dir="${dist.home}/docs/api" />
+    <javadoc sourcepath="${source.home}" destdir="${dist.home}/docs/api" overview="${docs.home}/overview.html" packagenames="org.x4juli.*" source="${compile.source.version}" author="true" private="true" version="true" doctitle="&lt;h1&gt;${component.title} (Version ${component.version})&lt;/h1&gt;" windowtitle="${component.title} (Version ${component.version})" bottom="${license_html}">
+      <classpath refid="test.classpath" />
+    </javadoc>
+  </target>
 
 
-	<target name="dist" depends="rebuild, create.samples" description="Create binary distribution">
-		<mkdir dir="${dist.home}" />
-		<copy file="LICENSE.txt" todir="${dist.home}" />
-		<copy file="NOTICE.txt" todir="${dist.home}" />
-		<copy file="SLF4JLICENSE.txt" todir="${dist.home}" />
-		<copy file="RELEASE-NOTES.txt" todir="${dist.home}" />
-		<copy file="${build.home}/${component.name}-${component.version}.jar"
-			  tofile="${dist.home}/${component.name}-${component.version}.jar" />
-		<mkdir dir="${dist.home}/src" />
-		<copy todir="${dist.home}/src" filtering="on">
-			<fileset dir="${source.home}" />
-		</copy>
+  <target name="dist" depends="rebuild, create.samples" description="Create binary distribution">
+    <mkdir dir="${dist.home}" />
+    <copy file="LICENSE.txt" todir="${dist.home}" />
+    <copy file="NOTICE.txt" todir="${dist.home}" />
+    <copy file="SLF4JLICENSE.txt" todir="${dist.home}" />
+    <copy file="RELEASE-NOTES.txt" todir="${dist.home}" />
+    <copy file="${build.home}/${component.name}-${component.version}.jar"
+        tofile="${dist.home}/${component.name}-${component.version}.jar" />
+    <mkdir dir="${dist.home}/src" />
+    <copy todir="${dist.home}/src" filtering="on">
+      <fileset dir="${source.home}" />
+    </copy>
 
-		<mkdir dir="${dist.home}/samples" />
-		<copy todir="${dist.home}/samples" filtering="on">
-			<fileset dir="${build.sample.dist}" />
-		</copy>
+    <mkdir dir="${dist.home}/samples" />
+    <copy todir="${dist.home}/samples" filtering="on">
+      <fileset dir="${build.sample.dist}" />
+    </copy>
 
-		<tar destfile="${component.name}-${component.version}.tar"
-			 longfile="fail"
-			 basedir="${dist.home}">
-		</tar>
-		<gzip src="${component.name}-${component.version}.tar"
-			  destfile="${component.name}-${component.version}.tar.gz"/>
-		<delete file="${component.name}-${component.version}.tar"/>
-		<zip destfile="${component.name}-${component.version}.zip"
-			 encoding="UTF-8"
-			 compress="true"
-			 comment="${component.title} ${component.version}">
-		    <fileset dir="${dist.home}"/>
-	    </zip>
-	</target>
+    <tar destfile="${component.name}-${component.version}.tar"
+       longfile="fail"
+       basedir="${dist.home}">
+    </tar>
+    <gzip src="${component.name}-${component.version}.tar"
+        destfile="${component.name}-${component.version}.tar.gz"/>
+    <delete file="${component.name}-${component.version}.tar"/>
+    <zip destfile="${component.name}-${component.version}.zip"
+       encoding="UTF-8"
+       compress="true"
+       comment="${component.title} ${component.version}">
+        <fileset dir="${dist.home}"/>
+      </zip>
+  </target>
 
-	<!-- ========== Sample Targets ========================================= -->
+  <!-- ========== Sample Targets ========================================= -->
 
-	<target name="compile.samples" depends="compile" description="Compile samples">
-		<mkdir dir="${build.sample.classes}" />
-		<javac srcdir="${sample.home.src}" destdir="${build.sample.classes}" source="${compile.source.version}" target="${compile.target.version}" debug="${compile.debug}" deprecation="${compile.deprecation}" optimize="${compile.optimize}">
-			<classpath refid="sample.classpath" />
-		</javac>
-		<copy todir="${build.sample.classes}" filtering="on">
-			<fileset dir="${sample.home.src}" excludes="**/*.java" />
-		</copy>
-	</target>
+  <target name="compile.samples" depends="compile" description="Compile samples">
+    <mkdir dir="${build.sample.classes}" />
+    <javac srcdir="${sample.home.src}" destdir="${build.sample.classes}" source="${compile.source.version}" target="${compile.target.version}" debug="${compile.debug}" deprecation="${compile.deprecation}" optimize="${compile.optimize}">
+      <classpath refid="sample.classpath" />
+    </javac>
+    <copy todir="${build.sample.classes}" filtering="on">
+      <fileset dir="${sample.home.src}" excludes="**/*.java" />
+    </copy>
+  </target>
 
   <target name="create.samples.jar" depends="compile.samples" description="Create sample.jar">
-  	<mkdir dir="${build.sample.classes}/META-INF" />
-		<copy file="LICENSE.txt" todir="${build.sample.classes}/META-INF" />
-		<copy file="NOTICE.txt" todir="${build.sample.classes}/META-INF" />
-		<jar destfile="${build.sample.temp}/${component.name}sample-${component.version}.jar"
-			 basedir="${build.sample.classes}">
-     	 <manifest>
-		      <attribute name="Manifest-version" value="1.0"/>
-		      <attribute name="Compiled-against-servlet-api-Version" value="${servlet-api.jar.version}"/>
-		      <attribute name="Compiled-against-commons-logging-Version" value="${commons-logging.version}"/>
-		      <section name="org/x4juli/sample/">
-		         <attribute name="Implementation-Title" value="${component.name}sample"/>
-		         <attribute name="Implementation-Version" value="${component.version} ${TODAY}"/>
-		         <attribute name="Implementation-Vendor" value="x4juli.org"/>
-		      </section>
+    <mkdir dir="${build.sample.classes}/META-INF" />
+    <copy file="LICENSE.txt" todir="${build.sample.classes}/META-INF" />
+    <copy file="NOTICE.txt" todir="${build.sample.classes}/META-INF" />
+    <jar destfile="${build.sample.temp}/${component.name}sample-${component.version}.jar"
+       basedir="${build.sample.classes}">
+       <manifest>
+          <attribute name="Manifest-version" value="1.0"/>
+          <attribute name="Compiled-against-servlet-api-Version" value="${servlet-api.jar.version}"/>
+          <attribute name="Compiled-against-commons-logging-Version" value="${commons-logging.version}"/>
+          <section name="org/x4juli/sample/">
+             <attribute name="Implementation-Title" value="${component.name}sample"/>
+             <attribute name="Implementation-Version" value="${component.version} ${TODAY}"/>
+             <attribute name="Implementation-Vendor" value="x4juli.org"/>
+          </section>
         </manifest>
-			<include name="org/x4juli/sample/**" />
-			<include name="META-INF/LICENSE.txt" />
-			<include name="META-INF/NOTICE.txt" />
-		</jar>
+      <include name="org/x4juli/sample/**" />
+      <include name="META-INF/LICENSE.txt" />
+      <include name="META-INF/NOTICE.txt" />
+    </jar>
   </target>
 
   <target name="create.samples.war" depends="create.samples.jar" description="Creates sample war files">
- 		<manifest file="${build.sample.temp}/MANIFEST.MF">
+    <manifest file="${build.sample.temp}/MANIFEST.MF">
       <attribute name="Manifest-version" value="1.0"/>
-   		<section name="org/x4juli/sample">
-	      <attribute name="Implementation-Title" value="${component.name}sample war"/>
-		    <attribute name="Implementation-Version" value="${component.version} ${TODAY}"/>
-		    <attribute name="Implementation-Vendor" value="x4juli.org"/>
-		  </section>
-  	</manifest>
+      <section name="org/x4juli/sample">
+        <attribute name="Implementation-Title" value="${component.name}sample war"/>
+        <attribute name="Implementation-Version" value="${component.version} ${TODAY}"/>
+        <attribute name="Implementation-Vendor" value="x4juli.org"/>
+      </section>
+    </manifest>
 
     <war destfile="${build.sample.temp}/x4juli-jcl.war"
          webxml="${sample.home}/src/webapp/web.xml"
          manifest="${build.sample.temp}/MANIFEST.MF">
-			<metainf dir="${basedir}">
-			  <include name="LICENSE.txt" />
-			  <include name="NOTICE.txt" />
-			</metainf>
-  		<lib dir="${build.sample.temp}">
-					<include name="${component.name}sample-${component.version}.jar" />
-  		</lib>
-  		<classes dir="${sample.home}/src/webapp">
-					<include name="commons-logging.properties" />
-  		</classes>
+      <metainf dir="${basedir}">
+        <include name="LICENSE.txt" />
+        <include name="NOTICE.txt" />
+      </metainf>
+      <lib dir="${build.sample.temp}">
+          <include name="${component.name}sample-${component.version}.jar" />
+      </lib>
+      <classes dir="${sample.home}/src/webapp">
+          <include name="commons-logging.properties" />
+      </classes>
     </war>
 
     <war destfile="${build.sample.temp}/x4juli.war"
          webxml="${sample.home}/src/webapp/web.xml"
          manifest="${build.sample.temp}/MANIFEST.MF">
-			<metainf dir="${basedir}">
-			  <include name="LICENSE.txt" />
-			  <include name="NOTICE.txt" />
-			</metainf>
-  		<lib dir="${build.sample.temp}">
-					<include name="${component.name}sample-${component.version}.jar" />
-  		</lib>
+      <metainf dir="${basedir}">
+        <include name="LICENSE.txt" />
+        <include name="NOTICE.txt" />
+      </metainf>
+      <lib dir="${build.sample.temp}">
+          <include name="${component.name}sample-${component.version}.jar" />
+      </lib>
     </war>
   </target>
 
-	<target name="create.samples" depends="create.samples.war" description="Creates all samples">
-	  <mkdir dir="${build.sample.dist}" />
+  <target name="create.samples" depends="create.samples.war" description="Creates all samples">
+    <mkdir dir="${build.sample.dist}" />
 
-	  <mkdir dir="${build.sample.dist}/tomcat-per-server" />
-	  <copy todir="${build.sample.dist}/tomcat-per-server" filtering="on">
-			<fileset dir="${sample.home}/tomcat-per-server" />
-			<fileset dir="${build.sample.temp}">
-			  <include name="x4juli.war" />
-			</fileset>
-		</copy>
+    <mkdir dir="${build.sample.dist}/tomcat-per-server" />
+    <copy todir="${build.sample.dist}/tomcat-per-server" filtering="on">
+      <fileset dir="${sample.home}/tomcat-per-server" />
+      <fileset dir="${build.sample.temp}">
+        <include name="x4juli.war" />
+      </fileset>
+    </copy>
 
-		<mkdir dir="${build.sample.dist}/tomcat-per-webapp-jcl" />
-		<copy todir="${build.sample.dist}/tomcat-per-webapp-jcl" filtering="on">
-			<fileset dir="${sample.home}/tomcat-per-webapp-jcl" />
-			<fileset dir="${build.sample.temp}">
-			  <include name="x4juli.war" />
-			  <include name="x4juli-jcl.war" />
-			</fileset>
-		</copy>
+    <mkdir dir="${build.sample.dist}/tomcat-per-webapp-jcl" />
+    <copy todir="${build.sample.dist}/tomcat-per-webapp-jcl" filtering="on">
+      <fileset dir="${sample.home}/tomcat-per-webapp-jcl" />
+      <fileset dir="${build.sample.temp}">
+        <include name="x4juli.war" />
+        <include name="x4juli-jcl.war" />
+      </fileset>
+    </copy>
 
-		<mkdir dir="${build.sample.dist}/tomcat-migrate" />
-		<copy todir="${build.sample.dist}/tomcat-migrate" filtering="on">
-			<fileset dir="${sample.home}/tomcat-migrate" />
-		</copy>
-		
-		<mkdir dir="${build.sample.dist}/standalone" />
-		<copy todir="${build.sample.dist}/standalone" filtering="on">
-			<fileset dir="${sample.home}/standalone" />
-			<fileset dir="${build.sample.temp}">
-			  <include name="${component.name}sample-${component.version}.jar" />
-			</fileset>
-		</copy>
+    <mkdir dir="${build.sample.dist}/tomcat-migrate" />
+    <copy todir="${build.sample.dist}/tomcat-migrate" filtering="on">
+      <fileset dir="${sample.home}/tomcat-migrate" />
+    </copy>
 
-	</target>
+    <mkdir dir="${build.sample.dist}/standalone" />
+    <copy todir="${build.sample.dist}/standalone" filtering="on">
+      <fileset dir="${sample.home}/standalone" />
+      <fileset dir="${build.sample.temp}">
+        <include name="${component.name}sample-${component.version}.jar" />
+      </fileset>
+    </copy>
 
-	<!-- ========== Check Targets ========================================= -->
-	<target name="checks" depends="checkstyle, findbugs" />
+  </target>
 
-
-	<target name="checkstyle" depends="compile-only" description="Generates a report of code convention violations.">
-		<mkdir dir="${build.home}/checkstyle" />
-
-		<checkstyle config="x4juli_checkstyle.xml"
-			        failureProperty="checkstyle.failure"
-			        failOnViolation="false">
-			<formatter type="xml" tofile="${build.home}/checkstyle/checkstyle_report.xml" />
-			<fileset dir="${source.home}" includes="**/*" />
-		</checkstyle>
-
-		<style in="${build.home}/checkstyle/checkstyle_report.xml"
-			   out="${build.home}/checkstyle/checkstyle_report.html"
-			   style="${checkstyle.home}/contrib/checkstyle-frames.xsl" />
-	</target>
-
-	<target name="findbugs" depends="create-jar">
-		<mkdir dir="${build.home}/findbugs" />
-
-		<findbugs home="${findbugs.home}"
-			      output="xml:withMessages" outputFile="${build.home}/findbugs/x4juli-findbugs.xml"
-			      effort="max"
-			      reportLevel="low"
-			      errorProperty="findbugs.failure"
-			      failOnError="false"
-			      excludeFilter="x4juli_findbugs.xml">
-			<auxClasspath refid="test.classpath" />
-			<sourcePath path="${source.home}" />
-			<class location="${build.home}/${component.name}-${component.version}.jar" />
-		</findbugs>
-		<style in="${build.home}/findbugs/x4juli-findbugs.xml"
-			   out="${build.home}/findbugs/x4juli-findbugs_summary.html"
-			   style="${findbugs.home}/src/xsl/summary.xsl" />
-		<style in="${build.home}/findbugs/x4juli-findbugs.xml"
-			   out="${build.home}/findbugs/x4juli-findbugs_report.html"
-			   style="${findbugs.home}/src/xsl/default.xsl" />
-		<style in="${build.home}/findbugs/x4juli-findbugs.xml"
-			   out="${build.home}/findbugs/x4juli-findbugs_fancy.html"
-			   style="${findbugs.home}/src/xsl/fancy.xsl" />
-	</target>
-
-	<!-- ========== Unit Test Targets ========================================= -->
+  <!-- ========== Check Targets ========================================= -->
+  <target name="checks" depends="checkstyle, findbugs" />
 
 
-	<target name="test"
-		depends="compile.tests, test-common, test-renaming, test-juli-config, test-juli-jcl-slf4j"
-		    description="Run all unit test cases">
-	</target>
+  <target name="checkstyle" depends="compile-only" description="Generates a report of code convention violations.">
+    <mkdir dir="${build.home}/checkstyle" />
 
-	<target name="clean-test-output" description="Cleans the test/output Folder">
-		<delete includeemptydirs="true" verbose="false">
-		    <fileset dir="${test.home}/output" includes="**/*"/>
-		</delete>
-	</target>
+    <checkstyle config="x4juli_checkstyle.xml"
+              failureProperty="checkstyle.failure"
+              failOnViolation="false">
+      <formatter type="xml" tofile="${build.home}/checkstyle/checkstyle_report.xml" />
+      <fileset dir="${source.home}" includes="**/*" />
+    </checkstyle>
 
-	<target name="test-common" depends="clean-test-output"
-		description="Run all unit test cases which need no special treatment">
-		<echo>
+    <style in="${build.home}/checkstyle/checkstyle_report.xml"
+         out="${build.home}/checkstyle/checkstyle_report.html"
+         style="${checkstyle.home}/contrib/checkstyle-frames.xsl" />
+  </target>
+
+  <target name="findbugs" depends="create-jar">
+    <mkdir dir="${build.home}/findbugs" />
+
+    <findbugs home="${findbugs.home}"
+            output="xml:withMessages" outputFile="${build.home}/findbugs/x4juli-findbugs.xml"
+            effort="max"
+            reportLevel="low"
+            errorProperty="findbugs.failure"
+            failOnError="false"
+            excludeFilter="x4juli_findbugs.xml">
+      <auxClasspath refid="test.classpath" />
+      <sourcePath path="${source.home}" />
+      <class location="${build.home}/${component.name}-${component.version}.jar" />
+    </findbugs>
+    <style in="${build.home}/findbugs/x4juli-findbugs.xml"
+         out="${build.home}/findbugs/x4juli-findbugs_summary.html"
+         style="${findbugs.home}/src/xsl/summary.xsl" />
+    <style in="${build.home}/findbugs/x4juli-findbugs.xml"
+         out="${build.home}/findbugs/x4juli-findbugs_report.html"
+         style="${findbugs.home}/src/xsl/default.xsl" />
+    <style in="${build.home}/findbugs/x4juli-findbugs.xml"
+         out="${build.home}/findbugs/x4juli-findbugs_fancy.html"
+         style="${findbugs.home}/src/xsl/fancy.xsl" />
+  </target>
+
+  <!-- ========== Unit Test Targets ========================================= -->
+
+
+  <target name="test"
+    depends="compile.tests, test-common, test-renaming, test-juli-config, test-juli-jcl-slf4j"
+        description="Run all unit test cases">
+  </target>
+
+  <target name="clean-test-output" description="Cleans the test/output Folder">
+    <delete includeemptydirs="true" verbose="false">
+        <fileset dir="${test.home}/output" includes="**/*"/>
+    </delete>
+  </target>
+
+  <target name="test-common" depends="clean-test-output"
+    description="Run all unit test cases which need no special treatment">
+    <echo>
      Output of test-common may signal errors. That is correct. Until no test fails,
      do not bother about them.
     </echo>
 
-		<java classname="${test.runner}"
-			  fork="yes"
-			  dir="${test.home}">
-	      <sysproperty key="java.util.logging.manager"
-	                 value="org.x4juli.DiagnosticLogManager"/>
-	      <sysproperty key="org.x4juli.juli.internal.level"
-	                 value="INFO"/>
-	      <arg value="org.x4juli.JuliSuite"/>
-	      <classpath refid="test.classpath"/>
-	    </java>
-	 </target>
+    <java classname="${test.runner}"
+        fork="yes"
+        dir="${test.home}">
+        <sysproperty key="java.util.logging.manager"
+                   value="org.x4juli.DiagnosticLogManager"/>
+        <sysproperty key="org.x4juli.juli.internal.level"
+                   value="INFO"/>
+        <arg value="org.x4juli.JuliSuite"/>
+        <classpath refid="test.classpath"/>
+      </java>
+   </target>
 
-	<target name="test-juli-jcl-slf4j" depends="clean-test-output"
-		description="Run unit test case for Jakarta Commons Logging Logger">
-		<java classname="${test.runner}"
-			  fork="yes"
-			  dir="${test.home}">
-	      <sysproperty key="java.util.logging.manager"
-	                 value="org.x4juli.X4JuliLogManager"/>
-	      <sysproperty key="org.x4juli.internal.level"
-	                 value="INFO"/>
-	      <sysproperty key="org.apache.commons.logging.LogFactory"
-	                 value="org.x4juli.JCLFactory"/>
-	      <arg value="org.x4juli.X4JuliLoggerTest"/>
-	      <classpath refid="test.classpath"/>
-	    </java>
-	 </target>
+  <target name="test-juli-jcl-slf4j" depends="clean-test-output"
+    description="Run unit test case for Jakarta Commons Logging Logger">
+    <java classname="${test.runner}"
+        fork="yes"
+        dir="${test.home}">
+        <sysproperty key="java.util.logging.manager"
+                   value="org.x4juli.X4JuliLogManager"/>
+        <sysproperty key="org.x4juli.internal.level"
+                   value="INFO"/>
+        <sysproperty key="org.apache.commons.logging.LogFactory"
+                   value="org.x4juli.JCLFactory"/>
+        <arg value="org.x4juli.X4JuliLoggerTest"/>
+        <classpath refid="test.classpath"/>
+      </java>
+   </target>
 
-	<target name="test-renaming" depends="clean-test-output"
-		description="Run unit test case org.x4juli.handlers.rolling.RenamingTest">
-	     <parallel>
-			<java classname="${test.runner}"
-				  fork="yes"
-				  dir="${test.home}">
-		      <sysproperty key="java.util.logging.manager"
-		                 value="org.x4juli.DiagnosticLogManager"/>
-		      <sysproperty key="org.x4juli.internal.level"
-		                 value="INFO"/>
-		      <arg value="org.x4juli.handlers.rolling.RenamingTest"/>
-		      <classpath refid="test.classpath"/>
-		    </java>
-	      <sequential>
-		    <sleep seconds="1"/>
-			<java classname="org.x4juli.handlers.rolling.FileOpener"
-				  fork="yes"
-				  dir="${test.home}">
-		      <classpath refid="test.classpath"/>
-		    </java>
-	      </sequential>
-	    </parallel>
-	 </target>
+  <target name="test-renaming" depends="clean-test-output"
+    description="Run unit test case org.x4juli.handlers.rolling.RenamingTest">
+       <parallel>
+      <java classname="${test.runner}"
+          fork="yes"
+          dir="${test.home}">
+          <sysproperty key="java.util.logging.manager"
+                     value="org.x4juli.DiagnosticLogManager"/>
+          <sysproperty key="org.x4juli.internal.level"
+                     value="INFO"/>
+          <arg value="org.x4juli.handlers.rolling.RenamingTest"/>
+          <classpath refid="test.classpath"/>
+        </java>
+        <sequential>
+        <sleep seconds="1"/>
+      <java classname="org.x4juli.handlers.rolling.FileOpener"
+          fork="yes"
+          dir="${test.home}">
+          <classpath refid="test.classpath"/>
+        </java>
+        </sequential>
+      </parallel>
+   </target>
 
-	<target name="test-juli-config" depends="clean-test-output"
-		description="Run unit test case for file configuration Logger">
-		<mkdir dir="${test.home}/output/config"/>
-		<junit
-			fork="yes"
-			printsummary="on"
-			showoutput="false"
-			dir="${test.home}">
-	      <sysproperty key="java.util.logging.manager"
-	                 value="org.x4juli.DiagnosticLogManager"/>
+  <target name="test-juli-config" depends="clean-test-output"
+    description="Run unit test case for file configuration Logger">
+    <mkdir dir="${test.home}/output/config"/>
+    <junit
+      fork="yes"
+      printsummary="on"
+      showoutput="false"
+      dir="${test.home}">
+        <sysproperty key="java.util.logging.manager"
+                   value="org.x4juli.DiagnosticLogManager"/>
           <sysproperty key="java.util.logging.config.file"
-	                 value="${test.home}/input/configs/testconf0.properties"/>
+                   value="${test.home}/input/configs/testconf0.properties"/>
           <sysproperty key="testout.dir"
-  	                 value="${test.home}/output"/>
-	      <classpath>
-		    <path refid="test.classpath" />
-	      	<!-- fileset file="${test.home}/input/configs/logging.properties" / -->
-		  </classpath>
-		  <test name="org.x4juli.SimpleTest"/>
-	    </junit>
-		<junit
-			fork="yes"
-			printsummary="on"
-			showoutput="false"
-			dir="${test.home}">
-	      <sysproperty key="java.util.logging.manager"
-	                 value="org.x4juli.DiagnosticLogManager"/>
+                     value="${test.home}/output"/>
+        <classpath>
+        <path refid="test.classpath" />
+          <!-- fileset file="${test.home}/input/configs/logging.properties" / -->
+      </classpath>
+      <test name="org.x4juli.SimpleTest"/>
+      </junit>
+    <junit
+      fork="yes"
+      printsummary="on"
+      showoutput="false"
+      dir="${test.home}">
+        <sysproperty key="java.util.logging.manager"
+                   value="org.x4juli.DiagnosticLogManager"/>
           <sysproperty key="java.util.logging.config.file"
-	                 value="${test.home}/input/configs/testconf1.properties"/>
+                   value="${test.home}/input/configs/testconf1.properties"/>
           <sysproperty key="testout.dir"
-  	                 value="${test.home}/output"/>
-	      <classpath>
-		    <path refid="test.classpath" />
-	      	<!-- fileset file="${test.home}/input/configs/logging.properties" / -->
-		  </classpath>
-		  <test name="org.x4juli.SimpleTest"/>
-	    </junit>
-		<junit
-			fork="yes"
-			printsummary="on"
-			showoutput="false"
-			dir="${test.home}">
-	      <sysproperty key="java.util.logging.manager"
-	                 value="org.x4juli.DiagnosticLogManager"/>
+                     value="${test.home}/output"/>
+        <classpath>
+        <path refid="test.classpath" />
+          <!-- fileset file="${test.home}/input/configs/logging.properties" / -->
+      </classpath>
+      <test name="org.x4juli.SimpleTest"/>
+      </junit>
+    <junit
+      fork="yes"
+      printsummary="on"
+      showoutput="false"
+      dir="${test.home}">
+        <sysproperty key="java.util.logging.manager"
+                   value="org.x4juli.DiagnosticLogManager"/>
           <sysproperty key="java.util.logging.config.file"
-	                 value="${test.home}/input/configs/testconf3.properties"/>
+                   value="${test.home}/input/configs/testconf3.properties"/>
           <sysproperty key="testout.dir"
-  	                 value="${test.home}/output"/>
-	      <classpath>
-		    <path refid="test.classpath" />
-	      	<!-- fileset file="${test.home}/input/configs/logging.properties" / -->
-		  </classpath>
-		  <test name="org.x4juli.SimpleTest"/>
-	    </junit>
-	</target>
+                     value="${test.home}/output"/>
+        <classpath>
+        <path refid="test.classpath" />
+          <!-- fileset file="${test.home}/input/configs/logging.properties" / -->
+      </classpath>
+      <test name="org.x4juli.SimpleTest"/>
+      </junit>
+  </target>
 
-	<!-- ========== Performance Test Targets =================================== -->
+  <!-- ========== Performance Test Targets =================================== -->
 
-	<target name="performance"
-		depends="init, performance-warning, test-juli-performance1, test-juli-performance2"
-		    description="Run all performance tests">
-	</target>
+  <target name="performance"
+    depends="init, performance-warning, test-juli-performance1, test-juli-performance2"
+        description="Run all performance tests">
+  </target>
 
-	<target name="performance-warning">
-		<echo>
+  <target name="performance-warning">
+    <echo>
     *** WARNING ***
     To interpret results, have a look at the code. Maybe erroneous port from log4j.
     </echo>
 
-	</target>
-	<target name="test-juli-performance1" depends="clean-test-output"
-		description="Run performance test case for Logger.getLogger method">
-		<java classname="org.x4juli.performance.GetLoggerTest"
-			  fork="yes"
-			  dir="${test.home}">
-	      <sysproperty key="java.util.logging.manager"
-	                 value="org.x4juli.X4JuliLogManager"/>
-	      <sysproperty key="org.x4juli.internal.level"
-	                 value="INFO"/>
-	      <arg line="1000 30"/>
-	      <classpath refid="test.classpath"/>
-	    </java>
-	 </target>
+  </target>
+  <target name="test-juli-performance1" depends="clean-test-output"
+    description="Run performance test case for Logger.getLogger method">
+    <java classname="org.x4juli.performance.GetLoggerTest"
+        fork="yes"
+        dir="${test.home}">
+        <sysproperty key="java.util.logging.manager"
+                   value="org.x4juli.X4JuliLogManager"/>
+        <sysproperty key="org.x4juli.internal.level"
+                   value="INFO"/>
+        <arg line="1000 30"/>
+        <classpath refid="test.classpath"/>
+      </java>
+   </target>
 
-	<target name="test-juli-performance2" depends="clean-test-output"
-		description="Run performance test case for logger.log(...) method">
-		<java classname="org.x4juli.performance.LoggingLoop"
-			  fork="yes"
-			  dir="${test.home}">
-	      <sysproperty key="java.util.logging.manager"
-	                 value="org.x4juli.X4JuliLogManager"/>
-	      <sysproperty key="org.apache.juli.internal.level"
-	                 value="INFO"/>
-	      <arg line="100000 all"/>
-	      <classpath refid="test.classpath"/>
-	    </java>
-	 </target>
+  <target name="test-juli-performance2" depends="clean-test-output"
+    description="Run performance test case for logger.log(...) method">
+    <java classname="org.x4juli.performance.LoggingLoop"
+        fork="yes"
+        dir="${test.home}">
+        <sysproperty key="java.util.logging.manager"
+                   value="org.x4juli.X4JuliLogManager"/>
+        <sysproperty key="org.apache.juli.internal.level"
+                   value="INFO"/>
+        <arg line="100000 all"/>
+        <classpath refid="test.classpath"/>
+      </java>
+   </target>
 
    <!-- ========== Documentation Targets ========================================= -->
-	 <target name="transform-docbook-faq" depends="prepare"
-	    description="Transform FAQ into HTML page">
-	 
-		<style in="${docs.home}/manual/faq.xml"
-			   out="${build.home}/docs/manual/faq.html"
-			   style="${docbook.xsl.home}/html/docbook.xsl" />
+   <target name="transform-docbook-faq" depends="prepare"
+      description="Transform FAQ into HTML page">
+
+    <style in="${docs.home}/manual/faq.xml"
+         out="${build.home}/docs/manual/faq.html"
+         style="${docbook.xsl.home}/html/docbook.xsl" />
    </target>
 </project>

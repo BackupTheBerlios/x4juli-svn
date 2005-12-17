@@ -1,8 +1,8 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
 "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd">
 <!-- 
-# Copyright 2001-2005 The Apache Software Foundation.
+# Copyright 2005, x4juli.org.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -38,7 +38,7 @@
       <title>Is x4juli production ready?</title>
 
       <para>We are heavily working on tests and fixing bugs, but x4juli has
-      still pre-alpha status (December 2005, x4juli 0.6). Please use it in
+      still alpha status (December 2005, x4juli 0.6). Please use it in
       test environments and give us feedback.</para>
 
       <para>You want miss any advantages of x4juli for new developments if you

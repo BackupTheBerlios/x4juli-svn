@@ -1,0 +1,30 @@
+body
+    {
+    margin: 0;
+    padding: 0;
+    color: #333;
+    font: 13px Trebuchet MS,Lucida Sans Unicode,Arial,sans-serif;
+    background: #E2EBED;
+    text-align: left;
+    }
+a
+    {
+    color: #307082;
+    }
+a:hover
+    {
+    color: #D60808;
+    }
+#container
+    {
+    margin: 0 auto;
+    width: 724px;
+    position: relative;
+    background: #fff;
+    padding: 0 10px 0 10px;
+    text-align: left;
+    }
+* html #container
+    {
+    width: 744px;
+    }
