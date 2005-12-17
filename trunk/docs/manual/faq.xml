@@ -326,7 +326,7 @@
 
       <para>Second you have to specify that you want to use x4juli for
       logging: Put parameter
-      -Djava.util.logging.manager=org.apache.juli.X4JuliLogManager on the
+      -Djava.util.logging.manager=org.x4juli.X4JuliLogManager on the
       startup line (in your script, or corresponding config) for the JVM
       start.</para>
 
@@ -339,10 +339,10 @@
       <para>#Handlers property must include ALL handlers, even when used with
       the root config ".handlers" </para>
 
-      <para>handlers = 1system.org.apache.juli.handlers.FileHandler,
-      2testfoo.org.apache.juli.handlers.FileHandler,
+      <para>handlers = 1system.org.x4juli.handlers.FileHandler,
+      2testfoo.org.x4juli.handlers.FileHandler,
       java.util.logging.ConsoleHandler .handlers =
-      1system.org.apache.juli.handlers.FileHandler,
+      1system.org.x4juli.handlers.FileHandler,
       java.util.logging.ConsoleHandler </para>
 
       <para>#Level of the root Logger </para>
@@ -356,33 +356,33 @@
       <para># Each handler is configured with an formatter, and here you have
       to specifiy options for the corresponding formatter. </para>
 
-      <para>2testfoo.org.apache.juli.handlers.FileHandler.level = FINEST
+      <para>2testfoo.org.x4juli.handlers.FileHandler.level = FINEST
       </para>
 
-      <para>2testfoo.org.apache.juli.handlers.FileHandler.filename =
+      <para>2testfoo.org.x4juli.handlers.FileHandler.filename =
       /etc/logs/testfoo.log </para>
 
-      <para>2testfoo.org.apache.juli.handlers.FileHandler.name = 2testfoo
+      <para>2testfoo.org.x4juli.handlers.FileHandler.name = 2testfoo
       </para>
 
-      <para>2testfoo.org.apache.juli.handlers.FileHandler.formatter =
-      org.apache.juli.formatter.PatternFormatter</para>
+      <para>2testfoo.org.x4juli.handlers.FileHandler.formatter =
+      org.x4juli.formatter.PatternFormatter</para>
 
-      <para>2testfoo.org.apache.juli.formatter.PatternFormatter.pattern=[%d{ISO8601}]-[%p][%c]%m[%l]%n
+      <para>2testfoo.org.x4juli.formatter.PatternFormatter.pattern=[%d{ISO8601}]-[%p][%c]%m[%l]%n
       </para>
 
-      <para>1system.org.apache.juli.handlers.FileHandler.level = INFO </para>
+      <para>1system.org.x4juli.handlers.FileHandler.level = INFO </para>
 
-      <para>1system.org.apache.juli.handlers.FileHandler.filename =
+      <para>1system.org.x4juli.handlers.FileHandler.filename =
       /etc/logs/system.log </para>
 
-      <para>1system.org.apache.juli.handlers.FileHandler.name = 1system
+      <para>1system.org.x4juli.handlers.FileHandler.name = 1system
       </para>
 
-      <para>1system.org.apache.juli.handlers.FileHandler.formatter =
-      org.apache.juli.formatter.PatternFormatter</para>
+      <para>1system.org.x4juli.handlers.FileHandler.formatter =
+      org.x4juli.formatter.PatternFormatter</para>
 
-      <para>1system.org.apache.juli.formatter.PatternFormatter.pattern=[%d{ISO8601}]-[%c][%p]%m%n
+      <para>1system.org.x4juli.formatter.PatternFormatter.pattern=[%d{ISO8601}]-[%c][%p]%m%n
       </para>
 
       <para>java.util.logging.ConsoleHandler.level = WARNING
@@ -393,7 +393,7 @@
       loggers:</para>
 
       <para>org.foo.sample.level = FINEST org.foo.sample.handlers =
-      2testfoo.org.apache.juli.handlers.FileHandler </para>
+      2testfoo.org.x4juli.handlers.FileHandler </para>
 
       <para>org.foo.sample.child.level=INFO
       org.foo.another.package.level=SEVERE</para>
@@ -413,10 +413,10 @@
       <para>Second part: You have to make Jakarta Commons Logging use the
       x4juli JCLFactory. There are two possibilities: Specify a system
       property on your jvm startup (script):
-      -Dorg.apache.commons.logging.LogFactory=org.apache.juli.JCLFactory</para>
+      -Dorg.apache.commons.logging.LogFactory=org.x4juli.JCLFactory</para>
 
       <para>or put in an commons-logging.properties file in your classpath
-      with org.apache.commons.logging.LogFactory=org.apache.juli.JCLFactory
+      with org.apache.commons.logging.LogFactory=org.x4juli.JCLFactory
       property line in the file.</para>
     </section>
 
@@ -440,9 +440,9 @@
       <para>Open catalina.sh or catalina.bat (Windows environment) in your
       favourite editor. Search for tomcat-juli.jar. Replace String
       "org.apache.juli.ClassLoaderLogManager" (without double quotes) with
-      "org.apache.juli.X4JuliLogManager" (without double quotes). This is also
+      "org.x4juli.X4JuliLogManager" (without double quotes). This is also
       a good place to enable Jakarta Commons Logging native support, add
-      "-Dorg.apache.commons.logging.LogFactory=org.apache.juli.JCLFactory"
+      "-Dorg.apache.commons.logging.LogFactory=org.x4juli.JCLFactory"
       (with double quotes in catalina.sh, without double quotes in
       catalina.bat) at the end of the line.</para>
 
