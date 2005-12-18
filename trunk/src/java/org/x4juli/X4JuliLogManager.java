@@ -25,15 +25,11 @@ import java.util.logging.Logger;
  * 1) Put x4juli-x.y.jar on the system classpath, another classpath will not work.
  * (x.y means your current version)
  * <br/>
- * 2) Set parameter -Djava.util.logging.manager=org.apache.juli.X4JuliLogManager
+ * 2) Set parameter -Djava.util.logging.manager=org.x4juli.X4JuliLogManager
  * on the startup line (in your script, or corresponding config) for the JVM start.
  * See {@link java.util.logging.LogManager} for details.
  * <br/>
  * Through that you activate the extensions provided by x4juli.
- * Additionally you have got a native implementation for
- * the <a href="http://jakarta.apache.org/commons/logging" title="Apache Jakarta
- * Commons Logging">Apache Jakarta Commons Logging</a> API.
- * <br/>
  *
  * @author Boris Unckel
  * @since 0.5

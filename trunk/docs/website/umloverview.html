@@ -1,0 +1,113 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!-- 
+# Copyright 2005, x4juli.org.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+-->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+	<meta name="author" content="Boris Unckel" />
+	<meta name="keywords" content="x4juli UMl Diagramm" />
+	<meta name="description" content="The UML-Overview of x4juli" />
+	<meta name="robots" content="all" />
+
+	<title>Overview of x4juli</title>
+
+	<!-- to correct the unsightly Flash of Unstyled Content. http://www.bluerobot.com/web/css/fouc.asp -->
+	<script type="text/javascript"></script>
+	
+	<style type="text/css" media="all">
+		@import "css/layout.css";
+	</style>
+	
+</head>
+<body onload="window.defaultStatus='X4JULI.ORG';" id="css-ph-x4juli">
+<div id="container">
+  <div id="pageHeader">
+			<h1><span>Overview of x4juli</span></h1>
+	</div>
+	<div id="umldiagramm">
+	  <span><img src="./image/overview_uml.png" alt="UML Overview of x4juli" width="907" height="560" id="umlOverview"/></span>
+	  <br/>
+	</div>
+	<div id="details">
+	  <div id="detailsuser">
+	    <h2><span>Classes affecting user code</span></h2>
+
+	  <div id="detailsjul">
+	    <h3><span>Using java.util.logging</span></h3>
+	    <p><span>
+	      There is just one class needed: <code>java.util.logging.Logger</code>.
+	      <br/>
+	      private static final Logger LOG = Logger.getLogger("org.foo.Sample");
+	      <br/>
+	      Optionally a user might aquire a Logger using the <code>java.util.logging.LogManager</code>, which 
+	      has the same behaviour as Logger.getLogger(String name):
+	      <br/>
+	      private static final Logger LOG = LogManager.getLogManager().getLogger("org.foo.Sample");
+	    </span></p>
+	  </div>
+
+	  <div id="detailsjcl">
+	    <h3><span>Using Jakarta Commons Logging</span></h3>
+	    <p><span>
+	      There are two classes needed: <code>org.apache.commons.logging.Log</code> and <code>org.apache.commons.logging.LogFactory</code>.
+	      <br/>
+	       private static final Log LOG = LogFactory.getLog("org.foo.Sample");
+	    </span></p>
+	  </div>
+
+	  <div id="detailsslf4j">
+	    <h3><span>Using Simple Logging Facade for Java</span></h3>
+	    <p><span>
+	      There are two classes needed: <code>org.slf4j.Logger</code> and <code>org.slf4j.LoggerFactory</code>.
+	      <br/>
+	       private static final Logger LOG = LoggerFactory.getLogger("org.foo.Sample");
+	    </span></p>
+	  </div>
+    </div> <!-- End of detailsuser -->
+    
+	  <div id="detailsbackend">
+	    <h2><span>Classes NOT affecting user code</span></h2>
+	    <p><span>
+	      The two classes <code>org.x4juli.X4JuliLogger</code> and <code>org.x4juli.X4JuliLogManager</code>
+	       do not bother user code. If x4juli is configured properly, and also the correct properties for JCL are set,
+	       this classes are behind the interfaces and actually do the logging.
+	      <br/>
+	      <b>Usually there is no need for any org.x4juli.* import in your code.</b>
+	    </span></p>
+	    <div id="detailsbackendx4julilogger">
+	    <h3><span>org.x4juli.X4JuliLogger</span></h3>
+	    <p><span>
+	      This class extends <code>java.util.logging.Logger</code> and implements <code>org.apache.commons.logging.Log</code>,
+	      and <code>org.slf4j.Logger</code>. It overrides all log methods from <code>java.util.logging.Logger</code> to
+	      have correct location information, without performance lost. (Obtaining location information is still a costly
+	      operation, look at the <code>org.x4juli.formatter.PatternFormatter</code> API Docs for details.)
+	    </span></p>
+	    </div>
+	    <div id="detailsbackendx4julilogmanager">
+	    <h3><span>org.x4juli.X4JuliLogManager</span></h3>
+	    <p><span>
+	      This class extends <code>java.util.logging.LogManager</code>. It is initialized through a static constructor
+	      in <code>java.util.logging.LogManager</code> when the property -Djava.util.logging.manager=org.x4juli.X4JuliLogManager
+	      is present.
+	    </span></p>
+	    </div>
+	  </div> <!-- End of detailsbackend -->
+
+	</div> <!-- End of details -->
+</div> <!-- End of container -->
+</body>
+</html>

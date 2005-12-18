@@ -62,6 +62,9 @@
   <!-- The base directory for distribution targets -->
   <property name="dist.home" value="${basedir}/dist" />
 
+  <!-- The base directory for needed libs -->
+  <property name="lib.home" value="${basedir}/lib" />
+
   <!-- The base directory for component sources -->
   <property name="source.home" value="${basedir}/src/java" />
 
@@ -172,7 +175,6 @@
     <mkdir dir="${build.home}/classes" />
     <mkdir dir="${build.home}/conf" />
     <mkdir dir="${build.home}/docs" />
-    <mkdir dir="${build.home}/docs/api" />
     <mkdir dir="${build.home}/docs/website" />
     <mkdir dir="${build.home}/docs/manual" />
     <mkdir dir="${build.home}/tests" />
@@ -280,6 +282,11 @@
     <mkdir dir="${dist.home}/src" />
     <copy todir="${dist.home}/src" filtering="on">
       <fileset dir="${source.home}" />
+    </copy>
+
+    <mkdir dir="${dist.home}/lib" />
+    <copy todir="${dist.home}/lib" filtering="on">
+      <fileset dir="${lib.home}" />
     </copy>
 
     <mkdir dir="${dist.home}/samples" />
@@ -632,4 +639,20 @@
          out="${build.home}/docs/manual/faq.html"
          style="${docbook.xsl.home}/html/docbook.xsl" />
    </target>
+
+   <target name="create-website" depends="transform-docbook-faq"
+      description="Copy documents for website publishing">
+
+    <copy todir="${build.home}/docs/website" filtering="on">
+      <fileset file="${build.home}/docs/manual/faq.html" />
+      <fileset dir="${docs.home}/website" />
+    </copy>
+
+    <mkdir dir="${build.home}/docs/website/api"/>
+    <copy todir="${build.home}/docs/website/api" filtering="on">
+      <fileset dir="${dist.home}/docs/api" />
+    </copy>
+
+   </target>
+
 </project>
