@@ -24,7 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class for Servlet: X4JuliSample
+ * Servlet implementation class for Servlet: X4JuliSample.
  * 
  */
 public class JulSample extends javax.servlet.http.HttpServlet implements
