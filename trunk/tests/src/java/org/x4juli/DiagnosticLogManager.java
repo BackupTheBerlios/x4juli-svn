@@ -17,6 +17,8 @@ package org.x4juli;
 
 import java.util.logging.Logger;
 
+import org.x4juli.global.Constants;
+
 /**
  * Offers access to internal informations.
  * @since 0.5
@@ -35,7 +37,7 @@ public class DiagnosticLogManager extends ClassLoaderLogManager {
      * @since 0.5
      */
     public String getFQCNofLogger() {
-        return "org.x4juli.DiagnosticLogger";
+        return Constants.FQCN_JUL_LOGGER;
     }
 
     /**
@@ -43,7 +45,7 @@ public class DiagnosticLogManager extends ClassLoaderLogManager {
      * @since 0.5
      */
     public Class getLoggerClass() {
-        return org.x4juli.DiagnosticLogger.class;
+        return java.util.logging.Logger.class;
     }
 
     /**

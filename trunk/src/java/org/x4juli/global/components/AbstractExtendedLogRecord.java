@@ -51,6 +51,11 @@ public abstract class AbstractExtendedLogRecord extends LogRecord implements Ext
      * Location information for the caller.
      */
     private LocationInfo locationInfo = null;
+    
+    /**
+     * The full qualified class name of the logger which submitted the logrecord.
+     */
+    private String fqcnOfLogger = ((LoggerClassInformation)LogManager.getLogManager()).getFQCNofLogger();
 
     // ----------------------------------------------------------- Constructors
 
@@ -85,9 +90,7 @@ public abstract class AbstractExtendedLogRecord extends LogRecord implements Ext
      */
     public LocationInfo getLocationInformation() {
         if (this.locationInfo == null) {
-            LoggerClassInformation lci = (LoggerClassInformation) LogManager.getLogManager();
-            String fqcnOfLogger = lci.getFQCNofLogger();
-            this.locationInfo = new LocationInfo(new Throwable(), fqcnOfLogger);
+            this.locationInfo = new LocationInfo(new Throwable(), this.fqcnOfLogger);
         }
         return this.locationInfo;
     }
@@ -141,6 +144,22 @@ public abstract class AbstractExtendedLogRecord extends LogRecord implements Ext
             return this.cachedFormattedMessage;
         }
         return getMessage();
+    }
+
+    /**
+     * {@inheritDoc}
+     * @since 0.7
+     */
+    public String getFQCNofLogger() {
+        return this.fqcnOfLogger;
+    }
+
+    /**
+     * {@inheritDoc}
+     * @since 0.7
+     */
+    public void setFQCNofLogger(final String fqcn) {
+        this.fqcnOfLogger = fqcn;
     }
 
 }

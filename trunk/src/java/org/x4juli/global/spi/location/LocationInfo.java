@@ -136,10 +136,6 @@ public class LocationInfo implements java.io.Serializable {
             return;
         }
         StackTraceElementExtractor.extract(this, t, fqnOfInvokingClass);
-        // One Try to resolve the LocationInfo with the Default FQN
-        if (this.className.equals(Constants.NOT_AVAILABLE_CHAR)) {
-            StackTraceElementExtractor.extract(this, t, "java.util.logging.Logger");
-        }
     }
 
     /**

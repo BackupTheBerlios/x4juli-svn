@@ -25,7 +25,7 @@ import org.x4juli.global.spi.location.LocationInfo;
  * @author Boris Unckel
  * @since 0.5
  */
-public interface ExtendedLogRecord extends LogRecord {
+public interface ExtendedLogRecord extends LogRecord, java.io.Serializable {
 
     /**
      * Provide extended information about the attached throwable. Returns null,
@@ -66,5 +66,19 @@ public interface ExtendedLogRecord extends LogRecord {
      * @return the cached formatted message, if cache is empty, returns the message.
      */
     String getFormattedMessage();
+    
+    /**
+     * Returns the actual FQCN of the (wrapper) class which submitted the logrecord. 
+     * @return the full qualified class name of the logger class.
+     */
+    String getFQCNofLogger();
+    
+    /**
+     * Sets the full qualified class name of the logger. This method is needed
+     * for wrapper classes which are not able to directly inherit 
+     * from {@link org.x4juli.global.components.AbstractExtendedLogger}.
+     * @param fqcn of the logger submitting the logrecord to the system. 
+     */
+    void setFQCNofLogger(String fqcn);
 
 }

@@ -23,7 +23,7 @@ package org.x4juli.global.spi;
  * @since 0.6
  */
 public interface ExtendedLogger extends Logger {
-    
+
     /**
      * Logs a ExtendedLogRecord.
      * @param record to log.

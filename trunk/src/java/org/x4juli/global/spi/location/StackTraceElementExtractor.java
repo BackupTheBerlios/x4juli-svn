@@ -16,84 +16,43 @@
 
 package org.x4juli.global.spi.location;
 
-import java.lang.reflect.Method;
-
 import org.x4juli.global.Constants;
 
 /**
  * A faster extractor based on StackTraceElements introduced in JDK 1.4.
- *
- * The present code uses reflection. Thus, it should compile on all platforms.
+ * Since <code>java.util.logging</code> was introduced in JDK 1.4, x4juli
+ * fully depends on <code>java.lang.StackTraceElement</code> and does
+ * not use reflection to determine the LocationInfo.
  * <p>
- * Logging API as a whole was originally done for <a
- * href="http://logging.apache.org/log4j/">Apache log4j</a>. <b>Juli</b> is a
- * port of main parts of that to complete the <a
- * href="http://java.sun.com/j2se/1.4.2/docs/guide/util/logging/">Java Logging
- * APIs</a>. All credits for initial idea, design, implementation,
- * documentation belong to the <a
- * href="http://logging.apache.org/site/who-we-are.html">log4j crew</a>. This
- * file was originally published by <i>Martin Schulz, Ceki G&uuml;lc&uuml;</i>.
- * Please use exclusively the <i>appropriate</i> mailing lists for questions,
- * remarks and contribution.
+ * Logging API as a whole was originally done for <a href="http://logging.apache.org/log4j/">Apache
+ * log4j</a>. <b>Juli</b> is a port of main parts of that to complete the <a
+ * href="http://java.sun.com/j2se/1.4.2/docs/guide/util/logging/">Java Logging APIs</a>. All
+ * credits for initial idea, design, implementation, documentation belong to the <a
+ * href="http://logging.apache.org/site/who-we-are.html">log4j crew</a>. This file was originally
+ * published by <i>Martin Schulz, Ceki G&uuml;lc&uuml;</i>. Please use exclusively the
+ * <i>appropriate</i> mailing lists for questions, remarks and contribution.
  * </p>
  * <p>
- * This is just a plain copy.
  * </p>
- *
- * @author Martin Schulz
- * @author Ceki G&uuml;lc&uuml;
+ * 
+ * @author Boris Unckel
  * @since 0.5
  */
 public class StackTraceElementExtractor {
-    //Unused?
-    //private static boolean haveStackTraceElement = false;
 
-    private static Method getStackTrace = null;
-
-    private static Method getClassName = null;
-
-    private static Method getFileName = null;
-
-    private static Method getMethodName = null;
-
-    private static Method getLineNumber = null;
-
-    private static Object[] nullArgs = new Object[] {};
-
-    static {
-        try {
-            Class cStackTraceElement = Class
-                    .forName("java.lang.StackTraceElement");
-            Class[] nullClassArray = new Class[] {};
-            getStackTrace = Throwable.class.getDeclaredMethod("getStackTrace",
-                    nullClassArray);
-            getClassName = cStackTraceElement.getDeclaredMethod("getClassName",
-                    nullClassArray);
-            getFileName = cStackTraceElement.getDeclaredMethod("getFileName",
-                    nullClassArray);
-            getMethodName = cStackTraceElement.getDeclaredMethod(
-                    "getMethodName", nullClassArray);
-            getLineNumber = cStackTraceElement.getDeclaredMethod(
-                    "getLineNumber", nullClassArray);
-            //haveStackTraceElement = true;
-        } catch (Throwable e) {
-            // we should never get here
-        }
-    }
-
-    static void extract(LocationInfo li, Throwable t, String fqnOfInvokingClass) {
+    static void extract(final LocationInfo li, final Throwable t, final String fqnOfInvokingClass) {
         if (t == null) {
             return;
         }
 
-        Object location = null;
+        StackTraceElement location = null;
         try {
-            Object[] stes = (Object[]) getStackTrace.invoke(t, nullArgs);
-
+            // Object[] stes = (Object[]) t.getStackTrace();
+            StackTraceElement[] stes = t.getStackTrace();
             boolean match = false;
             for (int i = 0; i < stes.length; i++) {
-                if (((String) getClassName.invoke(stes[i], nullArgs))
-                        .equals(fqnOfInvokingClass)) {
+
+                if (stes[i].getClassName().equals(fqnOfInvokingClass)) {
                     match = true;
                 } else if (match) {
                     location = stes[i];
@@ -118,50 +77,48 @@ public class StackTraceElementExtractor {
             li.lineNumber = Constants.NOT_AVAILABLE_CHAR;
             li.methodName = Constants.NOT_AVAILABLE_CHAR;
         } else { // otherwise, get the real info
-            setClassName(li, location);
-            setFileName(li, location);
-            setMethodName(li, location);
-            setLineNumber(li, location);
+            setClassName(location, li);
+            setMethodName(location, li);
+            setFileName(location, li);
+            setLineNumber(location, li);
         }
     }
 
-    /**
-     * Return the fully qualified class name of the caller making the logging
-     * request.
-     */
-    static void setClassName(LocationInfo li, Object location) {
+    private static void setClassName(final StackTraceElement location, final LocationInfo li) {
         try {
-            li.className = (String) getClassName.invoke(location, nullArgs);
-        } catch (Throwable e) {
+            li.className = location.getClassName();
+        } catch (Exception e) {
             li.className = Constants.NOT_AVAILABLE_CHAR;
         }
     }
 
-    static void setFileName(LocationInfo li, Object location) {
+    private static void setMethodName(final StackTraceElement location, final LocationInfo li) {
         try {
-            li.fileName = (String) getFileName.invoke(location, nullArgs);
-        } catch (Throwable e) {
+            li.methodName = location.getMethodName();
+        } catch (Exception e) {
+            li.methodName = Constants.NOT_AVAILABLE_CHAR;
+        }
+    }
+
+    private static void setFileName(final StackTraceElement location, final LocationInfo li) {
+        try {
+            li.fileName = location.getFileName();
+        } catch (Exception e) {
             li.fileName = Constants.NOT_AVAILABLE_CHAR;
         }
     }
 
-    static void setLineNumber(LocationInfo li, Object location) {
-        Integer ln = null;
+    private static void setLineNumber(final StackTraceElement location, final LocationInfo li) {
         try {
-            ln = (Integer) getLineNumber.invoke(location, nullArgs);
-            if (ln.intValue() >= 0) {
-                li.lineNumber = ln.toString();
+            int lnr = location.getLineNumber();
+            if (lnr > 0) {
+                li.lineNumber = String.valueOf(lnr);
+            } else {
+                li.lineNumber = Constants.NOT_AVAILABLE_CHAR;
             }
-        } catch (Throwable e) {
+        } catch (Exception e) {
             li.lineNumber = Constants.NOT_AVAILABLE_CHAR;
         }
     }
 
-    static void setMethodName(LocationInfo li, Object location) {
-        try {
-            li.methodName = (String) getMethodName.invoke(location, nullArgs);
-        } catch (Throwable e) {
-            li.methodName = Constants.NOT_AVAILABLE_CHAR;
-        }
-    }
 }

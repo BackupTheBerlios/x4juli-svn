@@ -697,7 +697,7 @@ class X4JuliLogger extends AbstractExtendedLogger implements org.apache.commons.
         logRecord.setSourceClassName(sourceClass);
         logRecord.setSourceMethodName(sourceMethod);
         logRecord.setResourceBundleName(bundleName);
-        logRecord.setLoggerName(getName());
+        completeLogRecord((ExtendedLogRecord) logRecord);
         super.log(logRecord);
     }
 
@@ -716,7 +716,7 @@ class X4JuliLogger extends AbstractExtendedLogger implements org.apache.commons.
         logRecord.setSourceMethodName(sourceMethod);
         logRecord.setResourceBundleName(bundleName);
         logRecord.setParameters(params);
-        logRecord.setLoggerName(getName());
+        completeLogRecord((ExtendedLogRecord) logRecord);
         super.log(logRecord);
     }
 
@@ -735,7 +735,7 @@ class X4JuliLogger extends AbstractExtendedLogger implements org.apache.commons.
         logRecord.setSourceMethodName(sourceMethod);
         logRecord.setResourceBundleName(bundleName);
         logRecord.setThrown(thrown);
-        logRecord.setLoggerName(getName());
+        completeLogRecord((ExtendedLogRecord) logRecord);
         super.log(logRecord);
     }
 
@@ -753,7 +753,7 @@ class X4JuliLogger extends AbstractExtendedLogger implements org.apache.commons.
         logRecord.setSourceClassName(sourceClass);
         logRecord.setSourceMethodName(sourceMethod);
         logRecord.setResourceBundleName(bundleName);
-        logRecord.setLoggerName(getName());
+        completeLogRecord((ExtendedLogRecord) logRecord);
         super.log(logRecord);
     }
 

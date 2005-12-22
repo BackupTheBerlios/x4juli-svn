@@ -30,8 +30,9 @@ import org.x4juli.global.spi.ExtendedLogger;
 public abstract class AbstractExtendedLogger extends Logger implements ExtendedLogger {
 
     /**
-     * @param name
-     * @param resourceBundleName
+     * Constructs a logger with a specific resourcebundle.
+     * @param name of the logger.
+     * @param resourceBundleName for i18n messages.
      */
     protected AbstractExtendedLogger(final String name, final String resourceBundleName) {
         super(name, resourceBundleName);
@@ -44,7 +45,7 @@ public abstract class AbstractExtendedLogger extends Logger implements ExtendedL
     protected void completeLogRecord(ExtendedLogRecord logRecord) {
         logRecord.setLoggerName(getName());
         String rbName = getResourceBundleName();
-        if (rbName != null) {
+        if (rbName != null && logRecord.getResourceBundleName() == null) {
             logRecord.setResourceBundleName(rbName);
             logRecord.setResourceBundle(getResourceBundle());
         }
