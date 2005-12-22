@@ -71,6 +71,7 @@ public class WrapperFilter extends AbstractFilter {
 
     /**
      * {@inheritDoc}
+     * @since 0.5
      */
     public int decide(final ExtendedLogRecord record) {
         // Decision is taken by the wrapped filter xor extendedFilter
@@ -91,6 +92,7 @@ public class WrapperFilter extends AbstractFilter {
 
     /**
      * {@inheritDoc}
+     * @since 0.5
      */
     public MessageProperties getMessageProperties() {
         return MessageProperties.PROPERTIES_FILTER;
