@@ -433,6 +433,17 @@ public class ClassLoaderLogManager extends LogManager implements LoggerRepositor
         String rootHandlers = info.props.getProperty(".handlers");
         String handlers = info.props.getProperty("handlers");
         Logger localRootLogger = info.rootNode.logger;
+        String rootLevelProp = info.props.getProperty(".level");
+        if (rootLevelProp != null) {
+            try {
+                Level rootLevel = Level.parse(rootLevelProp.trim());
+                localRootLogger.setLevel(rootLevel);
+            } catch (Exception e) {
+                // Default level for root logger will be taken - nothing to do.
+                // Ignored Exception, to recognize it, use IDE Debugger Breakpoint in NOPLogger
+                NOPLogger.NOP_LOGGER.log(Level.FINEST, "Ignored exception", e);
+            }
+        }
         if (handlers != null) {
             StringTokenizer tok = new StringTokenizer(handlers, ",");
             while (tok.hasMoreTokens()) {
