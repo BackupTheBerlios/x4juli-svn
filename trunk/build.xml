@@ -51,7 +51,7 @@
   <property name="component.title" value="Extensions for the Java Util Logging Implementation (x4juli)" />
 
   <!-- The current version number of this component -->
-  <property name="component.version" value="0.6" />
+  <property name="component.version" value="0.7" />
 
   <!-- The base directory for compilation targets -->
   <property name="build.home" value="${basedir}/target" />
@@ -119,6 +119,7 @@
   <path id="compile.classpath">
     <pathelement location="${junit.jar}" />
     <pathelement location="${commons-logging.jar}" />
+  	<pathelement location="${jboss-commons.jar}" />
   </path>
 
   <!-- Construct sample compile classpath -->
@@ -138,6 +139,7 @@
     <pathelement location="${junit.jar}" />
     <pathelement location="${jakarta-oro.jar}"/>
     <pathelement location="${commons-logging.jar}" />
+  	<pathelement location="${jboss-commons.jar}" />
     <pathelement location="${conf.home}" />
   </path>
 
@@ -230,6 +232,7 @@
          <manifest>
           <attribute name="Manifest-version" value="1.0"/>
           <attribute name="Compiled-against-commons-logging-Version" value="${commons-logging.version}"/>
+          <attribute name="Compiled-against-jboss-commons-Version" value="${jboss-commons.jar.version}"/>
           <section name="org/x4juli/">
              <attribute name="Implementation-Title" value="${component.name}"/>
              <attribute name="Implementation-Version" value="${component.version} ${TODAY}"/>
@@ -488,7 +491,7 @@
                    value="org.x4juli.DiagnosticLogManager"/>
         <sysproperty key="org.x4juli.juli.internal.level"
                    value="INFO"/>
-        <arg value="org.x4juli.JuliSuite"/>
+        <arg value="org.x4juli.X4JuliSuite"/>
         <classpath refid="test.classpath"/>
       </java>
    </target>

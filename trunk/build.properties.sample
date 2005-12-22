@@ -45,6 +45,12 @@ servlet-api.jar.version=2.4
 
 
 #Required
+#Obtain from: http://www.jboss.org
+jboss-commons.jar=D:/home/java/jboss-4.0.3SP1/lib/jboss-common.jar
+jboss-commons.jar.version=4.0.3SP1
+
+
+#Required
 #Obtain from: http://checkstyle.sourceforge.net
 #Checkstyle to check sources for valid format
 #Build assumes distribution directory structure
