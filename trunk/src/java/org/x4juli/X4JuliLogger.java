@@ -372,6 +372,19 @@ class X4JuliLogger extends AbstractExtendedLogger implements org.apache.commons.
     }
 
     /**
+     * Refers to <code>java.util.logging.Level.FINE</code>.
+     * @see org.slf4j.Logger#debug(String, Object[])
+     * @since 0.7
+     */
+    public void debug(final String format, final Object[] argArray) {
+        if (!isLoggable(SLF4J_MAPPING_DEBUG) || format == null) {
+            return;
+        }
+        final String formatted = org.slf4j.impl.MessageFormatter.arrayFormat(format, argArray);
+        log(SLF4J_MAPPING_DEBUG, formatted);
+    }
+
+    /**
      * Refers to <code>java.util.logging.Level.INFO</code>.
      *
      * @see org.slf4j.Logger#debug(String, Throwable)
@@ -410,6 +423,20 @@ class X4JuliLogger extends AbstractExtendedLogger implements org.apache.commons.
             return;
         }
         final String formatted = org.slf4j.impl.MessageFormatter.format(format, arg1, arg2);
+        log(SLF4J_MAPPING_INFO, formatted);
+    }
+
+    /**
+     * Refers to <code>java.util.logging.Level.INFO</code>.
+     * 
+     * @see org.slf4j.Logger#info(String, Object[])
+     * @since 0.7
+     */
+    public void info(final String format, final Object[] argArray) {
+        if (!isLoggable(SLF4J_MAPPING_INFO) || format == null) {
+            return;
+        }
+        final String formatted = org.slf4j.impl.MessageFormatter.arrayFormat(format, argArray);
         log(SLF4J_MAPPING_INFO, formatted);
     }
 
@@ -468,6 +495,19 @@ class X4JuliLogger extends AbstractExtendedLogger implements org.apache.commons.
     }
 
     /**
+     * Refers to <code>java.util.logging.Level.WARNING</code>.
+     * @see org.slf4j.Logger#warn(String, Object[])
+     * @since
+     */
+    public void warn(final String format, final Object[] argArray) {
+        if (!isLoggable(SLF4J_MAPPING_WARN) || format == null) {
+            return;
+        }
+        final String formatted = org.slf4j.impl.MessageFormatter.arrayFormat(format, argArray);
+        log(SLF4J_MAPPING_WARN, formatted);
+    }
+
+    /**
      * Refers to <code>java.util.logging.Level.SEVERE</code>.
      *
      * @see org.slf4j.Logger#error(String)
@@ -518,6 +558,19 @@ class X4JuliLogger extends AbstractExtendedLogger implements org.apache.commons.
             return;
         }
         final String formatted = org.slf4j.impl.MessageFormatter.format(format, arg1, arg2);
+        log(SLF4J_MAPPING_ERROR, formatted);
+    }
+
+    /**
+     * Refers to <code>java.util.logging.Level.SEVERE</code>.
+     * @see org.slf4j.Logger#error(String, Object[])
+     * @since 0.7
+     */
+    public void error(final String format, final Object[] argArray) {
+        if (!isLoggable(SLF4J_MAPPING_ERROR) || format == null) {
+            return;
+        }
+        final String formatted = org.slf4j.impl.MessageFormatter.arrayFormat(format, argArray);
         log(SLF4J_MAPPING_ERROR, formatted);
     }
 

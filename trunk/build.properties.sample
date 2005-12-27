@@ -30,7 +30,7 @@ jakarta-oro.jar=D:/home/java/resource/jakarta_oro_2_0_8/jakarta-oro-2.0.8.jar
 #Required
 #Obtained from: http://www.slf4j.org
 #Do not modify until java source changes!
-slf4j.version=1.0-RC3
+slf4j.version=1.0-RC4
 
 
 #Required
