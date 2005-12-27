@@ -49,6 +49,7 @@ public abstract class AbstractExtendedLogger extends Logger implements ExtendedL
             logRecord.setResourceBundleName(rbName);
             logRecord.setResourceBundle(getResourceBundle());
         }
+        logRecord.getNDC();
     }
 
 }

@@ -587,9 +587,11 @@ class X4JuliLogger extends AbstractExtendedLogger implements org.apache.commons.
             return;
         }
         if (!(record instanceof ExtendedLogRecord)) {
-            LogRecord lr = new ExtendedLogRecordWrapper(record);
-            super.log(lr);
+            ExtendedLogRecord lr = new ExtendedLogRecordWrapper(record);
+            lr.getNDC();
+            super.log((LogRecord)lr);
         } else {
+            ((ExtendedLogRecord) record).getNDC();
             super.log(record);
         }
     }
@@ -603,6 +605,7 @@ class X4JuliLogger extends AbstractExtendedLogger implements org.apache.commons.
         if (record == null || record.getLevel() == null || !isLoggable(record.getLevel())) {
             return;
         }
+        record.getNDC();
         super.log((LogRecord) record);
     }
 
