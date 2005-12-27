@@ -22,6 +22,7 @@ import java.util.logging.LogRecord;
 
 import org.x4juli.NOPLogger;
 import org.x4juli.formatter.MessageText;
+import org.x4juli.formatter.helper.FormatterUtil;
 import org.x4juli.global.Constants;
 import org.x4juli.global.resources.MessageProperties;
 import org.x4juli.global.spi.Component;
@@ -146,11 +147,16 @@ public abstract class AbstractFormatter extends Formatter implements Component,
     public abstract String doFormat(ExtendedLogRecord record);
 
     /**
-     * @see java.util.logging.Formatter#formatMessage(java.util.logging.LogRecord)
+     * High availability format. Neither incorrect messages
+     * (missing java.text.MessageFormat compatibility) nor
+     * exceptions during format will fail.
+     * @param record containing raw message and parameters.
+     * @return the formatted message.
+     * @see FormatterUtil#formatMessage(ExtendedLogRecord)
      * @since 0.5
      */
     public String formatMessage(final ExtendedLogRecord record) {
-        return super.formatMessage((LogRecord) record);
+        return FormatterUtil.formatMessage(record);
     }
 
     // ------------------------------------------------------ Protected Methods

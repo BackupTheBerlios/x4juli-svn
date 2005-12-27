@@ -85,17 +85,21 @@ public final class FormatterUtil {
         try {
             if (parameters == null || parameters.length == 0) {
                 // No parameters. Just return format string.
+                // First default case.
                 return format;
             }
             // Is this a java.text style format?
             if (format.indexOf("{0") >= 0) {
+                // Second default case
                 return java.text.MessageFormat.format(format, parameters);
             }
-            return appendParamsToString(format, parameters);
-
         } catch (Exception ex) {
+            // Case of formatting exception.
             return appendParamsToString(format, parameters);
         }
+        // Case format String is not valid for java.text.MessageFormat
+        // AND there are parameters
+        return appendParamsToString(format, parameters);
     }
 
     private static String appendParamsToString(final String format, final Object[] parameters) {
@@ -104,7 +108,13 @@ public final class FormatterUtil {
             buf.append("[");
             buf.append(i);
             buf.append("=");
-            buf.append(String.valueOf(parameters[i]));
+            try {
+                buf.append(String.valueOf(parameters[i]));
+            } catch (RuntimeException e) {
+                buf.append("Error in format[");
+                buf.append(e);
+                buf.append("]");
+            }
             buf.append("]");
         }
         return buf.toString();
