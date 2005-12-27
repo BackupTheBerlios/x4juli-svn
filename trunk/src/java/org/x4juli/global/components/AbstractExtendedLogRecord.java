@@ -20,6 +20,7 @@ import java.util.logging.LogManager;
 import java.util.logging.LogRecord;
 
 import org.x4juli.global.LoggerClassInformation;
+import org.x4juli.global.context.NDC;
 import org.x4juli.global.spi.ExtendedLogRecord;
 import org.x4juli.global.spi.ThrowableInformation;
 import org.x4juli.global.spi.location.LocationInfo;
@@ -56,6 +57,19 @@ public abstract class AbstractExtendedLogRecord extends LogRecord implements Ext
      * The full qualified class name of the logger which submitted the logrecord.
      */
     private String fqcnOfLogger = ((LoggerClassInformation)LogManager.getLogManager()).getFQCNofLogger();
+
+    /**
+     * The nested diagnostic context (NDC) of logging event.
+     */
+    private String ndc;
+
+    /**
+     * Have we tried to do an NDC lookup? If we did, there is no need to do it
+     * again.  Note that its value is always false when serialized. Thus, a
+     * receiving SocketNode will never use it's own (incorrect) NDC. See also
+     * writeObject method.
+     */
+    private boolean ndcLookupRequired = true;
 
     // ----------------------------------------------------------- Constructors
 
@@ -160,6 +174,30 @@ public abstract class AbstractExtendedLogRecord extends LogRecord implements Ext
      */
     public void setFQCNofLogger(final String fqcn) {
         this.fqcnOfLogger = fqcn;
+    }
+
+    /**
+     * {@inheritDoc}
+     * @since 0.7
+     */
+    public synchronized String getNDC() {
+        if (ndcLookupRequired) {
+            ndcLookupRequired = false;
+            ndc = NDC.get();
+        }
+      return ndc;
+     }
+
+    /**
+     * {@inheritDoc}
+     * @since 0.7
+     */
+    public synchronized void setNDC(final String ndcString) {
+        if (this.ndc != null) {
+            throw new IllegalStateException("The NDC has been already set.");
+          }
+          ndcLookupRequired = false;
+          ndc = ndcString;
     }
 
 }

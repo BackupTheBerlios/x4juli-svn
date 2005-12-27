@@ -58,18 +58,21 @@ public interface ExtendedLogRecord extends LogRecord, java.io.Serializable {
     /**
      * Setup the cache for the formatted message.
      * @param formattedMessage current state of the formatted message.
+     * @since 0.6
      */
     void setFormattedMessage(String formattedMessage);
     
     /**
      * Returns the cached formatted message.
      * @return the cached formatted message, if cache is empty, returns the message.
+     * @since 0.6
      */
     String getFormattedMessage();
     
     /**
      * Returns the actual FQCN of the (wrapper) class which submitted the logrecord. 
      * @return the full qualified class name of the logger class.
+     * @since 0.6
      */
     String getFQCNofLogger();
     
@@ -77,8 +80,28 @@ public interface ExtendedLogRecord extends LogRecord, java.io.Serializable {
      * Sets the full qualified class name of the logger. This method is needed
      * for wrapper classes which are not able to directly inherit 
      * from {@link org.x4juli.global.components.AbstractExtendedLogger}.
-     * @param fqcn of the logger submitting the logrecord to the system. 
+     * @param fqcn of the logger submitting the logrecord to the system.
+     * @since 0.6 
      */
     void setFQCNofLogger(String fqcn);
 
+    
+    /**
+     * This method returns the NDC for this event. It will return the correct
+     * content even if the event was generated in a different thread or even on
+     * a different machine. The {@link org.x4juli.global.context.NDC#get} method
+     * should <em>never</em> be
+     * called directly.
+     * @return nested diagnostic context message.
+     * @since 0.7
+     */
+    public String getNDC();
+
+    /**
+     * This method sets the NDC string for this event.
+     * @param ndcString to set.
+     * @throws IllegalStateException if ndc had been already set.
+     * @since 0.7
+     */
+    public void setNDC(String ndcString);
 }

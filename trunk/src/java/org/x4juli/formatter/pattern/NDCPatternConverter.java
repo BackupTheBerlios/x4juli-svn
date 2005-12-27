@@ -15,12 +15,14 @@
  */
 package org.x4juli.formatter.pattern;
 
+import org.x4juli.global.spi.ExtendedLogRecord;
+
 /**
- * Currently not available. Returns always "?".
+ * Return the event's NDC in a StringBuffer.
  * @author Boris Unckel
  * @since 0.5
  */
-public class NDCPatternConverter extends CurrentlyNotAvailableConverter {
+public class NDCPatternConverter extends LogRecordPatternConverter {
 
     // -------------------------------------------------------------- Variables
 
@@ -48,6 +50,14 @@ public class NDCPatternConverter extends CurrentlyNotAvailableConverter {
     public static NDCPatternConverter newInstance(
       final String[] options) {
       return INSTANCE;
+    }
+
+    /**
+     * {@inheritDoc}
+     * @since 0.7
+     */
+    public void format(final ExtendedLogRecord record, final StringBuffer toAppendTo) {
+        toAppendTo.append(record.getNDC());
     }
 
 }

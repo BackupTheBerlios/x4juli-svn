@@ -17,14 +17,14 @@
 -->
 
                            Extensions for the Java Util Logging Implemenation (x4juli)
-                                Version 0.6
+                                Version 0.7
                                 Release Notes
 
 WARNING:
 ============
-x4juli version 0.6 is not meant to be used in production systems!
+x4juli version 0.7 is not meant to be used in production systems!
 We already made intensive use of JUnit tests, findbugs, and checkstyle improvements,
-due to that 0.6 brings a lot of quality.
+due to that 0.7 brings a lot of quality.
 To be sure that you can use x4juli from a later stable release, simply
 use Logger.getLogger(Sample.class.getName()) from java.util.logging,
 you will not have to change any code, due to this is recommended use.
@@ -37,7 +37,7 @@ This document contains the release notes for this version of the x4juli package.
 It is primarily a service release for downstream users.
 
 The following paragraphs document changes since the previous release
-(version 0.5). The documentation (userguide and javadoc) 
+(version 0.6). The documentation (userguide and javadoc) 
 has also been improved.
 
 
@@ -45,29 +45,16 @@ NEW FEATURES:
 ============
 
 [ALL FILES]        
-[Packages]         The package has moved from org.apache.juli to org.x4juli
-                   because it will not be published at Apache. Maybe later :-)
-[X4JuliLogManager] is now compatible with java.util.logging, Jakarta Commons Logging (JCL)
-                   and the Simple Log Facade for Java (SLF4J).
-[SLF4J]            x4juli delivers the slf4j classes as recommended on http://slf4j.org/faq.html#3
-[JCLFactory]       can be used to get an logger with an static compiled approach.
+[SLF4J]            was updated to 1.0RC4
 [build.xml]        has been improved to correspond actual needs.
-[samples]          There is one sample for a standalone application and three samples for use within Tomcat.
+[NDC, MDC]         Package org.x4juli.global.context was added,
+                   NDCPatternConverter now works.
 
 BUG FIXES:
 =========
-
-[MANIFEST.MF]      All jars include correct tags.
-[License]          The sl4fj license has been included.
-[RollingFileHandler] works now within an configuration environment
-[I18N]             The x4juli internal logging has now a working i18n output
+[samples]          Have been bugfixed in documentation.
 
 DEPRECATIONS:
 ============
 
-    (These are carried forward from Version 0.5)
-
-[org.apache.juli.FileHandler]        
-                   Deprecated, replaced by org.apache.juli.handlers.FileHandler
-                   or org.apache.juli.handlers.RollingFileHandler.
-                   Class was also made final to make users change to new classes.
+    (These are carried forward from Version 0.6)

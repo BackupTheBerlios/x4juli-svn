@@ -20,6 +20,7 @@ import junit.framework.Test;
 import junit.framework.TestSuite;
 
 import org.x4juli.global.components.AbstractJuliTestCase;
+import org.x4juli.global.context.NDCTest;
 import org.x4juli.global.spi.ThrowableInformationTest;
 
 /**
@@ -45,6 +46,7 @@ public class AllTests extends AbstractJuliTestCase {
     public static Test suite(){
         TestSuite suite = new TestSuite("org.x4juli.global");
         suite.addTestSuite(ThrowableInformationTest.class);
+        suite.addTestSuite(NDCTest.class);
         return suite;
     }
 
