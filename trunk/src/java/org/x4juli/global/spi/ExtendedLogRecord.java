@@ -63,8 +63,8 @@ public interface ExtendedLogRecord extends LogRecord, java.io.Serializable {
     void setFormattedMessage(String formattedMessage);
     
     /**
-     * Returns the cached formatted message.
-     * @return the cached formatted message, if cache is empty, returns the message.
+     * Returns the cached formatted message or null.
+     * @return the cached formatted message, if cache is empty, returns null.
      * @since 0.6
      */
     String getFormattedMessage();

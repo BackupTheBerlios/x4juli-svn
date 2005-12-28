@@ -136,11 +136,13 @@ public abstract class AbstractFormatter extends Formatter implements Component,
      */
     public String format(final ExtendedLogRecord record) {
         String ret = doFormat(record);
-        record.setFormattedMessage(ret);
         return ret;
     }
 
     /**
+     * Method to implement for the concrete formatting of the LogRecord.
+     * @param record to format.
+     * @return the formatted information specified in the concrete class.
      * @see java.util.logging.Formatter#format(java.util.logging.LogRecord)
      * @since 0.5
      */

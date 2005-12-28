@@ -154,10 +154,7 @@ public abstract class AbstractExtendedLogRecord extends LogRecord implements Ext
      * @since 0.6
      */
     public String getFormattedMessage() {
-        if (this.cachedFormattedMessage != null) {
-            return this.cachedFormattedMessage;
-        }
-        return getMessage();
+        return this.cachedFormattedMessage;
     }
 
     /**

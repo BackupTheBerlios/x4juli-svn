@@ -217,7 +217,11 @@ public class WriterHandler extends AbstractHandler {
      * used will depend on the value of the <code>encoding</code> property. If
      * the encoding value is specified incorrectly the writer will be opened
      * using the default system encoding (an error message will be printed to
-     * the loglog.
+     * the x4juli internal logging.
+     *
+     * @param os to wrap.
+     * @return writer wrapping the outputstream.
+     * @since 0.5
      */
     protected OutputStreamWriter createWriter(OutputStream os) {
         OutputStreamWriter retval = null;
@@ -254,6 +258,8 @@ public class WriterHandler extends AbstractHandler {
      * the application exits. This is a high price to pay even for a 20%
      * performance gain.
      * </p>
+     * @param value ImmediateFlush option.
+     * @since 0.5
      */
     public void setImmediateFlush(boolean value) {
         this.immediateFlush = value;
@@ -261,6 +267,8 @@ public class WriterHandler extends AbstractHandler {
 
     /**
      * Returns value of the <b>ImmediateFlush</b> option.
+     * @return ImmediateFlush option.
+     * @since 0.5
      */
     public boolean getImmediateFlush() {
         return this.immediateFlush;
@@ -268,6 +276,7 @@ public class WriterHandler extends AbstractHandler {
 
     /**
      * {@inheritDoc}
+     * @since 0.5
      */
     public void activateOptions() {
         int errors = 0;
@@ -289,6 +298,7 @@ public class WriterHandler extends AbstractHandler {
 
     /**
      * {@inheritDoc}
+     * @since 0.5
      */
     public void configure() {
         super.configure();
@@ -362,7 +372,7 @@ public class WriterHandler extends AbstractHandler {
      * Most subclasses of <code>WriterAppender</code> will need to override
      * this method.
      * </p>
-     *
+     * @param record to write.
      * @since 0.5
      */
     protected void subAppend(final ExtendedLogRecord record) {
@@ -418,6 +428,9 @@ public class WriterHandler extends AbstractHandler {
      * It checks whether there is a set output target and also if there is a set
      * layout. If these checks fail, then the boolean value <code>false</code>
      * is returned.
+     * </p>
+     * @return appending is ok or not.
+     * @since 0.5
      */
     protected boolean checkEntryConditions() {
         if (this.closed) {
@@ -437,6 +450,7 @@ public class WriterHandler extends AbstractHandler {
     /**
      * Write a footer as produced by the embedded formatter's
      * {@link Formatter#getTail(java.util.logging.Handler)} method.
+     * @since 0.5
      */
     protected void writeFooter() {
         if (getFormatter() != null) {
@@ -459,6 +473,7 @@ public class WriterHandler extends AbstractHandler {
     /**
      * Write a header as produced by the embedded formatter's
      * {@link Formatter#getHead(java.util.logging.Handler)} method.
+     * @since 0.5
      */
     protected void writeHeader() {
         if (getFormatter() != null) {

@@ -60,12 +60,16 @@ public final class FormatterUtil {
      * A fully independent formatting of the raw Message. If the raw message
      * does not contain any java.text parameters like {0} or the ResourceBundle
      * is missing key and value, the parameters are appended on the raw message
-     * with [No=Value].
+     * with [No=Value]. The Method will try to use the cache of the formatted
+     * message and fill it after formatting.
      * 
      * @param record containing raw message and optional parameters.
      * @return the formatted message String.
      */
     public static String formatMessage(final ExtendedLogRecord record) {
+        if (record.getFormattedMessage() != null) {
+            return record.getFormattedMessage();
+        }
         String format = record.getMessage();
         if (format == null) {
             return String.valueOf(format);
@@ -82,6 +86,7 @@ public final class FormatterUtil {
         }
         // Formatting.
         Object parameters[] = record.getParameters();
+        String ret = null;
         try {
             if (parameters == null || parameters.length == 0) {
                 // No parameters. Just return format string.
@@ -91,15 +96,19 @@ public final class FormatterUtil {
             // Is this a java.text style format?
             if (format.indexOf("{0") >= 0) {
                 // Second default case
-                return java.text.MessageFormat.format(format, parameters);
+                ret = java.text.MessageFormat.format(format, parameters);
             }
         } catch (Exception ex) {
             // Case of formatting exception.
-            return appendParamsToString(format, parameters);
+            ret = appendParamsToString(format, parameters);
         }
         // Case format String is not valid for java.text.MessageFormat
         // AND there are parameters
-        return appendParamsToString(format, parameters);
+        if(ret == null) {
+            ret = appendParamsToString(format, parameters);
+        }
+        record.setFormattedMessage(ret);
+        return ret;
     }
 
     private static String appendParamsToString(final String format, final Object[] parameters) {
