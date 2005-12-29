@@ -60,7 +60,7 @@
   <property name="conf.home" value="${basedir}/src/conf" />
 
   <!-- The base directory for distribution targets -->
-  <property name="dist.home" value="${basedir}/dist" />
+  <property name="dist.home" value="${basedir}/dist/${component.name}-${component.version}" />
 
   <!-- The base directory for needed libs -->
   <property name="lib.home" value="${basedir}/lib" />
@@ -169,7 +169,7 @@
 
   <target name="clean" description="Clean build and distribution directories">
     <delete dir="${build.home}" />
-    <delete dir="${dist.home}" />
+    <delete dir="${basedir}/dist" />
   </target>
 
   <target name="prepare" depends="init" description="Prepare build directory">
@@ -299,7 +299,7 @@
 
     <tar destfile="${component.name}-${component.version}.tar"
        longfile="fail"
-       basedir="${dist.home}">
+       basedir="${basedir}/dist">
     </tar>
     <gzip src="${component.name}-${component.version}.tar"
         destfile="${component.name}-${component.version}.tar.gz"/>
@@ -308,7 +308,7 @@
        encoding="UTF-8"
        compress="true"
        comment="${component.title} ${component.version}">
-        <fileset dir="${dist.home}"/>
+        <zipfileset dir="${basedir}/dist"/>
       </zip>
   </target>
 
