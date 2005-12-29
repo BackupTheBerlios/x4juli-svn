@@ -60,7 +60,7 @@ public final class FormatterUtil {
      * A fully independent formatting of the raw Message. If the raw message
      * does not contain any java.text parameters like {0} or the ResourceBundle
      * is missing key and value, the parameters are appended on the raw message
-     * with [No=Value]. The Method will try to use the cache of the formatted
+     * with [Number=Value]. The Method will try to use the cache of the formatted
      * message and fill it after formatting.
      * 
      * @param record containing raw message and optional parameters.
