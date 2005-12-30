@@ -166,7 +166,7 @@ import org.x4juli.global.spi.ObjectStore;
  *
  * <tr>
  * <td align=center><b>d</b></td>
- * <td>Used to output the date of the logging event. The date conversion
+ * <td>Used to output the date of the logrecord. The date conversion
  * specifier may be followed by a set of braces containing a date and time
  * pattern strings for the <code>java.text.SimpleDateFormat</code>: <em>ABSOLUTE</em>,
  * <em>DATE</em> or <em>ISO8601</em>. For example, <b>%d{HH:mm:ss,SSS}</b>,
@@ -192,7 +192,7 @@ import org.x4juli.global.spi.ObjectStore;
  * <td align=center><b>l</b></td>
  *
  * <td>Used to output location information of the caller which generated the
- * logging event.
+ * logrecord.
  *
  * <p>
  * The location information depends on the JVM implementation but usually
@@ -229,7 +229,7 @@ import org.x4juli.global.spi.ObjectStore;
  * <tr>
  * <td align=center><b>m</b></td>
  * <td>Used to output the application supplied message associated with the
- * logging event.</td>
+ * logrecord.</td>
  * </tr>
  *
  * <tr>
@@ -262,7 +262,7 @@ import org.x4juli.global.spi.ObjectStore;
  *
  * <tr>
  * <td align=center><b>p</b></td>
- * <td>Used to output the priority of the logging event.
+ * <td>Used to output the priority of the logrecord.
  * <p>
  * With no options specified or with option <code>%p{default}</code> this will
  * return the non-localized name of the
@@ -279,7 +279,7 @@ import org.x4juli.global.spi.ObjectStore;
  * <td align=center><b>r</b></td>
  *
  * <td>Used to output the number of milliseconds elapsed since the start of the
- * application until the creation of the logging event.
+ * application until the creation of the logrecord.
  * <p>
  * "r" will return generated input from
  * <code>org.x4juli.spi.ExtendedLogRecord</code>.
@@ -292,8 +292,8 @@ import org.x4juli.global.spi.ObjectStore;
  * <td align=center><b>t</b></td>
  *
  * <td>Used to output the
- * <code>java.util.logging.LogRecord.getThreadID()</code> of the thread that
- * generated the logging event.</td>
+ * <code>org.x4juli.spi.ExtendedLogRecord.getThreadName()</code> of the thread that
+ * generated the logrecord.</td>
  *
  * </tr>
  *
@@ -302,7 +302,7 @@ import org.x4juli.global.spi.ObjectStore;
  * <td align=center><b>x</b></td>
  *
  * <td>Used to output the NDC (nested diagnostic context) associated with the
- * thread that generated the logging event. </td>
+ * thread that generated the logrecord. </td>
  * </tr>
  *
  *
@@ -313,7 +313,7 @@ import org.x4juli.global.spi.ObjectStore;
  *
  * <p>
  * Used to output the MDC (mapped diagnostic context) associated with the thread
- * that generated the logging event. The <b>X</b> conversion character can be
+ * that generated the logrecord. The <b>X</b> conversion character can be
  * followed by the key for the map placed between braces, as in
  * <b>%X{clientNumber}</b> where <code>clientNumber</code> is the key. The
  * value in the MDC corresponding to the key will be output. If no additional
@@ -329,7 +329,7 @@ import org.x4juli.global.spi.ObjectStore;
  *
  * <td>
  * <p>
- * Used to output the Properties associated with the logging event. The
+ * Used to output the Properties associated with the logrecord. The
  * <b>properties</b> conversion word can be followed by the key for the map
  * placed between braces, as in <b>%properties{application}</b> where
  * <code>application</code> is the key. The value in the Properties bundle
@@ -353,7 +353,7 @@ import org.x4juli.global.spi.ObjectStore;
  * </p>
  * <p>
  * <b>This is needed to output Stacktrace information if you are not using a
- * Juli Handler. "m" just outputs the message</b>
+ * x4juli Handler. "m" just outputs the message</b>
  * </p>
  * </td>
  * </tr>
