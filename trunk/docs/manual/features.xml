@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
+"http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd">
+<article>
+  <title>x4juli - Features and Comparison</title>
+
+  <section>
+    <title>Features</title>
+
+    <section>
+      <title>LogManager</title>
+
+      <para>The ClassLoaderLogManager has ThreadContextClassLoading support
+      and allows different configurations per classloader. This has advantages
+      in J2EE environments, to configure per webapplication or enterprise
+      application. Loggers are hold with a weak reference, this avoids memory
+      leaks when the server throws away the classloader (for
+      hot-/re-deployment tasks).</para>
+    </section>
+
+    <section>
+      <title>Formatter</title>
+
+      <para>There are three x4juli formatters, with a common, abstract
+      baseclass which allows user to extend x4juli in an easy way.</para>
+
+      <itemizedlist>
+        <listitem>
+          <para>SimpleFormatter - No configuration needed, just level and
+          message output.</para>
+        </listitem>
+      </itemizedlist>
+
+      <itemizedlist>
+        <listitem>
+          <para>PatternFormatter - Most flexible, configurable formatting.
+          Allows to enable/disable output of any information contained in the
+          LogRecord and NestedDiagnosticContext. The layout is also depending
+          on the configuration.</para>
+        </listitem>
+      </itemizedlist>
+
+      <itemizedlist>
+        <listitem>
+          <para>HTMLFormatter - Allows direct output as HTML page for viewing
+          per browser.</para>
+        </listitem>
+      </itemizedlist>
+    </section>
+
+    <section>
+      <title>Handler</title>
+
+      <para>There are three main x4juli handlers, with a common, abstract
+      baseclass which allows user to extend x4juli in an easy way. All
+      handlers accept filter chains.</para>
+
+      <para>It is possible to configure multiple instances of a handler with
+      different configuration, this is not possible in
+      java.util.logging.</para>
+
+      <itemizedlist>
+        <listitem>
+          <para>ConsoleHandler - Used to log to the system console.
+          Configuration allows to determine System.out or System.err for
+          output.</para>
+        </listitem>
+      </itemizedlist>
+
+      <itemizedlist>
+        <listitem>
+          <para>FileHandler - Used to log to a file. Path and filename,
+          appending to/overwriting an existing file, and buffering is
+          configurable.</para>
+        </listitem>
+      </itemizedlist>
+
+      <itemizedlist>
+        <listitem>
+          <para>RollingFileHandler - Used to log to a file. Depending on the
+          configuration a new file will be used when a certain file size or
+          time is reached. You can specifiy different locations and names for
+          the active log file and the backuped files. The backuped files can
+          optionally be compressed.</para>
+        </listitem>
+      </itemizedlist>
+    </section>
+
+    <section>
+      <title>Filter</title>
+
+      <para>All filters can be configured to accept or deny a logrecord if the
+      specified criteria are matched. Currently one can configure the filters
+      per programming, not by a config file.</para>
+
+      <itemizedlist>
+        <listitem>
+          <para>LevelMatchFilter - Based on the exact match of the specified
+          filter level to the logrecord's level.</para>
+        </listitem>
+      </itemizedlist>
+
+      <itemizedlist>
+        <listitem>
+          <para>LevelRangeFilter - Based on a minimum/maximum range of the
+          filter level to the logrecord's level.</para>
+        </listitem>
+      </itemizedlist>
+
+      <itemizedlist>
+        <listitem>
+          <para>StringMatchFilter - Based on a specified String to match
+          against the logrecord's message.</para>
+        </listitem>
+      </itemizedlist>
+
+      <itemizedlist>
+        <listitem>
+          <para>DenyAllFilter - Rejects any logrecord.</para>
+        </listitem>
+      </itemizedlist>
+
+      <itemizedlist>
+        <listitem>
+          <para>WrapperFilter - A wrapper around a standard java.util.logging
+          filter for use in filter chains.</para>
+        </listitem>
+      </itemizedlist>
+    </section>
+
+    <section>
+      <title>Loggers and LogRecords</title>
+
+      <para>x4juli uses internally extended Logger classes and extended
+      LogRecord classes. These are normally not exposed to user code, which
+      has limitations in the extension of the interface, but allows change
+      without breaking user code.</para>
+
+      <itemizedlist>
+        <listitem>
+          <para>All information of java.util.logging</para>
+        </listitem>
+      </itemizedlist>
+
+      <itemizedlist>
+        <listitem>
+          <para>Location Information: java.util.logging has just location
+          information about the class and the method which invoked the logging
+          operation. x4juli has all information: class, method, file,
+          linenumber. Obtaining these information is a expensive task. It is
+          just done, when the user configures x4juli (by the PatternFormatter)
+          to do so!</para>
+        </listitem>
+      </itemizedlist>
+
+      <itemizedlist>
+        <listitem>
+          <para>Nested Diagnostic Context: Usefull in J2EE server environments
+          to specify information per thread, i.E. session id, user id,
+          cookie... It is displayed for each logrecord generated in the
+          corresponding thread.</para>
+        </listitem>
+      </itemizedlist>
+    </section>
+
+    <section>
+      <title>Wrapper and Plugin APIs</title>
+
+      <para>x4juli works in the "backend" of java.util.logging. Very few
+      classes for <emphasis>special</emphasis> usecases are needed for
+      user-code. The normal usecase is to have java.util.logging objects and
+      methods in usercode and configure java.util.logging to use x4juli for
+      formatting, filtering and output.</para>
+
+      <para>There is also native support for the following APIs:</para>
+
+      <itemizedlist>
+        <listitem>
+          <para>Jakarta Commons Logging (JCL): The X4JuliLogger implements the
+          interface of the JCL Logger. X4Juli delivers a factory for JCL,
+          which can be enabled by an property, either per system property or
+          in an commons-logging.properties file. This avoids wrapper object
+          creation and native extend logrecord generation (behind the
+          interface of JCL).</para>
+        </listitem>
+      </itemizedlist>
+
+      <itemizedlist>
+        <listitem>
+          <para>Simple Logging Facade for Java (slf4j): The X4JuliLogger
+          implements the interface of the slf4j Logger. X4Juli delivers
+          currently all classes for slf4j, it is ready to use. You simply have
+          to put x4juli (as described) on the system classpath. This avoids
+          wrapper object creation and native extend logrecord generation
+          (behind the interface of slf4j).</para>
+        </listitem>
+      </itemizedlist>
+
+      <itemizedlist>
+        <listitem>
+          <para>JBoss plugin: JBoss has an independent logging system which is
+          wrapper (class!) and plugin based. X4Juli delivers a plugin to have
+          better location information support.</para>
+        </listitem>
+      </itemizedlist>
+    </section>
+  </section>
+
+  <section>
+    <title>Comparison</title>
+
+    <para>The following feature comparison reflects status on end of December,
+    2005 and compares x4juli with JDK 1.4. The only extension in JDK 1.5 for
+    java.util.logging is the LoggingMXBean interface, so the comparison
+    reflects both versions.</para>
+
+    <table>
+      <title>Feature Comparison Table</title>
+
+      <tgroup cols="3">
+        <tbody>
+          <row>
+            <entry><emphasis role="bold">Feature</emphasis></entry>
+
+            <entry><emphasis role="bold">java.util.logging</emphasis></entry>
+
+            <entry><emphasis role="bold">x4juli</emphasis></entry>
+          </row>
+
+          <row>
+            <entry>ClassLoader dependent LogManager</entry>
+
+            <entry>No, one Map for the whole system.</entry>
+
+            <entry>Yes.</entry>
+          </row>
+
+          <row>
+            <entry>Multiple instances of a handler per configuration
+            file.</entry>
+
+            <entry>No (sic! look at the API docs).</entry>
+
+            <entry>Yes.</entry>
+          </row>
+
+          <row>
+            <entry>Handler's filter configuration</entry>
+
+            <entry>Single filter, no chain.</entry>
+
+            <entry>Single filter and filter chain possible.</entry>
+          </row>
+
+          <row>
+            <entry>ConsoleHandler</entry>
+
+            <entry>Yes, always System.err.</entry>
+
+            <entry>Yes, System.out and System.err depending on config.</entry>
+          </row>
+
+          <row>
+            <entry>FileHandler</entry>
+
+            <entry>Yes.</entry>
+
+            <entry>Yes, advanced configuration options.</entry>
+          </row>
+
+          <row>
+            <entry>RollingFileHandler</entry>
+
+            <entry>Same class as FileHandler, just allows maximum size for
+            rolling, no max backup limit.</entry>
+
+            <entry>Yes, advanced configuration options. Rolling due to size,
+            time. Maximum count of backup files, optional compression,
+            different locations for active log and backup log files.</entry>
+          </row>
+
+          <row>
+            <entry>Filters</entry>
+
+            <entry>Just interface specified, no filter classes per
+            default.</entry>
+
+            <entry>Interface and Filters based on level or message per default
+            available. Currently only programmatic configuration.</entry>
+          </row>
+
+          <row>
+            <entry>Logger</entry>
+
+            <entry>Default implementation. Single filter, no chain.</entry>
+
+            <entry>Extended implementation with full location information
+            (just and only when configured by the user). NDC support. Single
+            filter and filter chain possible.</entry>
+          </row>
+
+          <row>
+            <entry>Jakarta Commons Logging</entry>
+
+            <entry>Support due to default wrapper class in JCL, expensive
+            obtain of location information for every logrecord.</entry>
+
+            <entry>Native implementation, optionally activatable by the user.
+            Full location information (just and only when configured by the
+            user).</entry>
+          </row>
+
+          <row>
+            <entry>Simple Logging Facade for Java</entry>
+
+            <entry>Support due to default wrapper class in slf4j. No correct
+            location information available.</entry>
+
+            <entry>Native implementation. All classes provided in the x4juli
+            distribution. Full location information (just and only when
+            configured by the user).</entry>
+          </row>
+
+          <row>
+            <entry>JBoss plugin</entry>
+
+            <entry>Support due to default plugin provided by JBoss. No correct
+            location information available.</entry>
+
+            <entry>Advanced plugin delivered in the x4juli distribution,
+            optionally activatable by the user. Full location information
+            (just and only when configured by the user).</entry>
+          </row>
+
+          <row>
+            <entry>Nested diagnostic context (NDC)</entry>
+
+            <entry>No.</entry>
+
+            <entry>Yes.</entry>
+          </row>
+
+          <row>
+            <entry>System.out and System.err redirection</entry>
+
+            <entry>No.</entry>
+
+            <entry>Yes. (Handle with care to avoid logging loops!)</entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+  </section>
+</article>

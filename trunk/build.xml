@@ -641,6 +641,9 @@
     <style in="${docs.home}/manual/faq.xml"
          out="${build.home}/docs/manual/faq.html"
          style="${docbook.xsl.home}/html/docbook.xsl" />
+    <style in="${docs.home}/manual/features.xml"
+         out="${build.home}/docs/manual/features.html"
+         style="${docbook.xsl.home}/html/docbook.xsl" />
    </target>
 
    <target name="create-website" depends="transform-docbook-faq"
@@ -648,6 +651,7 @@
 
     <copy todir="${build.home}/docs/website" filtering="on">
       <fileset file="${build.home}/docs/manual/faq.html" />
+      <fileset file="${build.home}/docs/manual/features.html" />
       <fileset dir="${docs.home}/website" />
     </copy>
 
