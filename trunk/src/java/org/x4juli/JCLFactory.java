@@ -49,7 +49,18 @@ import org.apache.commons.logging.impl.Jdk14Logger;
 public class JCLFactory extends LogFactory {
 
     // -------------------------------------------------------------- Variables
-    private static LogManager manager = LogManager.getLogManager();
+    static {
+        try {
+            LogManager manager = LogManager.getLogManager();
+            manager.getClass();
+        } catch (Throwable t) {
+            System.err.println("JCLFactory: Error getting LogManager.");
+            System.err.println("JCLFactory: You have got system parameters or classpath or logging config problems.");
+            t.printStackTrace();
+            throw new LogConfigurationException("java.util.logging or x4juli setup is wrong. Check system parameters, classpath and logging.properties",t);
+        }
+    }
+
     private static final boolean juliAvailable;
     static {
         boolean temp = false;
