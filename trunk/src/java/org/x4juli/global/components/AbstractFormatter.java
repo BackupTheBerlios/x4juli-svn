@@ -24,11 +24,11 @@ import org.x4juli.NOPLogger;
 import org.x4juli.formatter.MessageText;
 import org.x4juli.formatter.helper.FormatterUtil;
 import org.x4juli.global.Constants;
+import org.x4juli.global.helper.LoggerUtil;
 import org.x4juli.global.resources.MessageProperties;
 import org.x4juli.global.spi.Component;
 import org.x4juli.global.spi.ExtendedFormatter;
 import org.x4juli.global.spi.ExtendedLogRecord;
-import org.x4juli.global.spi.ExtendedLogRecordWrapper;
 import org.x4juli.global.spi.ExtendedLogger;
 import org.x4juli.global.spi.ObjectStore;
 import org.x4juli.global.spi.OptionHandler;
@@ -119,13 +119,7 @@ public abstract class AbstractFormatter extends Formatter implements Component,
      * @since 0.5
      */
     public final String format(final LogRecord record) {
-        if (!(record instanceof ExtendedLogRecord)) {
-            ExtendedLogRecord myRecord = new ExtendedLogRecordWrapper(record);
-            return format(myRecord);
-        } else {
-            return format((ExtendedLogRecord) record);
-        }
-
+        return format(LoggerUtil.wrapLogRecord(record));
     }
 
     /**

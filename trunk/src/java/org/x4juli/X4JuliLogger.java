@@ -19,9 +19,9 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
 import org.x4juli.global.components.AbstractExtendedLogger;
+import org.x4juli.global.helper.LoggerUtil;
 import org.x4juli.global.spi.ExtendedLogRecord;
 import org.x4juli.global.spi.ExtendedLogRecordImpl;
-import org.x4juli.global.spi.ExtendedLogRecordWrapper;
 
 /**
  * This Logger offers native support for
@@ -574,14 +574,9 @@ class X4JuliLogger extends AbstractExtendedLogger implements org.apache.commons.
         if (record == null || record.getLevel() == null || !isLoggable(record.getLevel())) {
             return;
         }
-        if (!(record instanceof ExtendedLogRecord)) {
-            ExtendedLogRecord lr = new ExtendedLogRecordWrapper(record);
-            lr.getNDC();
-            super.log((LogRecord)lr);
-        } else {
-            ((ExtendedLogRecord) record).getNDC();
-            super.log(record);
-        }
+        ExtendedLogRecord lr = LoggerUtil.wrapLogRecord(record);
+        lr.getNDC();
+        super.log((LogRecord)lr);
     }
 
     /**

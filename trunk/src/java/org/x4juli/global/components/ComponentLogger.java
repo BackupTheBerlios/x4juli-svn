@@ -25,9 +25,9 @@ import org.x4juli.formatter.helper.FormatterUtil;
 import org.x4juli.formatter.pattern.ThrowableInformationPatternConverter;
 import org.x4juli.global.Constants;
 import org.x4juli.global.SystemUtils;
+import org.x4juli.global.helper.LoggerUtil;
 import org.x4juli.global.spi.ExtendedLogRecord;
 import org.x4juli.global.spi.ExtendedLogRecordImpl;
-import org.x4juli.global.spi.ExtendedLogRecordWrapper;
 import org.x4juli.global.spi.ExtendedLogger;
 
 /**
@@ -80,11 +80,10 @@ final class ComponentLogger extends Logger implements ExtendedLogger {
      * @since 0.6
      */
     public void log(final LogRecord record) {
-        if (record instanceof ExtendedLogRecord) {
-            doLogAddRb((ExtendedLogRecord) record);
-        } else {
-            doLogAddRb(new ExtendedLogRecordWrapper(record));
+        if (record == null) {
+            return;
         }
+        doLogAddRb(LoggerUtil.wrapLogRecord(record));
     }
 
     /**

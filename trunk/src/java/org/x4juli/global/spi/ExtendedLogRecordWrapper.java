@@ -36,19 +36,7 @@ public final class ExtendedLogRecordWrapper extends AbstractExtendedLogRecord {
     /**
      * 
      */
-    private static final long serialVersionUID = 4477335741068732142L;
-
-    private static final long startTime = System.currentTimeMillis();
-
-    /**
-     * This variable contains information about this event's throwable
-     */
-    private ThrowableInformation throwableInfo = null;
-
-    /**
-     * Location information for the caller.
-     */
-    private LocationInfo locationInfo = null;
+    private static final long serialVersionUID = 816390360975889657L;
 
     private LogRecord record = null;
 

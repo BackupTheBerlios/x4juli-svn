@@ -26,13 +26,13 @@ import org.x4juli.NOPLogger;
 import org.x4juli.filter.WrapperFilter;
 import org.x4juli.formatter.SimpleFormatter;
 import org.x4juli.global.Constants;
+import org.x4juli.global.helper.LoggerUtil;
 import org.x4juli.global.resources.MessageProperties;
 import org.x4juli.global.spi.Component;
 import org.x4juli.global.spi.ExtendedFilter;
 import org.x4juli.global.spi.ExtendedFormatter;
 import org.x4juli.global.spi.ExtendedHandler;
 import org.x4juli.global.spi.ExtendedLogRecord;
-import org.x4juli.global.spi.ExtendedLogRecordWrapper;
 import org.x4juli.global.spi.ExtendedLogger;
 import org.x4juli.global.spi.ObjectStore;
 import org.x4juli.global.spi.OptionHandler;
@@ -282,11 +282,7 @@ public abstract class AbstractHandler extends Handler
      * @since 0.5
      */
     public final void publish(final LogRecord record) {
-        if (record instanceof ExtendedLogRecord) {
-            publish((ExtendedLogRecord) record);
-        } else {
-            publish((ExtendedLogRecord) new ExtendedLogRecordWrapper(record));
-        }
+        publish(LoggerUtil.wrapLogRecord(record));
     }
 
     /**
@@ -339,11 +335,7 @@ public abstract class AbstractHandler extends Handler
             return false;
         }
         boolean result = false;
-        if (record instanceof ExtendedLogRecord) {
-            result = isLoggable((ExtendedLogRecord) record);
-        } else {
-            result = isLoggable((ExtendedLogRecord) new ExtendedLogRecordWrapper(record));
-        }
+        result = isLoggable(LoggerUtil.wrapLogRecord(record));
         return result;
     }
 

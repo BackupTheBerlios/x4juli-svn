@@ -17,8 +17,8 @@ package org.x4juli.formatter.helper;
 
 import java.util.logging.LogRecord;
 
+import org.x4juli.global.helper.LoggerUtil;
 import org.x4juli.global.spi.ExtendedLogRecord;
-import org.x4juli.global.spi.ExtendedLogRecordWrapper;
 
 /**
  * Utility methods for formatting purposes.
@@ -52,7 +52,7 @@ public final class FormatterUtil {
         if (record instanceof ExtendedLogRecord) {
             return formatMessage((ExtendedLogRecord) record);
         } else {
-            return formatMessage((ExtendedLogRecord) new ExtendedLogRecordWrapper(record));
+            return formatMessage(LoggerUtil.wrapLogRecord(record));
         }
     }
 

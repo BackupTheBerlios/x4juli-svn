@@ -17,9 +17,9 @@ package org.x4juli.global.components;
 
 import java.util.logging.LogRecord;
 
+import org.x4juli.global.helper.LoggerUtil;
 import org.x4juli.global.spi.ExtendedFilter;
 import org.x4juli.global.spi.ExtendedLogRecord;
-import org.x4juli.global.spi.ExtendedLogRecordWrapper;
 
 /**
  * <p>
@@ -88,13 +88,8 @@ public abstract class AbstractFilter extends AbstractComponent implements Extend
      * @see java.util.logging.Filter#isLoggable(java.util.logging.LogRecord)
      * @since 0.5
      */
-    public final boolean isLoggable(LogRecord record) {
-        ExtendedLogRecord toDecideRecord = null;
-        if (!(record instanceof ExtendedLogRecord)) {
-            toDecideRecord = new ExtendedLogRecordWrapper(record);
-        } else {
-            toDecideRecord = (ExtendedLogRecord) record;
-        }
+    public final boolean isLoggable(final LogRecord record) {
+        ExtendedLogRecord toDecideRecord = LoggerUtil.wrapLogRecord(record);
         switch (decide(toDecideRecord)) {
         case ExtendedFilter.X4JULI_ACCEPT:
             return true;

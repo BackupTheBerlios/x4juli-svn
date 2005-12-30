@@ -37,8 +37,8 @@ import org.x4juli.formatter.pattern.PatternConverter;
 import org.x4juli.formatter.pattern.PatternParser;
 import org.x4juli.global.LoggerRepositoryHolder;
 import org.x4juli.global.SystemUtils;
+import org.x4juli.global.helper.LoggerUtil;
 import org.x4juli.global.spi.ExtendedLogRecord;
-import org.x4juli.global.spi.ExtendedLogRecordWrapper;
 import org.x4juli.global.spi.ObjectStore;
 
 
@@ -60,7 +60,7 @@ public class PatternParserTest extends TestCase {
       LogRecord temp = new LogRecord(Level.INFO,"msg 1");
       temp.setLoggerName(logger.getName());
       temp.setMillis(now);
-      record = (LogRecord) new ExtendedLogRecordWrapper(temp);
+      record = (LogRecord) LoggerUtil.wrapLogRecord(temp);
     }
 
     private static String convert(

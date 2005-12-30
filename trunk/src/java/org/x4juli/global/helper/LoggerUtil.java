@@ -20,10 +20,13 @@ import java.util.logging.Filter;
 import java.util.logging.Formatter;
 import java.util.logging.Handler;
 import java.util.logging.Level;
+import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
 import org.x4juli.formatter.SimpleFormatter;
 import org.x4juli.global.components.AbstractComponent;
+import org.x4juli.global.spi.ExtendedLogRecord;
+import org.x4juli.global.spi.ExtendedLogRecordWrapper;
 import org.x4juli.global.spi.ExtendedLogger;
 import org.x4juli.global.spi.OptionHandler;
 
@@ -47,6 +50,22 @@ public final class LoggerUtil extends AbstractComponent {
 
     // --------------------------------------------------------- Public Methods
 
+    /**
+     * Wraps an LogRecord into an ExtendedLogRecord.
+     * @param record to wrap.
+     * @return an ExtendedLogRecord with the same content, maybe null if record is null.
+     */
+    public static ExtendedLogRecord wrapLogRecord(final LogRecord record){
+        if(record == null){
+            return null;
+        }
+        if(record instanceof ExtendedLogRecord){
+            return (ExtendedLogRecord) record;
+        }
+        ExtendedLogRecord ret = new ExtendedLogRecordWrapper(record);
+        return ret;
+    }
+    
     /**
      * Removes all handlers of an existing logger.
      * @param logger to remove the handlers from.
