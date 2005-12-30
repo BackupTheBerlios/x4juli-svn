@@ -294,9 +294,18 @@
 
             <entry>Default implementation. Single filter, no chain.</entry>
 
+            <entry>NDC and MDC support. Single filter and filter chain
+            possible.</entry>
+          </row>
+
+          <row>
+            <entry>LogRecord</entry>
+
+            <entry>Default implementation.</entry>
+
             <entry>Extended implementation with full location information
-            (just and only when configured by the user). NDC support. Single
-            filter and filter chain possible.</entry>
+            (just and only when configured by the user). NDC, MDC, Property,
+            ThreadName support.</entry>
           </row>
 
           <row>
@@ -333,7 +342,8 @@
           </row>
 
           <row>
-            <entry>Nested diagnostic context (NDC)</entry>
+            <entry>Nested diagnostic context (NDC), Mapped Diagnostic Context
+            (MDC).</entry>
 
             <entry>No.</entry>
 
