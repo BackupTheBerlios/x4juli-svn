@@ -27,7 +27,9 @@ import org.x4juli.global.spi.ExtendedLogRecordWrapper;
  * This Logger offers native support for
  * <code>org.apache.commons.logging.Log</code> and
  * <code>org.slf4j.Logger</code>. <br/> It offers the possibility to use both
- * mentioned loggers without the need of a wrapper class. <br/>
+ * mentioned loggers without the need of a wrapper class.
+ * <br/>
+ * This class is just package visible to avoid direct usage in user code.
  *
  * @author Boris Unckel
  * @since 0.5
@@ -160,7 +162,7 @@ class X4JuliLogger extends AbstractExtendedLogger implements org.apache.commons.
         if (!isLoggable(JCL_MAPPING_TRACE)) {
             return;
         }
-        log(JCL_MAPPING_TRACE, String.valueOf(message));
+        robustLog(JCL_MAPPING_TRACE, message, null);
     }
 
     /**
@@ -174,7 +176,7 @@ class X4JuliLogger extends AbstractExtendedLogger implements org.apache.commons.
         if (!isLoggable(JCL_MAPPING_TRACE)) {
             return;
         }
-        log(JCL_MAPPING_TRACE, String.valueOf(message), t);
+        robustLog(JCL_MAPPING_TRACE, message, t);
     }
 
     /**
@@ -187,7 +189,7 @@ class X4JuliLogger extends AbstractExtendedLogger implements org.apache.commons.
         if (!isLoggable(JCL_MAPPING_DEBUG)) {
             return;
         }
-        log(JCL_MAPPING_DEBUG, String.valueOf(message));
+        robustLog(JCL_MAPPING_DEBUG, message, null);
 
     }
 
@@ -202,8 +204,7 @@ class X4JuliLogger extends AbstractExtendedLogger implements org.apache.commons.
         if (!isLoggable(JCL_MAPPING_DEBUG)) {
             return;
         }
-        log(JCL_MAPPING_DEBUG, String.valueOf(message), t);
-
+        robustLog(JCL_MAPPING_DEBUG, message, t);
     }
 
     /**
@@ -216,7 +217,7 @@ class X4JuliLogger extends AbstractExtendedLogger implements org.apache.commons.
         if (!isLoggable(JCL_MAPPING_INFO)) {
             return;
         }
-        log(JCL_MAPPING_INFO, String.valueOf(message));
+        robustLog(JCL_MAPPING_INFO, message, null);
 
     }
 
@@ -231,7 +232,7 @@ class X4JuliLogger extends AbstractExtendedLogger implements org.apache.commons.
         if (!isLoggable(JCL_MAPPING_INFO)) {
             return;
         }
-        log(JCL_MAPPING_INFO, String.valueOf(message), t);
+        robustLog(JCL_MAPPING_INFO, message, t);
     }
 
     /**
@@ -244,7 +245,7 @@ class X4JuliLogger extends AbstractExtendedLogger implements org.apache.commons.
         if (!isLoggable(JCL_MAPPING_WARN)) {
             return;
         }
-        log(JCL_MAPPING_WARN, String.valueOf(message));
+        robustLog(JCL_MAPPING_WARN, message, null);
     }
 
     /**
@@ -258,7 +259,7 @@ class X4JuliLogger extends AbstractExtendedLogger implements org.apache.commons.
         if (!isLoggable(JCL_MAPPING_WARN)) {
             return;
         }
-        log(JCL_MAPPING_WARN, String.valueOf(message), t);
+        robustLog(JCL_MAPPING_WARN, message, t);
     }
 
     /**
@@ -271,7 +272,7 @@ class X4JuliLogger extends AbstractExtendedLogger implements org.apache.commons.
         if (!isLoggable(JCL_MAPPING_ERROR)) {
             return;
         }
-        log(JCL_MAPPING_ERROR, String.valueOf(message));
+        robustLog(JCL_MAPPING_ERROR, message, null);
     }
 
     /**
@@ -285,7 +286,7 @@ class X4JuliLogger extends AbstractExtendedLogger implements org.apache.commons.
         if (!isLoggable(JCL_MAPPING_ERROR)) {
             return;
         }
-        log(JCL_MAPPING_ERROR, String.valueOf(message), t);
+        robustLog(JCL_MAPPING_ERROR, message, t);
     }
 
     /**
@@ -298,7 +299,7 @@ class X4JuliLogger extends AbstractExtendedLogger implements org.apache.commons.
         if (!isLoggable(JCL_MAPPING_FATAL)) {
             return;
         }
-        log(JCL_MAPPING_FATAL, String.valueOf(message));
+        robustLog(JCL_MAPPING_FATAL, message, null);
     }
 
     /**
@@ -312,7 +313,7 @@ class X4JuliLogger extends AbstractExtendedLogger implements org.apache.commons.
         if (!isLoggable(JCL_MAPPING_FATAL)) {
             return;
         }
-        log(JCL_MAPPING_FATAL, String.valueOf(message), t);
+        robustLog(JCL_MAPPING_FATAL, message, t);
     }
 
     // --------------------------------------Methods only for org.slf4j.Logger
@@ -353,8 +354,7 @@ class X4JuliLogger extends AbstractExtendedLogger implements org.apache.commons.
         if (!isLoggable(SLF4J_MAPPING_DEBUG) || format == null) {
             return;
         }
-        final String formatted = org.slf4j.impl.MessageFormatter.format(format, arg);
-        log(SLF4J_MAPPING_DEBUG, formatted);
+        robustLogSlf4j(SLF4J_MAPPING_DEBUG, format, new Object[]{arg});
     }
 
     /**
@@ -367,8 +367,7 @@ class X4JuliLogger extends AbstractExtendedLogger implements org.apache.commons.
         if (!isLoggable(SLF4J_MAPPING_DEBUG) || format == null) {
             return;
         }
-        final String formatted = org.slf4j.impl.MessageFormatter.format(format, arg1, arg2);
-        log(SLF4J_MAPPING_DEBUG, formatted);
+        robustLogSlf4j(SLF4J_MAPPING_DEBUG, format, new Object[]{arg1, arg2});
     }
 
     /**
@@ -380,8 +379,7 @@ class X4JuliLogger extends AbstractExtendedLogger implements org.apache.commons.
         if (!isLoggable(SLF4J_MAPPING_DEBUG) || format == null) {
             return;
         }
-        final String formatted = org.slf4j.impl.MessageFormatter.arrayFormat(format, argArray);
-        log(SLF4J_MAPPING_DEBUG, formatted);
+        robustLogSlf4j(SLF4J_MAPPING_DEBUG, format, argArray);    
     }
 
     /**
@@ -407,9 +405,7 @@ class X4JuliLogger extends AbstractExtendedLogger implements org.apache.commons.
         if (!isLoggable(SLF4J_MAPPING_INFO) || format == null) {
             return;
         }
-        final String formatted = org.slf4j.impl.MessageFormatter.format(format, arg);
-        log(SLF4J_MAPPING_INFO, formatted);
-
+        robustLogSlf4j(SLF4J_MAPPING_INFO, format, new Object[]{arg});
     }
 
     /**
@@ -422,8 +418,7 @@ class X4JuliLogger extends AbstractExtendedLogger implements org.apache.commons.
         if (!isLoggable(SLF4J_MAPPING_INFO) || format == null) {
             return;
         }
-        final String formatted = org.slf4j.impl.MessageFormatter.format(format, arg1, arg2);
-        log(SLF4J_MAPPING_INFO, formatted);
+        robustLogSlf4j(SLF4J_MAPPING_INFO, format, new Object[]{arg1, arg2});
     }
 
     /**
@@ -436,8 +431,7 @@ class X4JuliLogger extends AbstractExtendedLogger implements org.apache.commons.
         if (!isLoggable(SLF4J_MAPPING_INFO) || format == null) {
             return;
         }
-        final String formatted = org.slf4j.impl.MessageFormatter.arrayFormat(format, argArray);
-        log(SLF4J_MAPPING_INFO, formatted);
+        robustLogSlf4j(SLF4J_MAPPING_INFO, format, argArray);
     }
 
     /**
@@ -476,8 +470,7 @@ class X4JuliLogger extends AbstractExtendedLogger implements org.apache.commons.
         if (!isLoggable(SLF4J_MAPPING_WARN) || format == null) {
             return;
         }
-        final String formatted = org.slf4j.impl.MessageFormatter.format(format, arg);
-        log(SLF4J_MAPPING_WARN, formatted);
+        robustLogSlf4j(SLF4J_MAPPING_WARN, format, new Object[]{arg});
     }
 
     /**
@@ -490,8 +483,7 @@ class X4JuliLogger extends AbstractExtendedLogger implements org.apache.commons.
         if (!isLoggable(SLF4J_MAPPING_WARN) || format == null) {
             return;
         }
-        final String formatted = org.slf4j.impl.MessageFormatter.format(format, arg1, arg2);
-        log(SLF4J_MAPPING_WARN, formatted);
+        robustLogSlf4j(SLF4J_MAPPING_WARN, format, new Object[]{arg1, arg2});
     }
 
     /**
@@ -503,8 +495,7 @@ class X4JuliLogger extends AbstractExtendedLogger implements org.apache.commons.
         if (!isLoggable(SLF4J_MAPPING_WARN) || format == null) {
             return;
         }
-        final String formatted = org.slf4j.impl.MessageFormatter.arrayFormat(format, argArray);
-        log(SLF4J_MAPPING_WARN, formatted);
+        robustLogSlf4j(SLF4J_MAPPING_WARN, format, argArray);
     }
 
     /**
@@ -543,8 +534,7 @@ class X4JuliLogger extends AbstractExtendedLogger implements org.apache.commons.
         if (!isLoggable(SLF4J_MAPPING_ERROR) || format == null) {
             return;
         }
-        final String formatted = org.slf4j.impl.MessageFormatter.format(format, arg);
-        log(SLF4J_MAPPING_ERROR, formatted);
+        robustLogSlf4j(SLF4J_MAPPING_ERROR, format, new Object[]{arg});
     }
 
     /**
@@ -557,8 +547,7 @@ class X4JuliLogger extends AbstractExtendedLogger implements org.apache.commons.
         if (!isLoggable(SLF4J_MAPPING_ERROR) || format == null) {
             return;
         }
-        final String formatted = org.slf4j.impl.MessageFormatter.format(format, arg1, arg2);
-        log(SLF4J_MAPPING_ERROR, formatted);
+        robustLogSlf4j(SLF4J_MAPPING_ERROR, format, new Object[]{arg1, arg2});
     }
 
     /**
@@ -570,8 +559,7 @@ class X4JuliLogger extends AbstractExtendedLogger implements org.apache.commons.
         if (!isLoggable(SLF4J_MAPPING_ERROR) || format == null) {
             return;
         }
-        final String formatted = org.slf4j.impl.MessageFormatter.arrayFormat(format, argArray);
-        log(SLF4J_MAPPING_ERROR, formatted);
+        robustLogSlf4j(SLF4J_MAPPING_ERROR, format, argArray);
     }
 
     // Following methods are overwritten to get correct location information
@@ -986,6 +974,57 @@ class X4JuliLogger extends AbstractExtendedLogger implements org.apache.commons.
         logRecord.setSourceMethodName(sourceMethod);
         logRecord.setThrown(thrown);
         completeLogRecord((ExtendedLogRecord) logRecord);
+        super.log(logRecord);
+    }
+
+    // ------------------------------------------------------ Protected Methods
+    
+    /**
+     * Method especially for public log methods which have an object (instead of
+     * an String) as message.
+     * @param level is not allowed to be null.
+     * @param message object to create String to log.
+     * @param t optional throwable to log, may be null.
+     * @since 0.7
+     */
+    protected void robustLog(final Level level, final Object message, final Throwable t){
+        String mes = null;
+        try {
+            mes = String.valueOf(message);
+        } catch (Exception e) {
+            mes = "Error in creating message["+e+"]";
+            //Temporary solution!
+            System.err.println("X4Juli: " + mes);
+            e.printStackTrace();
+        }
+        LogRecord logRecord = new ExtendedLogRecordImpl(level, mes);
+        if (t != null) {
+            logRecord.setThrown(t);
+        }
+        completeLogRecord((ExtendedLogRecord)logRecord);
+        super.log(logRecord);
+    }
+
+    /**
+     * Method especially for public slf4j log methods which have an object or object[]
+     * as parameter for the message formatting.
+     * @param level is not allowed to be null.
+     * @param message to format with args to complete logging.
+     * @param args for message format.
+     * @since 0.7
+     */
+    protected void robustLogSlf4j(final Level level, final String message, Object[] args){
+        String mes = null;
+        try {
+            mes = org.slf4j.impl.MessageFormatter.arrayFormat(message, args);
+        } catch (Exception e) {
+            mes = message + " Error in formatting message["+e+"]";
+            //Temporary solution!
+            System.err.println("X4Juli: " + mes);
+            e.printStackTrace();
+        }
+        LogRecord logRecord = new ExtendedLogRecordImpl(level, mes);
+        completeLogRecord((ExtendedLogRecord)logRecord);
         super.log(logRecord);
     }
 
