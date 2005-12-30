@@ -302,8 +302,7 @@ import org.x4juli.global.spi.ObjectStore;
  * <td align=center><b>x</b></td>
  *
  * <td>Used to output the NDC (nested diagnostic context) associated with the
- * thread that generated the logging event. <b>Currently not supported in Juli.
- * Always returns the "not available" questionmark</b> </td>
+ * thread that generated the logging event. </td>
  * </tr>
  *
  *
@@ -319,8 +318,7 @@ import org.x4juli.global.spi.ObjectStore;
  * <b>%X{clientNumber}</b> where <code>clientNumber</code> is the key. The
  * value in the MDC corresponding to the key will be output. If no additional
  * sub-option is specified, then the entire contents of the MDC key value pair
- * set is output using a format {{key1,val1},{key2,val2}} <b>Currently not
- * supported in Juli. Always returns the "not available" questionmark</b>
+ * set is output using a format {{key1,val1},{key2,val2}} 
  * </p>
  *
  * </td>
@@ -337,9 +335,7 @@ import org.x4juli.global.spi.ObjectStore;
  * <code>application</code> is the key. The value in the Properties bundle
  * corresponding to the key will be output. If no additional sub-option is
  * specified, then the entire contents of the Properties key value pair set is
- * output using a format {{key1,val1},{key2,val2}}<b>Currently not supported in
- * <code>java.util.logging.LogRecord</code>. Always returns the "not
- * available" questionmark</b>
+ * output using a format {{key1,val1},{key2,val2}}
  * </p>
  * </td>
  * </tr>

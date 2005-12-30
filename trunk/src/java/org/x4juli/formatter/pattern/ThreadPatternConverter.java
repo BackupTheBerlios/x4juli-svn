@@ -71,7 +71,7 @@ public class ThreadPatternConverter extends LogRecordPatternConverter {
      * @since 0.5
      */
     public void format(ExtendedLogRecord record, StringBuffer toAppendTo) {
-        toAppendTo.append(record.getThreadID());
+        toAppendTo.append(record.getThreadName());
     }
 
 }
