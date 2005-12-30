@@ -222,12 +222,7 @@ public class PatternFormatterTest extends AbstractJuliTestCase {
 		this.actualPattern = patternLayout10;
 		getTestLogger().info("uninteresting String");
 		String result = testHandler.getActual();
-		try {
-			Integer.parseInt(result);
-		} catch (NumberFormatException e) {
-			fail("ThreadId contains no int, but[" + result + "]");
-		}
-		
+		assertEquals("main", result);
 	}
 
 	public void test11() throws Exception {

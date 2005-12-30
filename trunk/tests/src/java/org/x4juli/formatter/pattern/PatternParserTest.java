@@ -121,7 +121,7 @@ public class PatternParserTest extends TestCase {
       String result = convert("%relative %-5level [%thread] %logger - %m%n", null, record);
 
       long expectedRelativeTime = now - ((ExtendedLogRecord)record).getStartTime();
-      String expected = expectedRelativeTime + " INFO  [10] "+logger.getName()+" - msg 1" + SystemUtils.LINE_SEPARATOR; 
+      String expected = expectedRelativeTime + " INFO  [main] "+logger.getName()+" - msg 1" + SystemUtils.LINE_SEPARATOR; 
       assertEquals(expected, result);
     }
 
