@@ -228,12 +228,17 @@
     <copy file="NOTICE.txt" todir="${build.home}/classes/META-INF" />
     <copy file="SLF4JLICENSE.txt" todir="${build.home}/classes/META-INF" />
     <jar destfile="${build.home}/${component.name}-${component.version}.jar"
-       basedir="${build.home}/classes">
+       basedir="${build.home}/classes"
+       index="true">
          <manifest>
           <attribute name="Manifest-version" value="1.0"/>
+          <attribute name="Extension-Name" value="${component.name}"/>
           <attribute name="Compiled-against-commons-logging-Version" value="${commons-logging.version}"/>
           <attribute name="Compiled-against-jboss-commons-Version" value="${jboss-commons.jar.version}"/>
           <section name="org/x4juli/">
+             <attribute name="Specification-Title" value="${component.name}"/>
+             <attribute name="Specification-Version" value="${component.version}"/>
+             <attribute name="Specification-Vendor" value="x4juli.org"/>
              <attribute name="Implementation-Title" value="${component.name}"/>
              <attribute name="Implementation-Version" value="${component.version} ${TODAY}"/>
              <attribute name="Implementation-Vendor" value="x4juli.org"/>
@@ -243,12 +248,21 @@
              <attribute name="Specification-Version" value="${slf4j.version}"/>
              <attribute name="Specification-Vendor" value="slf4j.org"/>
              <attribute name="Implementation-Title" value="slf4j native x4juli"/>
-             <attribute name="Implementation-Version" value="${component.version}"/>
+             <attribute name="Implementation-Version" value="${component.version} ${TODAY}"/>
+             <attribute name="Implementation-Vendor" value="x4juli.org"/>
+          </section>
+          <section name="org/apache/commons/logging/">
+             <attribute name="Specification-Title" value="Jakarta Commons Logging"/>
+             <attribute name="Specification-Version" value="${commons-logging.version}"/>
+             <attribute name="Specification-Vendor" value="jakarta.apache.org"/>
+             <attribute name="Implementation-Title" value="Jakarta Commons Logging"/>
+             <attribute name="Implementation-Version" value="${commons-logging.version}"/>
              <attribute name="Implementation-Vendor" value="x4juli.org"/>
           </section>
          </manifest>
       <include name="org/x4juli/**" />
       <include name="org/slf4j/**" />
+      <include name="org/apache/**" />
       <include name="META-INF/LICENSE.txt" />
       <include name="META-INF/NOTICE.txt" />
       <include name="META-INF/SLF4JLICENSE.txt" />
