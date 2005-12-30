@@ -21,8 +21,10 @@ import org.x4juli.global.spi.ExtendedLogRecord;
 import org.x4juli.global.spi.ExtendedLogger;
 
 /**
- * Basic implementation for implementing directly a log wrapper with an
- * interface.
+ * Basic implementation for implementing directly a ExtendedLogger.
+ * This is mainly for wrappers with an interface, i.E. Jakarta Commons
+ * Logging or Simple Logging Facade for Java.
+ * As sample refer to {@link org.x4juli.X4JuliLogger}.
  * 
  * @author Boris Unckel
  * @since 0.6
