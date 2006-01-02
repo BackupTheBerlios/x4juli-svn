@@ -26,7 +26,9 @@ import java.util.logging.LogRecord;
 
 import org.x4juli.global.LoggerClassInformation;
 import org.x4juli.global.context.MDC;
+import org.x4juli.global.context.MDCImpl;
 import org.x4juli.global.context.NDC;
+import org.x4juli.global.context.NDCImpl;
 import org.x4juli.global.spi.ExtendedLogRecord;
 import org.x4juli.global.spi.ThrowableInformation;
 import org.x4juli.global.spi.location.LocationInfo;
@@ -222,7 +224,7 @@ public abstract class AbstractExtendedLogRecord extends LogRecord implements Ext
     public synchronized String getNDC() {
         if (ndcLookupRequired) {
             ndcLookupRequired = false;
-            ndc = NDC.get();
+            ndc = NDCImpl.getNestedDiagnosticContext().get();
         }
         return ndc;
     }
@@ -266,7 +268,7 @@ public abstract class AbstractExtendedLogRecord extends LogRecord implements Ext
         }
 
         // if the key was not found in this even't properties, try the MDC
-        value = MDC.get(key);
+        value = MDCImpl.getMappedDiagnosticContext().get(key);
 
         return value;
 
@@ -316,7 +318,7 @@ public abstract class AbstractExtendedLogRecord extends LogRecord implements Ext
     public void initializeProperties() {
         if (properties == null) {
             properties = new TreeMap();
-            Map mdcMap = MDC.getContext();
+            Map mdcMap = MDCImpl.getMappedDiagnosticContext().getContext();
             if (mdcMap != null) {
                 properties.putAll(mdcMap);
             }
