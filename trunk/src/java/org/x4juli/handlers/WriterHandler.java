@@ -52,7 +52,7 @@ import org.x4juli.global.spi.ThrowableInformation;
  * supported encodings of the platform. <a
  * href="http://java.sun.com/j2se/1.4.2/docs/guide/intl/encoding.doc.html"
  * title="Supported Encodings">Supported Encodings</a></td>
- * <td valign="top">No. Default is value of system property "file.encoding".</td>
+ * <td valign="top">No. Default is UTF-8</td>
  * </tr>
  * <tr>
  * <td valign="top">.writer</td>
@@ -313,7 +313,7 @@ public class WriterHandler extends AbstractHandler {
         // Encoding
         key = className + ".encoding";
         try {
-            setEncoding(getProperty(key, System.getProperty("file.encoding")));
+            setEncoding(getProperty(key, "UTF-8"));
         } catch (Exception e) {
             try {
                 setEncoding(null);
