@@ -25,7 +25,7 @@ import java.util.logging.LogManager;
  * @author Boris Unckel
  * @since 0.7
  */
-public final class ContextFactoryProvider {
+public final class ContextFactory {
 
     private static final ContextFactoryIf INSTANCE;
 
@@ -35,7 +35,7 @@ public final class ContextFactoryProvider {
 
     static {
         String prop = manager.getProperty(CONTEXT_FACTORY_CLASS_KEY);
-        synchronized (ContextFactoryProvider.class) {
+        synchronized (ContextFactory.class) {
             ContextFactoryIf tempCF = null;
             if (prop == null) {
                 tempCF = new ContextFactoryImpl();
@@ -61,7 +61,7 @@ public final class ContextFactoryProvider {
     /**
      * No instantitation wanted.
      */
-    private ContextFactoryProvider() {
+    private ContextFactory() {
     }
 
     /**
@@ -72,12 +72,22 @@ public final class ContextFactoryProvider {
     public static ContextFactoryIf getContextFactory() {
         return INSTANCE;
     }
-    
-    public static NDC getNDC() {
+
+    /**
+     * Returns the instance to manage the nested diagnostic context.
+     * @return the nested diagnostic context object.
+     * @since 0.7
+     */
+    public static NDC getNestedDiagnosticContext() {
         return getContextFactory().getNestedDiagnosticContext();
     }
-    
-    public static MDC getMDC() {
+
+    /**
+     * Returns the instance to manage the mapped diagnostic context.
+     * @return the mapped diagnostic context object.
+     * @since 0.7
+     */
+    public static MDC getMappedDiagnosticContext() {
         return getContextFactory().getMappedDiagnosticContext();
     }
 

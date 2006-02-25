@@ -73,7 +73,7 @@ public class NDCTest extends AbstractJuliTestCase {
         LoggerUtil.removeAllHandlers(this.renameLogger);
         this.renameLogger.setUseParentHandlers(false);
         this.renameLogger.addHandler(fh);
-        NDC myNDC = NDCImpl.getNestedDiagnosticContext();
+        NDC myNDC = ContextFactory.getNestedDiagnosticContext();
 
         commonLog();
         myNDC.push("n1");
