@@ -1,15 +1,5 @@
 # robots.txt for http://www.x4juli.org/
 
 User-agent: *
-Disallow: cgi-bin/
 Disallow: /cgi-bin/
-Disallow: logs/
 Disallow: /logs/
-Allow: /index.html
-Allow: index.html
-Allow: /features.html
-Allow: features.html
-Allow: /faq.html
-Allow: faq.html
-Allow: /api/
-Allow: api/

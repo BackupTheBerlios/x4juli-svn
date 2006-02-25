@@ -43,7 +43,7 @@ import java.util.Hashtable;
  * @author Boris Unckel
  * @since 0.7
  */
-public final class MDCImpl implements MDC {
+final class MDCImpl implements MDC {
     
     // -------------------------------------------------------------- Variables
 
@@ -61,14 +61,6 @@ public final class MDCImpl implements MDC {
 
     // --------------------------------------------------------- Public Methods
 
-    /**
-     * Provides access to the MDC object. Calls the factory to obtain the MDC.
-     * @return the mapped diagnostic context object.
-     */
-    public static MDC getMappedDiagnosticContext() {
-        return ContextFactoryProvider.getContextFactory().getMappedDiagnosticContext();
-    }
-    
     /**
      * {@inheritDoc}
      * @param key to store information.

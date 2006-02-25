@@ -16,11 +16,11 @@
 package org.x4juli.global.context;
 
 /**
- * The default implementation for the ContextFactory.
+ * The default implementation for the ContextFactoryIf.
  * @author Boris Unckel
  * @since 0.7
  */
-final class ContextFactoryImpl implements ContextFactory {
+final class ContextFactoryImpl implements ContextFactoryIf {
 
     private final MDC mdc;
     

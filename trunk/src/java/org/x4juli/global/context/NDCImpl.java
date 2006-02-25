@@ -85,7 +85,7 @@ import java.util.Stack;
  * @author Boris Unckel
  * @since 0.7
  */
-public final class NDCImpl implements NDC {
+final class NDCImpl implements NDC {
 
     // -------------------------------------------------------------- Variables
 
@@ -113,14 +113,6 @@ public final class NDCImpl implements NDC {
 
     // --------------------------------------------------------- Public Methods
 
-    /**
-     * Provides access to the NDC object. Calls the factory to obtain the NDC.
-     * @return the nested diagnostic context object.
-     */
-    public static NDC getNestedDiagnosticContext(){
-        return ContextFactoryProvider.getContextFactory().getNestedDiagnosticContext();
-    }
-    
     /**
      * {@inheritDoc}
      * @since 0.7

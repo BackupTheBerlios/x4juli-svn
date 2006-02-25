@@ -18,12 +18,6 @@
 
 <project name="x4juli" default="rebuild" basedir=".">
 
-
-  <!--
-        "x4juli" component of the Apache Logging Project
--->
-
-
   <!-- ========== Initialize Properties ===================================== -->
 
 
@@ -51,7 +45,7 @@
   <property name="component.title" value="Extensions for the Java Util Logging Implementation (x4juli)" />
 
   <!-- The current version number of this component -->
-  <property name="component.version" value="0.7" />
+  <property name="component.version" value="0.7.00" />
 
   <!-- The base directory for compilation targets -->
   <property name="build.home" value="${basedir}/target" />
@@ -184,7 +178,7 @@
 
   <target name="static" depends="prepare" description="Copy static files to build directory">
     <tstamp />
-    <copy todir="${build.home}/conf" filtering="on">
+    <copy todir="${build.home}/conf">
       <fileset dir="${conf.home}" includes="*.properties" />
     </copy>
   </target>
@@ -217,7 +211,7 @@
          optimize="${compile.optimize}">
       <classpath refid="compile.classpath" />
     </javac>
-    <copy todir="${build.home}/classes" filtering="on">
+    <copy todir="${build.home}/classes">
       <fileset dir="${source.home}" excludes="**/*.java" />
     </copy>
   </target>
@@ -273,7 +267,7 @@
     <javac srcdir="${test.home.src}" destdir="${build.home}/tests" source="${compile.source.version}" target="${compile.target.version}" debug="${compile.debug}" deprecation="${compile.deprecation}" optimize="${compile.optimize}">
       <classpath refid="test.classpath" />
     </javac>
-    <copy todir="${build.home}/tests" filtering="on">
+    <copy todir="${build.home}/tests">
       <fileset dir="${test.home.src}" excludes="**/*.java" />
     </copy>
   </target>
@@ -317,17 +311,17 @@ limitations under the License.--&gt;' >
     <copy file="${build.home}/${component.name}-${component.version}.jar"
         tofile="${dist.home}/${component.name}-${component.version}.jar" />
     <mkdir dir="${dist.home}/src" />
-    <copy todir="${dist.home}/src" filtering="on">
+    <copy todir="${dist.home}/src">
       <fileset dir="${source.home}" />
     </copy>
 
     <mkdir dir="${dist.home}/lib" />
-    <copy todir="${dist.home}/lib" filtering="on">
+    <copy todir="${dist.home}/lib">
       <fileset dir="${lib.home}" />
     </copy>
 
     <mkdir dir="${dist.home}/samples" />
-    <copy todir="${dist.home}/samples" filtering="on">
+    <copy todir="${dist.home}/samples">
       <fileset dir="${build.sample.dist}" />
     </copy>
 
@@ -353,7 +347,7 @@ limitations under the License.--&gt;' >
     <javac srcdir="${sample.home.src}" destdir="${build.sample.classes}" source="${compile.source.version}" target="${compile.target.version}" debug="${compile.debug}" deprecation="${compile.deprecation}" optimize="${compile.optimize}">
       <classpath refid="sample.classpath" />
     </javac>
-    <copy todir="${build.sample.classes}" filtering="on">
+    <copy todir="${build.sample.classes}">
       <fileset dir="${sample.home.src}" excludes="**/*.java" />
     </copy>
   </target>
@@ -422,7 +416,7 @@ limitations under the License.--&gt;' >
     <mkdir dir="${build.sample.dist}" />
 
     <mkdir dir="${build.sample.dist}/tomcat-per-server" />
-    <copy todir="${build.sample.dist}/tomcat-per-server" filtering="on">
+    <copy todir="${build.sample.dist}/tomcat-per-server">
       <fileset dir="${sample.home}/tomcat-per-server" />
       <fileset dir="${build.sample.temp}">
         <include name="x4juli.war" />
@@ -430,7 +424,7 @@ limitations under the License.--&gt;' >
     </copy>
 
     <mkdir dir="${build.sample.dist}/tomcat-per-webapp-jcl" />
-    <copy todir="${build.sample.dist}/tomcat-per-webapp-jcl" filtering="on">
+    <copy todir="${build.sample.dist}/tomcat-per-webapp-jcl">
       <fileset dir="${sample.home}/tomcat-per-webapp-jcl" />
       <fileset dir="${build.sample.temp}">
         <include name="x4juli.war" />
@@ -439,12 +433,12 @@ limitations under the License.--&gt;' >
     </copy>
 
     <mkdir dir="${build.sample.dist}/tomcat-migrate" />
-    <copy todir="${build.sample.dist}/tomcat-migrate" filtering="on">
+    <copy todir="${build.sample.dist}/tomcat-migrate">
       <fileset dir="${sample.home}/tomcat-migrate" />
     </copy>
 
     <mkdir dir="${build.sample.dist}/standalone" />
-    <copy todir="${build.sample.dist}/standalone" filtering="on">
+    <copy todir="${build.sample.dist}/standalone">
       <fileset dir="${sample.home}/standalone" />
       <fileset dir="${build.sample.temp}">
         <include name="${component.name}sample-${component.version}.jar" />
@@ -683,14 +677,14 @@ limitations under the License.--&gt;' >
    <target name="create-website" depends="transform-docbook-faq"
       description="Copy documents for website publishing">
 
-    <copy todir="${build.home}/docs/website" filtering="on">
+    <copy todir="${build.home}/docs/website">
       <fileset file="${build.home}/docs/manual/faq.html" />
       <fileset file="${build.home}/docs/manual/features.html" />
       <fileset dir="${docs.home}/website" />
     </copy>
 
     <mkdir dir="${build.home}/docs/website/api"/>
-    <copy todir="${build.home}/docs/website/api" filtering="on">
+    <copy todir="${build.home}/docs/website/api">
       <fileset dir="${dist.home}/docs/api" />
     </copy>
 

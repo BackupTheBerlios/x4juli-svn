@@ -21,7 +21,7 @@ package org.x4juli.global.context;
  * @author Boris Unckel
  * @since 0.7
  */
-public interface ContextFactory {
+public interface ContextFactoryIf {
 
     /**
      * Returns the instance to manage the mapped diagnostic context.
@@ -39,4 +39,4 @@ public interface ContextFactory {
     
 }
 
-// EOF ContextFactory.java
+// EOF ContextFactoryIf.java

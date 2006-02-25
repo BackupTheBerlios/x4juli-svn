@@ -22,6 +22,11 @@ import org.x4juli.sample.standalone.jul.JulDemo;
 import org.x4juli.sample.standalone.jul.sub.AnotherJulDemo;
 import org.x4juli.sample.standalone.slf4j.Slf4jDemo;
 
+/**
+ * Main class for demo code.
+ * @author Boris Unckel
+ * @since 0.7
+ */
 public class X4JuliDemo {
     
     private static final Logger LOG = Logger.getLogger(X4JuliDemo.class.getName());
@@ -37,7 +42,7 @@ public class X4JuliDemo {
         juld.doDemoLog("demoParameterJul");
         
         AnotherJulDemo ajuld = new AnotherJulDemo();
-        juld.doDemoLog("anotherParam");
+        ajuld.doDemoLog("anotherParam");
         
         JclDemo jcld = new JclDemo();
         jcld.doDemoLog("theJclParam");
