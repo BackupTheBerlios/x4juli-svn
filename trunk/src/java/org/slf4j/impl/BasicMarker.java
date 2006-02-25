@@ -33,6 +33,7 @@
 
 package org.slf4j.impl;
 
+import org.slf4j.IMarkerFactory;
 import org.slf4j.Marker;
 
 import java.util.Collections;
@@ -54,11 +55,13 @@ import java.util.Vector;
  * @author Ceki G&uuml;lc&uuml;
  */
 public class BasicMarker implements Marker {
-  String name;
+  final String name;
   List children;
-
-  BasicMarker(String name) {
+  final IMarkerFactory factory;
+  
+  BasicMarker(String name, IMarkerFactory factory) {
     this.name = name;
+    this.factory = factory;
   }
 
   public String getName() {
@@ -103,4 +106,37 @@ public class BasicMarker implements Marker {
     // could not find markerToRemove
     return false;
   }
+  
+  public boolean contains(Marker other) {
+    if(other == null) {
+      throw new IllegalArgumentException("Other cannot be null");
+    }
+    
+    if(this == other) {
+      return true;
+    }
+    
+    if (hasChildren()) {
+      for(int i = 0; i < children.size(); i++) {
+        Marker child = (Marker) children.get(i);
+        if(child.contains(other)) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+  
+  public boolean contains(String name) {
+    if(name == null) {
+      return false;
+    }
+    if(factory.exists(name)) {
+      Marker other = factory.getMarker(name);
+      return contains(other);     
+    } else {
+      return false;
+    }
+  }
+
 }

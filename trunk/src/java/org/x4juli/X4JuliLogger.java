@@ -18,6 +18,7 @@ package org.x4juli;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
+import org.slf4j.Marker;
 import org.x4juli.global.components.AbstractExtendedLogger;
 import org.x4juli.global.helper.LoggerUtil;
 import org.x4juli.global.spi.ExtendedLogRecord;
@@ -95,7 +96,7 @@ class X4JuliLogger extends AbstractExtendedLogger implements org.apache.commons.
      * @since 0.5
      */
     public boolean isDebugEnabled() {
-        return this.isLoggable(JCL_MAPPING_DEBUG);
+        return isLoggable(JCL_MAPPING_DEBUG);
     }
 
     /**
@@ -562,6 +563,258 @@ class X4JuliLogger extends AbstractExtendedLogger implements org.apache.commons.
         robustLogSlf4j(SLF4J_MAPPING_ERROR, format, argArray);
     }
 
+    /**
+     * {@inheritDoc}
+     * @since 0.7
+     */
+    public void debug(Marker marker, String format, Object arg1, Object arg2) {
+        if (!isLoggable(SLF4J_MAPPING_DEBUG) || format == null) {
+            return;
+        }
+        robustLogSlf4j(SLF4J_MAPPING_DEBUG, format, new Object[]{arg1, arg2});
+    }
+
+    /**
+     * {@inheritDoc}
+     * @since 0.7
+     */
+    public void debug(Marker marker, String format, Object arg) {
+        if (!isLoggable(SLF4J_MAPPING_DEBUG) || format == null) {
+            return;
+        }
+        robustLogSlf4j(SLF4J_MAPPING_DEBUG, format, new Object[]{arg});
+    }
+
+    /**
+     * {@inheritDoc}
+     * @since 0.7
+     */
+    public void debug(Marker marker, String format, Object[] argArray) {
+        if (!isLoggable(SLF4J_MAPPING_DEBUG) || format == null) {
+            return;
+        }
+        robustLogSlf4j(SLF4J_MAPPING_DEBUG, format, argArray);
+    }
+
+    /**
+     * {@inheritDoc}
+     * @since 0.7
+     */
+    public void debug(Marker marker, String msg, Throwable t) {
+        if (!isLoggable(SLF4J_MAPPING_DEBUG)) {
+            return;
+        }
+        log(SLF4J_MAPPING_DEBUG, msg, t);
+    }
+
+    /**
+     * {@inheritDoc}
+     * @since 0.7
+     */
+    public void debug(Marker marker, String msg) {
+        if (!isLoggable(SLF4J_MAPPING_DEBUG)) {
+            return;
+        }
+        log(SLF4J_MAPPING_DEBUG, msg);
+    }
+
+    /**
+     * {@inheritDoc}
+     * @since 0.7
+     */
+    public void error(Marker marker, String format, Object arg1, Object arg2) {
+        if (!isLoggable(SLF4J_MAPPING_ERROR) || format == null) {
+            return;
+        }
+        robustLogSlf4j(SLF4J_MAPPING_ERROR, format, new Object[]{arg1, arg2});
+    }
+
+    /**
+     * {@inheritDoc}
+     * @since 0.7
+     */
+    public void error(Marker marker, String format, Object arg) {
+        if (!isLoggable(SLF4J_MAPPING_ERROR) || format == null) {
+            return;
+        }
+        robustLogSlf4j(SLF4J_MAPPING_ERROR, format, new Object[]{arg});
+    }
+
+    /**
+     * {@inheritDoc}
+     * @since 0.7
+     */
+    public void error(Marker marker, String format, Object[] argArray) {
+        if (!isLoggable(SLF4J_MAPPING_ERROR) || format == null) {
+            return;
+        }
+        robustLogSlf4j(SLF4J_MAPPING_ERROR, format, argArray);
+    }
+
+    /**
+     * {@inheritDoc}
+     * @since 0.7
+     */
+    public void error(Marker marker, String msg, Throwable t) {
+        if (!isLoggable(SLF4J_MAPPING_ERROR)) {
+            return;
+        }
+        log(SLF4J_MAPPING_ERROR, msg, t);
+    }
+
+    /**
+     * {@inheritDoc}
+     * @since 0.7
+     */
+    public void error(Marker marker, String msg) {
+        if (!isLoggable(SLF4J_MAPPING_ERROR)) {
+            return;
+        }
+        log(SLF4J_MAPPING_ERROR, msg);
+    }
+
+    /**
+     * {@inheritDoc}
+     * @since 0.7
+     */
+    public void info(Marker marker, String format, Object arg1, Object arg2) {
+        if (!isLoggable(SLF4J_MAPPING_INFO) || format == null) {
+            return;
+        }
+        robustLogSlf4j(SLF4J_MAPPING_INFO, format, new Object[]{arg1, arg2});
+    }
+
+    /**
+     * {@inheritDoc}
+     * @since 0.7
+     */
+    public void info(Marker marker, String format, Object arg) {
+        if (!isLoggable(SLF4J_MAPPING_INFO) || format == null) {
+            return;
+        }
+        robustLogSlf4j(SLF4J_MAPPING_INFO, format, new Object[]{arg});
+    }
+
+    /**
+     * {@inheritDoc}
+     * @since 0.7
+     */
+    public void info(Marker marker, String format, Object[] argArray) {
+        if (!isLoggable(SLF4J_MAPPING_INFO) || format == null) {
+            return;
+        }
+        robustLogSlf4j(SLF4J_MAPPING_INFO, format, argArray);
+    }
+
+    /**
+     * {@inheritDoc}
+     * @since 0.7
+     */
+    public void info(Marker marker, String msg, Throwable t) {
+        if (!isLoggable(SLF4J_MAPPING_INFO)) {
+            return;
+        }
+        log(SLF4J_MAPPING_INFO, msg, t);
+    }
+
+    /**
+     * {@inheritDoc}
+     * @since 0.7
+     */
+    public void info(Marker marker, String msg) {
+        if (!isLoggable(SLF4J_MAPPING_INFO)) {
+            return;
+        }
+        log(SLF4J_MAPPING_INFO, msg);
+    }
+
+    /**
+     * {@inheritDoc}
+     * @since 0.7
+     */
+    public void warn(Marker marker, String format, Object arg1, Object arg2) {
+        if (!isLoggable(SLF4J_MAPPING_WARN) || format == null) {
+            return;
+        }
+        robustLogSlf4j(SLF4J_MAPPING_WARN, format, new Object[]{arg1, arg2});
+    }
+
+    /**
+     * {@inheritDoc}
+     * @since 0.7
+     */
+    public void warn(Marker marker, String format, Object arg) {
+        if (!isLoggable(SLF4J_MAPPING_WARN) || format == null) {
+            return;
+        }
+        robustLogSlf4j(SLF4J_MAPPING_WARN, format, new Object[]{arg});
+    }
+
+    /**
+     * {@inheritDoc}
+     * @since 0.7
+     */
+    public void warn(Marker marker, String format, Object[] argArray) {
+        if (!isLoggable(SLF4J_MAPPING_WARN) || format == null) {
+            return;
+        }
+        robustLogSlf4j(SLF4J_MAPPING_WARN, format, argArray);
+    }
+
+    /**
+     * {@inheritDoc}
+     * @since 0.7
+     */
+    public void warn(Marker marker, String msg, Throwable t) {
+        if (!isLoggable(SLF4J_MAPPING_WARN)) {
+            return;
+        }
+        log(SLF4J_MAPPING_WARN, msg, t);
+    }
+
+    /**
+     * {@inheritDoc}
+     * @since 0.7
+     */
+    public void warn(Marker marker, String msg) {
+        if (!isLoggable(SLF4J_MAPPING_WARN)) {
+            return;
+        }
+        log(SLF4J_MAPPING_WARN, msg);
+    }
+
+    /**
+     * {@inheritDoc}
+     * @since 0.7
+     */
+    public boolean isDebugEnabled(Marker marker) {
+        return isLoggable(SLF4J_MAPPING_DEBUG);
+    }
+
+    /**
+     * {@inheritDoc}
+     * @since 0.7
+     */
+    public boolean isErrorEnabled(Marker marker) {
+        return isLoggable(SLF4J_MAPPING_ERROR);
+    }
+
+    /**
+     * {@inheritDoc}
+     * @since 0.7
+     */
+    public boolean isInfoEnabled(Marker marker) {
+        return isLoggable(SLF4J_MAPPING_INFO);
+    }
+
+    /**
+     * {@inheritDoc}
+     * @since 0.7
+     */
+    public boolean isWarnEnabled(Marker marker) {
+        return isLoggable(SLF4J_MAPPING_WARN);
+    }
+
     // Following methods are overwritten to get correct location information
     // and for performance reasons (avoiding use of ExtendedLogRecordWrapper).
 
@@ -1008,7 +1261,7 @@ class X4JuliLogger extends AbstractExtendedLogger implements org.apache.commons.
      * @param args for message format.
      * @since 0.7
      */
-    protected void robustLogSlf4j(final Level level, final String message, Object[] args){
+    protected void robustLogSlf4j(final Level level, final String message, final Object[] args){
         String mes = null;
         try {
             mes = org.slf4j.impl.MessageFormatter.arrayFormat(message, args);

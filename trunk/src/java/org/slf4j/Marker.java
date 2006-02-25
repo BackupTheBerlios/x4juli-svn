@@ -39,7 +39,7 @@ import java.util.Iterator;
  * Markers are named objects used to enrich log statements. Conforming
  * logging system Implementations of SLF4J determine how information
  * conveyed by markers are used, if at all. In particular, many
- * conformant logging systems may ignore marker data.
+ * conforming logging systems ignore marker data.
  * 
  * <p>Markers can contain child markers, which in turn  can contain children 
  * of their own.
@@ -48,6 +48,17 @@ import java.util.Iterator;
  */
 public interface Marker {
  
+  /**
+   * This constant represents any marker, including a null marker.
+   */
+  public static final String ANY_MARKER = "*";
+  
+  /**
+   * This constant represents any non-null marker.
+   */
+  public static final String ANY_NON_NULL_MARKER = "+";
+  
+  
   /**
    * Get the name of this Marker.
    * @return name of marker
@@ -81,6 +92,28 @@ public interface Marker {
    * @return Iterator over the children of this marker
    */
   public Iterator iterator();
+  
+  /**
+   * Does this marker contain the 'other' marker? Marker A is defined to 
+   * contain marker B, if A == B or if B is a child of A. 
+   * 
+   * @param other The marker to test for inclusion.
+   * @throws IllegalArgumentException if 'other' is null
+   * @return Whether this marker contains the other marker.
+   */
+  public boolean contains(Marker other);
+
+  
+  
+  /**
+   * Does this marker contain the marker named 'name'? 
+   * 
+   * If 'name' is null the returned value is always false.
+   * 
+   * @param other The marker to test for inclusion.
+   * @return Whether this marker contains the other marker.
+   */
+  public boolean contains(String name);
   
 //  void makeImmutable();
 //  public boolean isImmutable();
