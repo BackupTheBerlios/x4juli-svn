@@ -31,7 +31,6 @@ import org.x4juli.global.components.AbstractFormatter;
 import org.x4juli.global.helper.OptionConverter;
 import org.x4juli.global.resources.MessageProperties;
 import org.x4juli.global.spi.ExtendedLogRecord;
-import org.x4juli.global.spi.ObjectStore;
 
 /**
  * <p>
@@ -558,9 +557,9 @@ public class PatternFormatter extends AbstractFormatter {
      * The default pattern just produces the application supplied message.
      */
     public PatternFormatter() {
-        configure();
-        setObjectStore(((LoggerRepositoryHolder) this.manager).getLoggerRepository());
-        activateOptions();
+//        configure();
+//        setLoggerRepository(((LoggerRepositoryHolder) this.manager).getLoggerRepository());
+//        activateOptions();
     }
 
     /**
@@ -568,7 +567,7 @@ public class PatternFormatter extends AbstractFormatter {
      */
     public PatternFormatter(String pattern) {
         this.conversionPattern = pattern;
-        setObjectStore(((LoggerRepositoryHolder) this.manager).getLoggerRepository());
+//        setLoggerRepository(((LoggerRepositoryHolder) this.manager).getLoggerRepository());
         activateOptions();
     }
 
