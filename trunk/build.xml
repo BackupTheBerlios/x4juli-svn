@@ -672,6 +672,9 @@ limitations under the License.--&gt;' >
     <style in="${docs.home}/manual/features.xml"
          out="${build.home}/docs/manual/features.html"
          style="${docbook.xsl.home}/html/docbook.xsl" />
+    <style in="${docs.home}/manual/en/book.xml"
+         out="${build.home}/docs/manual/book.html"
+         style="${docbook.xsl.home}/html/docbook.xsl" />
    </target>
 
    <target name="create-website" depends="transform-docbook-faq"

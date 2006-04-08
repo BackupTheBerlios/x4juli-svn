@@ -18,6 +18,9 @@ package org.x4juli.global.context;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
+import org.x4juli.global.spi.MDC;
+import org.x4juli.global.spi.NDC;
+
 /**
  * The MDC class is similar to the {@link NDC} class except that it is based on a map instead of a
  * stack. It provides <em>mapped diagnostic contexts</em>. A <em>Mapped Diagnostic Context</em>,

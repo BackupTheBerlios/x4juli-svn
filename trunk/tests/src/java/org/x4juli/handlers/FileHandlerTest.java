@@ -19,6 +19,7 @@ import java.io.File;
 
 import org.x4juli.formatter.DummyFormatter;
 import org.x4juli.global.components.AbstractHandler;
+import org.x4juli.global.spi.ExtendedFormatter;
 import org.x4juli.handlers.FileHandler;
 
 /**
@@ -65,7 +66,7 @@ public class FileHandlerTest extends AbstractHandlerTest {
     protected AbstractHandler getConfiguredHandler() {
         FileHandler wa = new FileHandler("foo");
         wa.setFile("output/temp");
-        wa.setFormatter(new DummyFormatter());
+        wa.setFormatter((ExtendedFormatter)new DummyFormatter());
         wa.activateOptions();
         return wa;
     }
@@ -77,7 +78,7 @@ public class FileHandlerTest extends AbstractHandlerTest {
         assertFalse(wa1.isActive());
 
         FileHandler wa2 = new FileHandler("foo 2a");
-        wa2.setFormatter(new DummyFormatter());
+        wa2.setFormatter((ExtendedFormatter)new DummyFormatter());
         wa2.activateOptions();
         assertFalse(wa2.isActive());
       }
@@ -95,7 +96,7 @@ public class FileHandlerTest extends AbstractHandlerTest {
 
           FileHandler wa = new FileHandler("foo 3");
           wa.setFile("output/newdir/temp.log");
-          wa.setFormatter(new DummyFormatter());
+          wa.setFormatter((ExtendedFormatter)new DummyFormatter());
           wa.activateOptions();
           assertTrue(new File("output/newdir/temp.log").exists());
       }

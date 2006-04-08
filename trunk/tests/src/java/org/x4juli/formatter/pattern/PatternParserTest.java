@@ -39,7 +39,7 @@ import org.x4juli.global.LoggerRepositoryHolder;
 import org.x4juli.global.SystemUtils;
 import org.x4juli.global.helper.LoggerUtil;
 import org.x4juli.global.spi.ExtendedLogRecord;
-import org.x4juli.global.spi.ObjectStore;
+import org.x4juli.global.spi.LoggerRepository;
 
 
 /**
@@ -50,7 +50,7 @@ public class PatternParserTest extends TestCase {
     Logger logger = Logger.getLogger("org.foobar");
     LogRecord record;
     long now;
-    ObjectStore repository;
+    LoggerRepository repository;
     
     public PatternParserTest(String name) {
       super(name);

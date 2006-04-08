@@ -15,10 +15,18 @@
  */
 package org.x4juli.global.components;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.logging.Handler;
 import java.util.logging.Logger;
 
+import org.x4juli.global.spi.ExtendedHandler;
 import org.x4juli.global.spi.ExtendedLogRecord;
 import org.x4juli.global.spi.ExtendedLogger;
+import org.x4juli.global.spi.HandlerAttachable;
+import org.x4juli.global.spi.LogSecurityException;
+import org.x4juli.global.spi.LoggerRepository;
+import org.x4juli.global.spi.SpiSecurity;
 
 /**
  * Basic implementation for implementing directly a ExtendedLogger.
@@ -29,8 +37,10 @@ import org.x4juli.global.spi.ExtendedLogger;
  * @author Boris Unckel
  * @since 0.6
  */
-public abstract class AbstractExtendedLogger extends Logger implements ExtendedLogger {
+public abstract class AbstractExtendedLogger extends Logger implements ExtendedLogger, HandlerAttachable {
 
+    private LoggerRepository repository = null;
+    
     /**
      * Constructs a logger with a specific resourcebundle.
      * @param name of the logger.
@@ -44,7 +54,7 @@ public abstract class AbstractExtendedLogger extends Logger implements ExtendedL
      * Adds the LoggerName and if available the resource bundle to the LogRecord.
      * @param logRecord to complete with common info.
      */
-    protected void completeLogRecord(ExtendedLogRecord logRecord) {
+    protected void completeLogRecord(final ExtendedLogRecord logRecord) {
         logRecord.setLoggerName(getName());
         String rbName = getResourceBundleName();
         if (rbName != null && logRecord.getResourceBundleName() == null) {
@@ -52,6 +62,113 @@ public abstract class AbstractExtendedLogger extends Logger implements ExtendedL
             logRecord.setResourceBundle(getResourceBundle());
         }
         logRecord.getNDC();
+    }
+
+    /**
+     * {@inheritDoc}
+     * @since 0.7
+     */
+    public final LoggerRepository getLoggerRepository() {
+        return this.repository;
+    }
+
+    /**
+     * {@inheritDoc}
+     * @since 0.7
+     */
+    public final void setLoggerRepository(final LoggerRepository repository, final SpiSecurity security) {
+        if(security == null) {
+            throw new LogSecurityException(
+             "The setLoggerRepository is not allowed to be called" 
+             + "from outside org.x4juli.global.spi");
+        }
+        this.repository = repository;
+    }
+
+    /**
+     * {@inheritDoc}
+     * @since 0.7
+     */
+    public void addHandler(final ExtendedHandler newHandler) throws SecurityException {
+        this.addHandler((Handler) newHandler);
+        
+    }
+
+    /**
+     * {@inheritDoc}
+     * @since 0.7
+     */
+    public List getAllHandlers() {
+        return Arrays.asList(getHandlers());
+    }
+
+    /**
+     * {@inheritDoc}
+     * @since 0.7
+     */
+    public ExtendedHandler getHandler(final String name) {
+        ExtendedHandler ret = null;
+        Handler[] handlers = getHandlers();
+        for (int i = 0; i < handlers.length; i++) {
+            ExtendedHandler handler = (ExtendedHandler) handlers[i];
+            if(handler.getName().equals(name)) {
+                ret = handler;
+                break;
+            }
+        }
+        return ret;
+    }
+
+    /**
+     * {@inheritDoc}
+     * @since 0.7
+     */
+    public boolean isAttached(final ExtendedHandler handler) {
+        boolean ret = false;
+        Handler[] handlers = getHandlers();
+        for (int i = 0; i < handlers.length; i++) {
+            ExtendedHandler localhandler = (ExtendedHandler) handlers[i];
+            if(localhandler == handler) {
+                ret = true;
+                break;
+            }
+        }
+        return ret;
+    }
+
+    /**
+     * {@inheritDoc}
+     * @since 0.7
+     */
+    public void removeAllHandlers() throws SecurityException {
+        Handler[] handlers = getHandlers();
+        for (int i = 0; i < handlers.length; i++) {
+            Handler localhandler = handlers[i];
+            removeHandler(localhandler);
+            }
+    }
+
+    /**
+     * {@inheritDoc}
+     * @since 0.7
+     */
+    public void removeHandler(final ExtendedHandler handler) throws SecurityException {
+        removeHandler((Handler)handler);
+    }
+
+    /**
+     * {@inheritDoc}
+     * @since 0.7
+     */
+    public void removeHandler(String name) throws SecurityException {
+        Handler[] handlers = getHandlers();
+        for (int i = 0; i < handlers.length; i++) {
+            ExtendedHandler handler = (ExtendedHandler) handlers[i];
+            if(handler.getName().equals(name)) {
+                removeHandler(handler);
+                break;
+            }
+        }
     }
 
 }

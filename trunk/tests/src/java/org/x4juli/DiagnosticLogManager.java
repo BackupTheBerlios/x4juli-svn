@@ -18,6 +18,8 @@ package org.x4juli;
 import java.util.logging.Logger;
 
 import org.x4juli.global.Constants;
+import org.x4juli.global.spi.LoggerFactory;
+import org.x4juli.global.spi.LoggerRepository;
 
 /**
  * Offers access to internal informations.
@@ -41,14 +43,6 @@ public class DiagnosticLogManager extends ClassLoaderLogManager {
     }
 
     /**
-     * @see org.x4juli.ClassLoaderLogManager#getLoggerClass()
-     * @since 0.5
-     */
-    public Class getLoggerClass() {
-        return java.util.logging.Logger.class;
-    }
-
-    /**
      * The method <code>getLogger</code> was overwritten. Different to the
      * super implementation it adds the Logger with
      * <code>addLogger(Logger)</code> to the repository. This was needed to
@@ -60,45 +54,28 @@ public class DiagnosticLogManager extends ClassLoaderLogManager {
      */
     public synchronized Logger getLogger(final String name) {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        Logger logger = (Logger) getClassLoaderInfo(classLoader).loggers.get(name);
-        if (logger == null) {
-            logger = new DiagnosticLogger(name);
-//            System.out.println("DiagnosticLogManager: adding["+name+"]");
-//            System.out.println("DiagnosticLogManager: Printing LogNodeTree");
-//            printLogNodeTree();
-//            System.out.println("DiagnosticLogManager: Printing LogNodeTree for["+name+"] ended");
-            addLogger(logger);
-        }
-        return logger;
+        LoggerRepository repository = getClassLoaderInfo(classLoader).repository;
+        return (Logger) repository.getLogger(name);
+    }
+
+    /**
+     * {@inheritDoc}
+     * @since 0.7
+     */
+    protected LoggerFactory getLoggerFactory() {
+        // TODO Auto-generated method stub
+        return null;
     }
 
     public synchronized void printLogNodeTree() {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        LogNode node = getClassLoaderInfo(classLoader).rootNode;
-        node.printTree(null, node);
+        //TODO Logik wiederherstellen
+        //Configurator configurator = createConfigurator();
+        //LogNode node = configurator.getClassLoaderInfo(classLoader).rootNode;
+        //node.printTree(null, node);
     }
  
-    /**
-     * {@inheritDoc}
-     * @since 0.5
-     */
-    protected Logger createRootLogger() {
-        return new RootLogger();
-    }
-
     // -------------------------------------------------------- Private Methods
-
-    // ------------------------------------------------- RootLogger Inner Class
-
-    /**
-     * This class is needed to instantiate the root of each per classloader
-     * hierarchy.
-     */
-    private class RootLogger extends DiagnosticLogger {
-        public RootLogger() {
-            super("", null);
-        }
-    }
 
 }
 

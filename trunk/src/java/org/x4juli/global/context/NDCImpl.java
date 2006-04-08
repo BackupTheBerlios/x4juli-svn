@@ -17,6 +17,8 @@ package org.x4juli.global.context;
 
 import java.util.Stack;
 
+import org.x4juli.global.spi.NDC;
+
 /**
  * The NDC class implements <i>nested diagnostic contexts</i> as defined by Neil Harrison in the
  * article "Patterns for Logging Diagnostic Messages" part of the book "<i>Pattern Languages of

@@ -28,7 +28,6 @@ import org.x4juli.global.SystemUtils;
 import org.x4juli.global.helper.LoggerUtil;
 import org.x4juli.global.spi.ExtendedLogRecord;
 import org.x4juli.global.spi.ExtendedLogRecordImpl;
-import org.x4juli.global.spi.ExtendedLogger;
 
 /**
  * A logger for internal use in x4juli to print various messages to
@@ -37,7 +36,7 @@ import org.x4juli.global.spi.ExtendedLogger;
  * @author Boris Unckel
  * @since 0.6
  */
-final class ComponentLogger extends Logger implements ExtendedLogger {
+final class ComponentLogger extends AbstractExtendedLogger  {
 
     // -------------------------------------------------------------- Variables
     private static final ThrowableInformationPatternConverter TIPC =

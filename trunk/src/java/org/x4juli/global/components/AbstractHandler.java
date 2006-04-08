@@ -34,7 +34,8 @@ import org.x4juli.global.spi.ExtendedFormatter;
 import org.x4juli.global.spi.ExtendedHandler;
 import org.x4juli.global.spi.ExtendedLogRecord;
 import org.x4juli.global.spi.ExtendedLogger;
-import org.x4juli.global.spi.ObjectStore;
+import org.x4juli.global.spi.LogIllegalStateException;
+import org.x4juli.global.spi.LoggerRepository;
 import org.x4juli.global.spi.OptionHandler;
 import org.x4juli.handlers.MessageText;
 
@@ -101,7 +102,7 @@ public abstract class AbstractHandler extends Handler
     /**
      * The component object store.
      */
-    protected ObjectStore repository;
+    protected LoggerRepository repository;
 
     /**
      * The component logmanager.
@@ -168,8 +169,9 @@ public abstract class AbstractHandler extends Handler
      */
     protected AbstractHandler() {
         if (!this.active) {
-            configure();
-            activateOptions();
+//TODO BEREINIGEN!!!
+            //            configure();
+//            activateOptions();
         }
     }
 
@@ -231,7 +233,7 @@ public abstract class AbstractHandler extends Handler
                 NOPLogger.NOP_LOGGER.log(Level.FINEST, "Ignored exception", e);
             }
         } else {
-            setFormatter(new SimpleFormatter());
+            setFormatter((ExtendedFormatter)new SimpleFormatter());
         }
 
         // Filter
@@ -258,13 +260,13 @@ public abstract class AbstractHandler extends Handler
 
     /**
      * {@inheritDoc}
-     * @since 0.5
+     * @since 0.7
      */
-    public void setObjectStore(final ObjectStore objectstore) {
+    public void setLoggerRepository(final LoggerRepository repository) {
         if (this.repository == null) {
-            this.repository = objectstore;
-        } else if (this.repository != objectstore) {
-            throw new IllegalStateException("Repository has been already set");
+            this.repository = repository;
+        } else if (this.repository != repository) {
+            throw new LogIllegalStateException("Repository has been already set");
         }
     }
 
@@ -442,6 +444,14 @@ public abstract class AbstractHandler extends Handler
 
     /**
      * {@inheritDoc}
+     * @since 0.7
+     */
+    public void setFormatter(final ExtendedFormatter newFormatter) {
+        this.extFormatter = newFormatter;
+    }
+
+    /**
+     * {@inheritDoc}
      *
      * @since 0.5
      */
@@ -532,7 +542,7 @@ public abstract class AbstractHandler extends Handler
      * @return Owning ObjectStore
      * @since 0.5
      */
-    protected ObjectStore getLoggerRepository() {
+    protected LoggerRepository getLoggerRepository() {
         return this.repository;
     }
 
@@ -566,8 +576,9 @@ public abstract class AbstractHandler extends Handler
             if (messageProperties != null) {
                 resource = messageProperties.getValueAsString();
             }
-            this.logger = AbstractComponent.getLogger(this.getClass().getName(), resource);
-            this.logger.setLevel(AbstractComponent.INTERNAL_LOG_LEVEL);
+            //TODO Message Properterties
+            String temp = this.getClass().getName();
+            this. logger = this.repository.getLogger(temp);
         }
         return this.logger;
     }

@@ -21,7 +21,7 @@ package org.x4juli.global.spi;
  * @author Boris Unckel
  * @since 0.5
  */
-public interface ExtendedFormatter extends Formatter {
+public interface ExtendedFormatter extends Formatter, Component {
 
 	/**
 	 * Formats a given ExtendedLogRecord.

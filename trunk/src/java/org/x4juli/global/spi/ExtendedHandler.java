@@ -22,7 +22,7 @@ import java.util.logging.LogRecord;
  * @since 0.5
  * @author Boris Unckel
  */
-public interface ExtendedHandler extends Handler {
+public interface ExtendedHandler extends Handler, Component {
 
     /**
      * Determine performant the FullQualifiedClassName. Subclasses should
@@ -66,21 +66,24 @@ public interface ExtendedHandler extends Handler {
     void clearFilters();
 
     /**
-     * Returns true if this appender instance is closed.
+     * Returns true if this handler instance is closed.
+     * @return true if this handler instance is closed.
      *
      * @since 0.5
      */
     boolean isClosed();
 
     /**
-     * Returns true if this appender is working order.
+     * Returns true if this handler is working order.
+     * @return true if this handler is working order.
      *
      * @since 0.5
      */
     boolean isActive();
 
     /**
-     * Set the name of this Appender.
+     * Set the name of this Handler.
+     * @param name of this handler.
      *
      * @since 0.5
      */
@@ -90,8 +93,16 @@ public interface ExtendedHandler extends Handler {
      * Retrieve name of the Handler.
      *
      * @return the name of the Handler.
+     * @since 0.5
      */
     String getName();
+    
+    /**
+     * Sets the Formatter of the Handler.
+     * @param formatter of this handler.
+     * @since 0.7
+     */
+    void setFormatter(ExtendedFormatter formatter);
 }
 
 // EOF ExtendedHandler.java

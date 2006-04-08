@@ -13,7 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.x4juli.global.context;
+package org.x4juli.global.spi;
+
 
 /**
  * Interface to implement factory for context related classes.
@@ -36,6 +37,13 @@ public interface ContextFactoryIf {
      * @since 0.7
      */
     NDC getNestedDiagnosticContext();
+    
+    /**
+     * Returns the instance to manage the ThreadContextClassLoader mapping.
+     * @return the ThreadContextClassLoaderMapper context object.
+     * @since 0.7
+     */
+    TCCLMapper getTCCLMapper();
     
 }
 

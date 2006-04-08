@@ -78,6 +78,8 @@ public abstract class AbstractExtendedLogRecord extends LogRecord implements Ext
 
     private final String threadName;
 
+    private final int threadContextClassloaderId;
+
     /**
      * <p>
      * The properties map is specific for this LogRecord.
@@ -110,6 +112,18 @@ public abstract class AbstractExtendedLogRecord extends LogRecord implements Ext
             tempThreadname = String.valueOf(getThreadID());
         }
         this.threadName = tempThreadname;
+
+        int tempId = 0;
+        try {
+            ClassLoader cl = Thread.currentThread().getContextClassLoader();
+            if (cl == null) {
+                cl = ClassLoader.getSystemClassLoader();
+            }
+            tempId = cl.hashCode();
+        } catch (Exception e) {
+            tempId = -1;
+        }
+        this.threadContextClassloaderId = tempId;
     }
 
     // --------------------------------------------------------- Public Methods
@@ -169,6 +183,8 @@ public abstract class AbstractExtendedLogRecord extends LogRecord implements Ext
         buf.append(getThreadID());
         buf.append("] ThreadName[");
         buf.append(getThreadName());
+        buf.append("] ClassloaderId[");
+        buf.append(getClassloaderId());
         buf.append("] Message[");
         buf.append(getMessage());
         buf.append("] Thrown[");
@@ -324,11 +340,21 @@ public abstract class AbstractExtendedLogRecord extends LogRecord implements Ext
 
     /**
      * {@inheritDoc}
+     * 
      * @since 0.7
      */
     public Set getPropertyKeySet() {
         initializeProperties();
         return Collections.unmodifiableSet(properties.keySet());
+    }
+
+    /**
+     * {@inheritDoc}
+     * 
+     * @since 0.7
+     */
+    public int getClassloaderId() {
+        return this.threadContextClassloaderId;
     }
 
 }

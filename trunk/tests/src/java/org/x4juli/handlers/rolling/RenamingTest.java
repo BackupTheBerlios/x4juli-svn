@@ -23,6 +23,7 @@ import java.util.logging.Logger;
 import org.x4juli.formatter.PatternFormatter;
 import org.x4juli.global.components.AbstractJuliTestCase;
 import org.x4juli.global.helper.LoggerUtil;
+import org.x4juli.global.spi.ExtendedFormatter;
 import org.x4juli.global.util.Compare;
 import org.x4juli.handlers.RollingFileHandler;
 import org.x4juli.handlers.rolling.TimeBasedRollingPolicy;
@@ -67,7 +68,7 @@ public class RenamingTest extends AbstractJuliTestCase {
         Thread.sleep(1000);
         System.out.println("Entering testRename");
         RollingFileHandler rfa = new RollingFileHandler("foo");
-        rfa.setFormatter(this.formatter);
+        rfa.setFormatter((ExtendedFormatter)this.formatter);
         rfa.setAppend(false);
 
         // rollover by the second

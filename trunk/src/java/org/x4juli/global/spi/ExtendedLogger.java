@@ -31,6 +31,23 @@ public interface ExtendedLogger extends Logger {
      * @since 0.6
      */
     void log(ExtendedLogRecord record);
+    
+    /**
+     * Sets the LoggerRepository
+     * @param repository where the logger belongs to.
+     * @param security ensures just spi objects can call this method.
+     * @since 0.6
+     */
+    void setLoggerRepository(LoggerRepository repository, SpiSecurity security);
+
+    /**
+     * Return the the {@link LoggerRepository} where this <code>ExtendedLogger</code>
+     * is attached.
+     * 
+     * @return the attached repository
+     * @since 0.7
+     */
+    public LoggerRepository getLoggerRepository();
 
 }
 

@@ -137,6 +137,31 @@ public final class Constants {
                                                   + SystemUtils.FILE_SEPARATOR + "x4juli";
 
     /**
+     * Filename to lookup in ThreadContextClassLoaders for their id.
+     */
+    public static final String CLASSLOADER_ID_FILE = "x4juli-id.properties";
+    
+    /**
+     * Property for the lookup of the id in the <code>CLASSLOADER_ID_FILE</code>.
+     */
+    public static final String CLASSLOADER_ID_PROPERTY = "x4juli.classloader.id";
+    
+    /**
+     * Default value for <code>CLASSLOADER_ID_PROPERTY</code>.
+     */
+    public static final String CLASSLOADER_DEFAULT_ID = "x4juli.cl.default";
+
+    /**
+     * Default value for <code>ClassLoader.getSystemClassLoader()</code>.
+     */
+    public static final String CLASSLOADER_SYSTEM_ID = "x4juli.cl.system";
+
+    //TODO JavaDoc for Constant
+    public static final String TEMP_LIST_HANDLER_NAME = "TEMP_LIST_HANDLER";
+    public static final String TEMP_CONSOLE_HANDLER_NAME = "TEMP_CONSOLE_HANDLER";
+
+    
+    /**
      * A random object for generating seeds.
      * <p>
      * Usage:

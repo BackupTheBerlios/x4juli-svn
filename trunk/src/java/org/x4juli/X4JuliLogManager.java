@@ -17,6 +17,9 @@ package org.x4juli;
 
 import java.util.logging.Logger;
 
+import org.x4juli.global.spi.LoggerFactory;
+import org.x4juli.global.spi.LoggerRepository;
+
 /**
  * The LogManager to enable X4Juli.
  * <br/>
@@ -37,7 +40,7 @@ import java.util.logging.Logger;
 public class X4JuliLogManager extends ClassLoaderLogManager {
 
     // -------------------------------------------------------------- Variables
-
+    
     // ------------------------------------------------------------ Constructor
 
     /**
@@ -54,61 +57,25 @@ public class X4JuliLogManager extends ClassLoaderLogManager {
      * @since 0.5
      */
     public String getFQCNofLogger() {
-        return "org.x4juli.X4JuliLogger";
-    }
-
-    /**
-     * @see org.x4juli.ClassLoaderLogManager#getLoggerClass()
-     * @since 0.5
-     */
-    public Class getLoggerClass() {
-        return org.x4juli.X4JuliLogger.class;
-    }
-
-    /**
-     * The method <code>getLogger</code> was overwritten. Different to the
-     * super implementation it adds the Logger with
-     * <code>addLogger(Logger)</code> to the repository. This was needed to
-     * have compatible use with
-     * <code>java.util.logging.Logger.getLogger(String name)</code>.
-     * 
-     * @see org.x4juli.ClassLoaderLogManager#getLogger(java.lang.String)
-     * @since 0.5
-     */
-    public synchronized Logger getLogger(final String name) {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        Logger logger = (Logger) getClassLoaderInfo(classLoader).loggers.get(name);
-        if (logger == null) {
-            logger = new X4JuliLogger(name);
-            addLogger(logger);
-        }
-        return logger;
+        LoggerRepository repository = getClassLoaderInfo(classLoader).repository;
+        LoggerFactory loggerFactory = repository.getLoggerFactory();
+        return loggerFactory.getFQCNofLogger();
+    }
+
+    /**
+     * {@inheritDoc}
+     * @since 0.7
+     */
+    protected LoggerFactory getLoggerFactory() {
+        return new X4JuliLoggerFactory();
     }
 
     // ------------------------------------------------------ Protected Methods
 
-    /**
-     * {@inheritDoc}
-     * 
-     * @since 0.5
-     */
-    protected Logger createRootLogger() {
-        return new RootLogger();
-    }
-
     // -------------------------------------------------------- Private Methods
 
     // ------------------------------------------------- RootLogger Inner Class
-
-    /**
-     * This class is needed to instantiate the root of each per classloader
-     * hierarchy.
-     */
-    private static final class RootLogger extends X4JuliLogger {
-        public RootLogger() {
-            super("", null);
-        }
-    }
 
 }
 

@@ -93,7 +93,7 @@ public interface ExtendedLogRecord extends LogRecord, java.io.Serializable {
     /**
      * This method returns the NDC for this event. It will return the correct content even if the
      * event was generated in a different thread or even on a different machine. The
-     * {@link org.x4juli.global.context.NDC#get} method should <em>never</em> be called directly.
+     * {@link org.x4juli.global.spi.NDC#get} method should <em>never</em> be called directly.
      * 
      * @return nested diagnostic context message.
      * @since 0.7
@@ -173,5 +173,14 @@ public interface ExtendedLogRecord extends LogRecord, java.io.Serializable {
      * @since 1.3
      */
     public Set getPropertyKeySet();
-
+    
+    /**
+     * Returns the hashcode of the ThreadContextClassloader
+     * if available. If the record is created without TCCL,
+     * the hashcode of the SystemClassloader is returned.
+     * 
+     * @return hashcode of the ThreadContextClassloader, alternativly
+     * the SystemClassloader.
+     */
+    public int getClassloaderId();
 }

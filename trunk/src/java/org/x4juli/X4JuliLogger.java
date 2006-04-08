@@ -79,7 +79,7 @@ class X4JuliLogger extends AbstractExtendedLogger implements org.apache.commons.
      * @param name of the logger.
      * @param resourceBundleName for i18n.
      */
-    protected X4JuliLogger(final String name, final String resourceBundleName) {
+    public X4JuliLogger(final String name, final String resourceBundleName) {
         super(name, resourceBundleName);
     }
 

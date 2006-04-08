@@ -26,7 +26,8 @@ import org.x4juli.global.components.AbstractComponent;
 import org.x4juli.global.resources.MessageProperties;
 import org.x4juli.global.spi.Component;
 import org.x4juli.global.spi.ExtendedLogger;
-import org.x4juli.global.spi.ObjectStore;
+import org.x4juli.global.spi.LogIllegalStateException;
+import org.x4juli.global.spi.LoggerRepository;
 
 /**
  * Testcase for x4juli.
@@ -36,9 +37,8 @@ public abstract class AbstractJuliTestCase extends TestCase implements
         Component {
     private final static int ERROR_COUNT_LIMIT = 3;
 
-    protected ObjectStore repository;
+    protected LoggerRepository repository;
 
-    protected LogManager manager = null;
     protected ErrorManager errManager = new ErrorManager();
 
     private ExtendedLogger logger;
@@ -50,11 +50,6 @@ public abstract class AbstractJuliTestCase extends TestCase implements
      */
     public AbstractJuliTestCase() {
         super();
-        try {
-            manager = LogManager.getLogManager();
-        } catch (Exception e) {
-            errManager.error("Error Retrieving LogManager",e,ErrorManager.GENERIC_FAILURE);
-        }
     }
 
     /**
@@ -62,11 +57,6 @@ public abstract class AbstractJuliTestCase extends TestCase implements
      */
     public AbstractJuliTestCase(String name) {
         super(name);
-        try {
-            manager = LogManager.getLogManager();
-        } catch (Exception e) {
-            errManager.error("Error Retrieving LogManager",e,ErrorManager.GENERIC_FAILURE);
-        }
     }
 
 	/**
@@ -91,32 +81,32 @@ public abstract class AbstractJuliTestCase extends TestCase implements
      * @since
      */
     protected void tearDown() {
-        manager.reset();
+        //TODO reset wiederherstellen 
+        //manager.reset();
         System.out.flush();
         System.err.flush();
     }
 
     /**
-     * Set the owning repository. The owning repository cannot be set more than
-     * once.
-     * 
-     * @see org.x4juli.global.spi.Component#setObjectStore(ObjectStore)
+     * {@inheritDoc}
+     * @since 0.7
      */
-    public void setObjectStore(ObjectStore repository) {
+    public void setLoggerRepository(final LoggerRepository repository) {
         if (this.repository == null) {
             this.repository = repository;
         } else if (this.repository != repository) {
-            throw new IllegalStateException("Repository has been already set");
+            throw new LogIllegalStateException("Repository has been already set");
         }
     }
 
     /**
-     * Return the {@link ObjectStore} this component is attached to.
-     * 
-     * @return Owning ObjectStore
+     * Return the {@link LoggerRepository} this component is attached to.
+     *
+     * @return Owning LoggerRepository
+     * @since 0.7
      */
-    protected ObjectStore getLoggerRepository() {
-        return repository;
+    protected LoggerRepository getLoggerRepository() {
+        return this.repository;
     }
 
     /**
@@ -147,8 +137,8 @@ public abstract class AbstractJuliTestCase extends TestCase implements
             if (messageProperties != null) {
                 resource = messageProperties.getValueAsString();
             }
-            logger = AbstractComponent.getLogger(this.getClass().getName(), resource);
-            logger.setLevel(AbstractComponent.INTERNAL_LOG_LEVEL);
+            //TODO Message Properterties
+            this.logger = this.repository.getLogger(this.getClass().getName());
         }
         return logger;
     }

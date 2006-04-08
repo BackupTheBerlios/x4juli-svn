@@ -15,6 +15,11 @@
  */
 package org.x4juli.global.context;
 
+import org.x4juli.global.spi.ContextFactoryIf;
+import org.x4juli.global.spi.MDC;
+import org.x4juli.global.spi.NDC;
+import org.x4juli.global.spi.TCCLMapper;
+
 /**
  * The default implementation for the ContextFactoryIf.
  * @author Boris Unckel
@@ -26,6 +31,8 @@ final class ContextFactoryImpl implements ContextFactoryIf {
     
     private final NDC ndc;
     
+    private final TCCLMapper tcclmapper;
+    
     /**
      * 
      */
@@ -33,6 +40,7 @@ final class ContextFactoryImpl implements ContextFactoryIf {
         super();
         this.mdc = (MDC) new MDCImpl();
         this.ndc = (NDC) new NDCImpl();
+        this.tcclmapper = (TCCLMapper) new TCCLMapperImpl();
     }
 
     /**
@@ -49,6 +57,14 @@ final class ContextFactoryImpl implements ContextFactoryIf {
      */
     public NDC getNestedDiagnosticContext() {
         return ndc;
+    }
+
+    /**
+     * {@inheritDoc}
+     * @since 0.7
+     */
+    public TCCLMapper getTCCLMapper() {
+        return tcclmapper;
     }
 
 }

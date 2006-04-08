@@ -23,6 +23,7 @@ import java.util.logging.Logger;
 import org.x4juli.formatter.PatternFormatter;
 import org.x4juli.global.components.AbstractJuliTestCase;
 import org.x4juli.global.helper.LoggerUtil;
+import org.x4juli.global.spi.ExtendedFormatter;
 import org.x4juli.global.util.Compare;
 import org.x4juli.handlers.RollingFileHandler;
 import org.x4juli.handlers.rolling.FixedWindowRollingPolicy;
@@ -89,7 +90,7 @@ public class SizeBasedRollingTest extends AbstractJuliTestCase {
         rfa.setAppend(false);
         rfa.setBufferedIO(false);
         rfa.setImmediateFlush(true);
-        rfa.setFormatter(formatter);
+        rfa.setFormatter((ExtendedFormatter)formatter);
 
         FixedWindowRollingPolicy swrp = new FixedWindowRollingPolicy("output/sizeBased-test1.%i");
         SizeBasedTriggeringPolicy sbtp = new SizeBasedTriggeringPolicy(100);
@@ -136,7 +137,7 @@ public class SizeBasedRollingTest extends AbstractJuliTestCase {
         rfa.setAppend(false);
         rfa.setBufferedIO(false);
         rfa.setImmediateFlush(true);
-        rfa.setFormatter(layout);
+        rfa.setFormatter((ExtendedFormatter)layout);
         rfa.setFile("output/sizeBased-test2.log");
 
         FixedWindowRollingPolicy swrp = new FixedWindowRollingPolicy("output/sizeBased-test2.%i");
@@ -183,7 +184,7 @@ public class SizeBasedRollingTest extends AbstractJuliTestCase {
         rfa.setAppend(false);
         rfa.setBufferedIO(false);
         rfa.setImmediateFlush(true);
-        rfa.setFormatter(layout);
+        rfa.setFormatter((ExtendedFormatter)layout);
 
         FixedWindowRollingPolicy fwrp = new FixedWindowRollingPolicy("output/sbr-test3.%i.gz");
         SizeBasedTriggeringPolicy sbtp = new SizeBasedTriggeringPolicy(100);
@@ -224,7 +225,7 @@ public class SizeBasedRollingTest extends AbstractJuliTestCase {
         rfa.setAppend(false);
         rfa.setBufferedIO(false);
         rfa.setImmediateFlush(true);
-        rfa.setFormatter(layout);
+        rfa.setFormatter((ExtendedFormatter)layout);
         rfa.setFile("output/sizeBased-test4.log");
 
         FixedWindowRollingPolicy swrp = new FixedWindowRollingPolicy("output/test4/sizeBased-test4.%i");
@@ -267,7 +268,7 @@ public class SizeBasedRollingTest extends AbstractJuliTestCase {
         rfa.setAppend(false);
         rfa.setBufferedIO(false);
         rfa.setImmediateFlush(true);
-        rfa.setFormatter(layout);
+        rfa.setFormatter((ExtendedFormatter)layout);
         rfa.setFile("output/sizeBased-test5.log");
 
         FixedWindowRollingPolicy swrp = new FixedWindowRollingPolicy("output/sizeBased-test5.%i");

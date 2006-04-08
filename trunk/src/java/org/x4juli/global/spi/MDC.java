@@ -13,10 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.x4juli.global.context;
+package org.x4juli.global.spi;
 
 import java.util.Enumeration;
 import java.util.Hashtable;
+
 
 /**
  * The MDC class is similar to the {@link NDC} class except that it is based on a map instead of a

@@ -51,8 +51,8 @@ import org.apache.commons.logging.LogFactory;
 		System.err.println("JclSample: Starting with sample, mode org.apache.commons.logging.Log System.err");
 		super.log("JclSample: Using method javax.servlet.GenericServlet.log(String msg)");
 		System.out.println("JclSample: Using class "+LOG.getClass().getName());
-		
-		LOG.trace("JclSample: Using method LOG.trace(Object arg)");
+
+        LOG.trace("JclSample: Using method LOG.trace(Object arg)");
 		LOG.debug("JclSample: Using method LOG.debug(Object arg)");
 		LOG.info("JclSample: Using method LOG.info(Object arg)");
 		LOG.error("JclSample: Using method LOG.error(Object arg)");

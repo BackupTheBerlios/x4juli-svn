@@ -19,8 +19,8 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
+import org.x4juli.global.components.AbstractExtendedLogger;
 import org.x4juli.global.spi.ExtendedLogRecord;
-import org.x4juli.global.spi.ExtendedLogger;
 
 /**
  * A no operation (NOP) implementation of {@link Logger}.
@@ -28,7 +28,7 @@ import org.x4juli.global.spi.ExtendedLogger;
  * @author Boris Unckel
  * @since 0.5
  */
-public final class NOPLogger extends Logger implements ExtendedLogger{
+public final class NOPLogger extends AbstractExtendedLogger {
 
     // -------------------------------------------------------------- Variables
 
@@ -45,7 +45,7 @@ public final class NOPLogger extends Logger implements ExtendedLogger{
      * @param name is ignored
      * @param resourceBundleName is ignored
      */
-    private NOPLogger(String name, String resourceBundleName) {
+    private NOPLogger(final String name, final String resourceBundleName) {
         super("NOPLogger", null);
         super.setLevel(Level.OFF);
     }

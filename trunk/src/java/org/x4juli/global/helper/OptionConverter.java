@@ -371,6 +371,7 @@ public final class OptionConverter {
                 getLogger().log(Level.SEVERE,
                         "Could not instantiate object of class [" + className + "].", ncfe);
             } catch (Throwable e) {
+                e.printStackTrace();
                 getLogger().log(Level.SEVERE,
                         "Could not instantiate object of class [" + className + "].", e);
             }

@@ -26,6 +26,7 @@ import org.x4juli.NOPLogger;
 import org.x4juli.formatter.PatternFormatter;
 import org.x4juli.global.components.AbstractJuliTestCase;
 import org.x4juli.global.helper.LoggerUtil;
+import org.x4juli.global.spi.ExtendedFormatter;
 import org.x4juli.global.util.Compare;
 import org.x4juli.handlers.RollingFileHandler;
 import org.x4juli.handlers.rolling.TimeBasedRollingPolicy;
@@ -94,7 +95,7 @@ public class TimeBasedRollingTest extends AbstractJuliTestCase {
     public void test1() throws Exception {
         PatternFormatter layout = new PatternFormatter("%c{1} - %m%n");
         RollingFileHandler rfa = new RollingFileHandler("TimeBasedRollingTest.test1");
-        rfa.setFormatter(layout);
+        rfa.setFormatter((ExtendedFormatter)layout);
 
         String datePattern = "yyyy-MM-dd_HH_mm_ss";
 
@@ -178,7 +179,7 @@ public class TimeBasedRollingTest extends AbstractJuliTestCase {
 
         PatternFormatter layout1 = new PatternFormatter("%c{1} - %m%n");
         RollingFileHandler rfa1 = new RollingFileHandler("TimeBasedRollingTest.test2.1");
-        rfa1.setFormatter(layout1);
+        rfa1.setFormatter((ExtendedFormatter)layout1);
 
         TimeBasedRollingPolicy tbrp1 = new TimeBasedRollingPolicy("output/test2-%d{" + datePattern
                 + "}");
@@ -211,7 +212,7 @@ public class TimeBasedRollingTest extends AbstractJuliTestCase {
 
         PatternFormatter layout2 = new PatternFormatter("%c{1} - %m%n");
         RollingFileHandler rfa2 = new RollingFileHandler("TimeBasedRollingTest.test2.2");
-        rfa2.setFormatter(layout2);
+        rfa2.setFormatter((ExtendedFormatter)layout2);
 
         TimeBasedRollingPolicy tbrp2 = new TimeBasedRollingPolicy("output/test2-%d{" + datePattern
                 + "}");
@@ -238,7 +239,7 @@ public class TimeBasedRollingTest extends AbstractJuliTestCase {
     public void test3() throws Exception {
         PatternFormatter layout = new PatternFormatter("%c{1} - %m%n");
         RollingFileHandler rfa = new RollingFileHandler("TimeBasedRollingTest.test3");
-        rfa.setFormatter(layout);
+        rfa.setFormatter((ExtendedFormatter)layout);
 
         String datePattern = "yyyy-MM-dd_HH_mm_ss";
 
@@ -292,7 +293,7 @@ public class TimeBasedRollingTest extends AbstractJuliTestCase {
 
         PatternFormatter layout1 = new PatternFormatter("%c{1} - %m%n");
         RollingFileHandler rfa1 = new RollingFileHandler("TimeBasedRollingTest.test4.1");
-        rfa1.setFormatter(layout1);
+        rfa1.setFormatter((ExtendedFormatter)layout1);
 
         TimeBasedRollingPolicy tbrp1 = new TimeBasedRollingPolicy("output/test4.log");
         tbrp1.setFileNamePattern("output/test4-%d{" + datePattern + "}");
@@ -327,7 +328,7 @@ public class TimeBasedRollingTest extends AbstractJuliTestCase {
 
         PatternFormatter layout2 = new PatternFormatter("%c{1} - %m%n");
         RollingFileHandler rfa2 = new RollingFileHandler("TimeBasedRollingTest.test4.2");
-        rfa2.setFormatter(layout2);
+        rfa2.setFormatter((ExtendedFormatter)layout2);
 
         TimeBasedRollingPolicy tbrp2 = new TimeBasedRollingPolicy("output/test4-%d{" + datePattern + "}");
         rfa2.setFile("output/test4.log");
@@ -356,7 +357,7 @@ public class TimeBasedRollingTest extends AbstractJuliTestCase {
     public void test5() throws Exception {
         PatternFormatter layout = new PatternFormatter("%c{1} - %m%n");
         RollingFileHandler rfa = new RollingFileHandler("TimeBasedRollingTest.test5");
-        rfa.setFormatter(layout);
+        rfa.setFormatter((ExtendedFormatter)layout);
 
         String datePattern = "yyyy-MM-dd_HH_mm_ss";
 
@@ -399,7 +400,7 @@ public class TimeBasedRollingTest extends AbstractJuliTestCase {
     public void test6() throws Exception {
         PatternFormatter layout = new PatternFormatter("%c{1} - %m%n");
         RollingFileHandler rfa = new RollingFileHandler("TimeBasedRollingTest.test6");
-        rfa.setFormatter(layout);
+        rfa.setFormatter((ExtendedFormatter)layout);
 
         String datePattern = "yyyy-MM-dd_HH_mm_ss";
 

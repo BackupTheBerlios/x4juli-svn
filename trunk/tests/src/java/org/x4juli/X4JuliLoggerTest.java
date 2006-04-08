@@ -16,6 +16,7 @@
 package org.x4juli;
 
 import java.util.logging.Level;
+import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 import junit.framework.Test;
@@ -64,14 +65,6 @@ public class X4JuliLoggerTest extends AbstractDifferentLoggerTest {
 		assertTrue(myLog instanceof org.apache.commons.logging.Log);
         assertTrue(myLog instanceof org.slf4j.Logger);
 
-		// Test on consistent class information between Logger and LogManager
-		Class clazz = ((LoggerClassInformation) manager).getLoggerClass();
-		String clazzName = ((LoggerClassInformation) manager).getFQCNofLogger();
-		assertEquals("LoggerClassInformation not consistent", clazz,
-				X4JuliLogger.class);
-		assertEquals(clazz.getName(), clazzName);
-        
-        
         final String jclFactoryProp = (String) java.security.AccessController
         .doPrivileged(new sun.security.action.GetPropertyAction(
         "org.apache.commons.logging.LogFactory"));

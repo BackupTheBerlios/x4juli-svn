@@ -17,6 +17,11 @@ package org.x4juli.global.context;
 
 import java.util.logging.LogManager;
 
+import org.x4juli.global.spi.ContextFactoryIf;
+import org.x4juli.global.spi.MDC;
+import org.x4juli.global.spi.NDC;
+import org.x4juli.global.spi.TCCLMapper;
+
 /**
  * Provides access to the factory for context related classes (NDC, MDC). The factory implementation
  * can be configured by the property <code>org.x4juli.global.context.ContextFactoryClass</code>.
@@ -31,10 +36,8 @@ public final class ContextFactory {
 
     private static final String CONTEXT_FACTORY_CLASS_KEY = "org.x4juli.global.context.ContextFactoryClass";
 
-    private static final LogManager manager = LogManager.getLogManager();
-
     static {
-        String prop = manager.getProperty(CONTEXT_FACTORY_CLASS_KEY);
+        String prop = System.getProperty(CONTEXT_FACTORY_CLASS_KEY);
         synchronized (ContextFactory.class) {
             ContextFactoryIf tempCF = null;
             if (prop == null) {
@@ -89,6 +92,14 @@ public final class ContextFactory {
      */
     public static MDC getMappedDiagnosticContext() {
         return getContextFactory().getMappedDiagnosticContext();
+    }
+    
+    /**
+     * Returns the instance to manage the ThreadContextClassLoader mapping.
+     * @return the TCCLMapper context object.
+     */
+    public static TCCLMapper getThreadContextClassLoaderMapper() {
+        return getContextFactory().getTCCLMapper();
     }
 
 }

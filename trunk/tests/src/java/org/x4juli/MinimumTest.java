@@ -21,6 +21,7 @@ import java.util.logging.Logger;
 import org.x4juli.formatter.SimpleFormatter;
 import org.x4juli.global.components.AbstractJuliTestCase;
 import org.x4juli.global.helper.LoggerUtil;
+import org.x4juli.global.spi.ExtendedFormatter;
 import org.x4juli.global.util.Compare;
 import org.x4juli.global.util.Filter;
 import org.x4juli.global.util.JunitTestRunnerFilter;
@@ -70,7 +71,7 @@ public class MinimumTest extends AbstractJuliTestCase {
         minimumTest.setUseParentHandlers(false);
         SimpleFormatter pf = new SimpleFormatter();
         FileHandler fh = new FileHandler("foo");
-        fh.setFormatter(pf);
+        fh.setFormatter((ExtendedFormatter)pf);
         fh.setAppend(false);
         fh.setBufferedIO(false);
         fh.setImmediateFlush(true);

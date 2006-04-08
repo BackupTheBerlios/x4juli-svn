@@ -44,10 +44,11 @@ public interface Component {
      *
      * @param repository
      *            The repository where the configuration is stored
-     * @throws IllegalStateException
+     * @throws LogIllegalStateException
      *             If you try to change the repository after it has been set.
+     * @since 0.7
      */
-    public void setObjectStore(ObjectStore repository);
+    public void setLoggerRepository(LoggerRepository repository);
 
 	/**
 	 * Specifiy Properties for the component. Default Implementation returns null.

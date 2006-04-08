@@ -15,7 +15,8 @@
  */
 package org.x4juli.global;
 
-import org.x4juli.global.spi.ObjectStore;
+import org.x4juli.global.spi.LoggerRepository;
+
 
 /**
  * Juli is just working with a ObjectStore.
@@ -31,5 +32,5 @@ public interface LoggerRepositoryHolder {
      * Get the actual repository for objects in the system.
 	 * @return the actual ObjectStore.
 	 */
-	ObjectStore getLoggerRepository();
+	LoggerRepository getLoggerRepository();
 }

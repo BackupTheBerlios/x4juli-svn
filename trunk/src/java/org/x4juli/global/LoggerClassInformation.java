@@ -22,12 +22,6 @@ package org.x4juli.global;
 public interface LoggerClassInformation {
 
     /**
-     * Returns the class of the actual used logger for system.
-     * @return class of the logger.
-     */
-    Class getLoggerClass();
-
-    /**
      * Returns the full qualified class name of the logger.
      * Must correspond to getLoggerClass, but should not be
      * created dynamicly.

@@ -73,16 +73,35 @@ public final class LoggerUtil extends AbstractComponent {
      */
     public static void removeAllHandlers(final Logger logger) {
         Handler[] allHandler = logger.getHandlers();
-        getInternalLogger().log(Level.FINEST, "logger handler count[{0}]", new Integer(allHandler.length));
+//        getInternalLogger().log(Level.FINEST, "logger handler count[{0}]", new Integer(allHandler.length));
         for (int i = 0; i < allHandler.length; i++) {
             Handler handler = allHandler[i];
             logger.removeHandler(handler);
         }
-        if (getInternalLogger().isLoggable(Level.FINEST)) {
-            allHandler = logger.getHandlers();
-            getInternalLogger().log(Level.FINEST, "logger handler after remove count[{0}]",
-                    new Integer(allHandler.length));
+//        if (getInternalLogger().isLoggable(Level.FINEST)) {
+//            allHandler = logger.getHandlers();
+//            getInternalLogger().log(Level.FINEST, "logger handler after remove count[{0}]",
+//                    new Integer(allHandler.length));
+//        }
+    }
+
+    /**
+     * Removes all handlers of an existing logger.
+     * @param logger to remove the handlers from.
+     * @since 0.5
+     */
+    public static void removeAllHandlers(final ExtendedLogger logger) {
+        Handler[] allHandler = logger.getHandlers();
+//        getInternalLogger().log(Level.FINEST, "logger handler count[{0}]", new Integer(allHandler.length));
+        for (int i = 0; i < allHandler.length; i++) {
+            Handler handler = allHandler[i];
+            logger.removeHandler(handler);
         }
+//        if (getInternalLogger().isLoggable(Level.FINEST)) {
+//            allHandler = logger.getHandlers();
+//            getInternalLogger().log(Level.FINEST, "logger handler after remove count[{0}]",
+//                    new Integer(allHandler.length));
+//        }
     }
 
     /**

@@ -23,6 +23,7 @@ import org.x4juli.NOPLogger;
 import org.x4juli.formatter.PatternFormatter;
 import org.x4juli.global.components.AbstractJuliTestCase;
 import org.x4juli.global.helper.LoggerUtil;
+import org.x4juli.global.spi.ExtendedFormatter;
 import org.x4juli.handlers.TestHandler;
 
 /**
@@ -50,7 +51,7 @@ public abstract class AbstractDifferentLoggerTest extends AbstractJuliTestCase {
         super.setUp();
 		testHandler = new TestHandler();
 		testHandler.setLevel(testLevel);
-		testHandler.setFormatter(new PatternFormatter("%m%throwable"));
+		testHandler.setFormatter((ExtendedFormatter)new PatternFormatter("%m%throwable"));
 		Logger testLogger = Logger.getLogger(getName());
 		LoggerUtil.removeAllHandlers(testLogger);
 		testLogger.addHandler(testHandler);

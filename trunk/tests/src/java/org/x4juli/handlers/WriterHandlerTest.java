@@ -20,6 +20,7 @@ import java.io.CharArrayWriter;
 
 import org.x4juli.formatter.DummyFormatter;
 import org.x4juli.global.components.AbstractHandler;
+import org.x4juli.global.spi.ExtendedFormatter;
 import org.x4juli.handlers.WriterHandler;
 
 /**
@@ -56,7 +57,7 @@ public class WriterHandlerTest extends AbstractHandlerTest {
         // set a bogus writer
         wa.setWriter(new CharArrayWriter());
         // set a bogus layout
-        wa.setFormatter(new DummyFormatter());
+        wa.setFormatter((ExtendedFormatter)new DummyFormatter());
         wa.activateOptions();
         return wa;
     }
@@ -72,7 +73,7 @@ public class WriterHandlerTest extends AbstractHandlerTest {
         WriterHandler wa2 = new WriterHandler("foo 2");
 
         // set a bogus writer
-        wa2.setFormatter(new DummyFormatter());
+        wa2.setFormatter((ExtendedFormatter)new DummyFormatter());
         wa2.activateOptions();
         assertFalse(wa2.isActive());
       }

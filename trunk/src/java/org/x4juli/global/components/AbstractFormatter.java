@@ -30,33 +30,33 @@ import org.x4juli.global.spi.Component;
 import org.x4juli.global.spi.ExtendedFormatter;
 import org.x4juli.global.spi.ExtendedLogRecord;
 import org.x4juli.global.spi.ExtendedLogger;
-import org.x4juli.global.spi.ObjectStore;
+import org.x4juli.global.spi.LogIllegalStateException;
+import org.x4juli.global.spi.LoggerRepository;
 import org.x4juli.global.spi.OptionHandler;
 
 /**
  * AbstractFormatter is for ease of development. It must extend
- *
- * <code>java.util.logging.Formatter</code> and be a Component with the
- * attributes of a BaseComponent. The code of BaseComponent is copied here
- * therefor.
- *
+ * 
+ * <code>java.util.logging.Formatter</code> and be a Component with the attributes of a
+ * BaseComponent. The code of BaseComponent is copied here therefor.
+ * 
  * @author Boris Unckel
  * @since 0.5
  */
-public abstract class AbstractFormatter extends Formatter implements Component,
-        OptionHandler, ExtendedFormatter {
+public abstract class AbstractFormatter extends Formatter implements Component, OptionHandler,
+        ExtendedFormatter {
 
     // -------------------------------------------------------------- Variables
 
     /**
      * Store for this component.
      */
-    protected ObjectStore repository;
+    protected LoggerRepository repository;
 
     /**
      * LogManager for easy access.
      */
-    protected final LogManager manager = LogManager.getLogManager();
+    // protected final LogManager manager = LogManager.getLogManager();
 
     /**
      * Formatter ignores throwables in output or not.
@@ -71,33 +71,38 @@ public abstract class AbstractFormatter extends Formatter implements Component,
 
     // --------------------------------------------------------- Public Methods
 
-  /**
-   * Specifiy Properties for the component. Default Implementation returns null.
-   * {@inheritDoc}
-   * @since 0.5
-   */
-  public MessageProperties getMessageProperties() {
-    return MessageProperties.PROPERTIES_FORMATTER;
-  }
-
+    /**
+     * Default.
+     */
+    public AbstractFormatter() {
+        super();
+    }
 
     /**
-     * Set the owning repository. The owning repository cannot be set more than
-     * once.
-     *
-     * {@inheritDoc}
+     * Specifiy Properties for the component. Default Implementation returns null. {@inheritDoc}
+     * 
      * @since 0.5
      */
-    public void setObjectStore(final ObjectStore rep) {
+    public MessageProperties getMessageProperties() {
+        return MessageProperties.PROPERTIES_FORMATTER;
+    }
+
+    /**
+     * {@inheritDoc}
+     * 
+     * @since 0.7
+     */
+    public void setLoggerRepository(final LoggerRepository repository) {
         if (this.repository == null) {
-            this.repository = rep;
-        } else if (this.repository != rep) {
-            throw new IllegalStateException("Repository has been already set");
+            this.repository = repository;
+        } else if (this.repository != repository) {
+            throw new LogIllegalStateException("Repository has been already set");
         }
     }
 
     /**
      * Formatter ignores throwables in output?
+     * 
      * @return whether throwables are ignored or not.
      * @since 0.5
      */
@@ -107,6 +112,7 @@ public abstract class AbstractFormatter extends Formatter implements Component,
 
     /**
      * Formatter ignores throwables in output?
+     * 
      * @param ignoresThrowable whether throwables are ignored or not.
      * @since 0.5
      */
@@ -116,6 +122,7 @@ public abstract class AbstractFormatter extends Formatter implements Component,
 
     /**
      * {@inheritDoc}
+     * 
      * @since 0.5
      */
     public final String format(final LogRecord record) {
@@ -124,6 +131,7 @@ public abstract class AbstractFormatter extends Formatter implements Component,
 
     /**
      * Formats the given LogRecord.
+     * 
      * @return the formatted information.
      * @see java.util.logging.Formatter#format(java.util.logging.LogRecord)
      * @since 0.5
@@ -135,6 +143,7 @@ public abstract class AbstractFormatter extends Formatter implements Component,
 
     /**
      * Method to implement for the concrete formatting of the LogRecord.
+     * 
      * @param record to format.
      * @return the formatted information specified in the concrete class.
      * @see java.util.logging.Formatter#format(java.util.logging.LogRecord)
@@ -143,9 +152,9 @@ public abstract class AbstractFormatter extends Formatter implements Component,
     public abstract String doFormat(ExtendedLogRecord record);
 
     /**
-     * High availability format. Neither incorrect messages
-     * (missing java.text.MessageFormat compatibility) nor
-     * exceptions during format will fail.
+     * High availability format. Neither incorrect messages (missing java.text.MessageFormat
+     * compatibility) nor exceptions during format will fail.
+     * 
      * @param record containing raw message and parameters.
      * @return the formatted message.
      * @see FormatterUtil#formatMessage(ExtendedLogRecord)
@@ -158,54 +167,53 @@ public abstract class AbstractFormatter extends Formatter implements Component,
     // ------------------------------------------------------ Protected Methods
 
     /**
-     * Called by derived classes when they deem that the component has recovered
-     * from an erroneous state.
+     * Called by derived classes when they deem that the component has recovered from an erroneous
+     * state.
      */
     protected void resetErrorCount() {
         this.errorCount = 0;
     }
 
     /**
-     * Return the {@link ObjectStore} this component is attached to.
-     *
-     * @return Owning ObjectStore
-     * @since 0.5
+     * Return the {@link LoggerRepository} this component is attached to.
+     * 
+     * @return Owning LoggerRepository
+     * @since 0.7
      */
-    protected ObjectStore getLoggerRepository() {
+    protected LoggerRepository getLoggerRepository() {
         return this.repository;
     }
 
     /**
-     * Return an instance specific logger to be used by the component itself.
-     * This logger is not intended to be accessed by the end-user, hence the
-     * protected keyword.
-     *
+     * Return an instance specific logger to be used by the component itself. This logger is not
+     * intended to be accessed by the end-user, hence the protected keyword.
+     * 
      * <p>
      * This logger always sends output to an
-     *
+     * 
      * <code>ConsoleHandler</code>, which outputs to System.err
      * </p>
-     *
+     * 
      * @return A Logger instance for the concrete formatter.
      * @since 0.5
      */
     protected ExtendedLogger getLogger() {
-      if (this.logger == null) {
+        if (this.logger == null) {
             MessageProperties messageProperties = getMessageProperties();
             String resource = null;
             if (messageProperties != null) {
                 resource = messageProperties.getValueAsString();
             }
-            this.logger = AbstractComponent.getLogger(this.getClass().getName(), resource);
-            this.logger.setLevel(AbstractComponent.INTERNAL_LOG_LEVEL);
-      }
-      return this.logger;
+            //TODO Message Properterties
+            this.logger = this.repository.getLogger(this.getClass().getName());
+        }
+        return this.logger;
     }
 
     /**
-     * Frequently called methods in log4j components can invoke this method in
-     * order to avoid flooding the output when logging lasting error conditions.
-     *
+     * Frequently called methods in log4j components can invoke this method in order to avoid
+     * flooding the output when logging lasting error conditions.
+     * 
      * @return a regular logger, or a NOPLogger if called too frequently.
      * @since 0.5
      */
@@ -219,13 +227,13 @@ public abstract class AbstractFormatter extends Formatter implements Component,
 
     /**
      * Get an property value out of the <code>LogManager</code> by name.
-     *
+     * 
      * @param name of the parameter to be obtained
      * @param defaultValue
      * @return the value of the given property, if null defaultValue
      */
     protected String getProperty(final String name, final String defaultValue) {
-        String value = this.manager.getProperty(name);
+        String value = this.repository.getName();
         if (value == null) {
             value = defaultValue;
         } else {
@@ -236,13 +244,13 @@ public abstract class AbstractFormatter extends Formatter implements Component,
 
     /**
      * Get an property value out of the <code>LogManager</code> by name.
-     *
+     * 
      * @param name of the parameter to be obtained
      * @param defaultValue
      * @return the value of the given property, if null defaultValue
      */
     protected int getProperty(final String name, final int defaultValue) {
-        String value = this.manager.getProperty(name);
+        String value = this.repository.getName();
         int ret;
         if (value == null) {
             ret = defaultValue;
@@ -252,7 +260,7 @@ public abstract class AbstractFormatter extends Formatter implements Component,
             } catch (NumberFormatException e) {
                 getLogger().log(Level.WARNING,
                         MessageText.Unexcpected_IO_Exception_during_formating,
-                        new Object[] {name, value, new Integer(defaultValue) });
+                        new Object[] { name, value, new Integer(defaultValue) });
                 ret = defaultValue;
             }
         }
@@ -261,13 +269,13 @@ public abstract class AbstractFormatter extends Formatter implements Component,
 
     /**
      * Get an property value out of the <code>LogManager</code> by name.
-     *
+     * 
      * @param name of the parameter to be obtained
      * @param defaultValue
      * @return the value of the given property, if null defaultValue
      */
     protected boolean getProperty(final String name, final boolean defaultValue) {
-        String value = this.manager.getProperty(name);
+        String value = this.repository.getName();
         boolean ret;
         if (value == null) {
             ret = defaultValue;

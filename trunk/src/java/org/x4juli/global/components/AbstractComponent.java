@@ -25,8 +25,9 @@ import org.x4juli.global.Constants;
 import org.x4juli.global.resources.MessageProperties;
 import org.x4juli.global.spi.Component;
 import org.x4juli.global.spi.ExtendedLogger;
+import org.x4juli.global.spi.LogIllegalStateException;
+import org.x4juli.global.spi.LoggerRepository;
 import org.x4juli.global.spi.MessageText;
-import org.x4juli.global.spi.ObjectStore;
 
 /**
  * The basic implementation for all x4juli components.
@@ -55,14 +56,7 @@ public abstract class AbstractComponent implements Component {
     /**
      * Contains objects for this component.
      */
-    protected ObjectStore repository;
-
-    /**
-     * Easy access to the LogManager for this component.
-     */
-    protected final LogManager manager = LogManager.getLogManager();
-
-    private static Map componentloggers = new Hashtable();
+    protected LoggerRepository repository;
 
     private int errorCount = 0;
 
@@ -82,17 +76,24 @@ public abstract class AbstractComponent implements Component {
         INTERNAL_LOG_LEVEL = newLevel;
     }
 
+    /**
+     * Default, NOP Constructor. 
+     */
+    public AbstractComponent() {
+        super();
+    }
+
     // --------------------------------------------------------- Public Methods
 
     /**
      * {@inheritDoc}
-     * @since 0.5
+     * @since 0.7
      */
-    public void setObjectStore(final ObjectStore objectstore) {
+    public void setLoggerRepository(final LoggerRepository repository) {
         if (this.repository == null) {
-            this.repository = objectstore;
-        } else if (this.repository != objectstore) {
-            throw new IllegalStateException("Repository has been already set");
+            this.repository = repository;
+        } else if (this.repository != repository) {
+            throw new LogIllegalStateException("Repository has been already set");
         }
     }
 
@@ -107,12 +108,12 @@ public abstract class AbstractComponent implements Component {
     // ------------------------------------------------------ Protected Methods
 
     /**
-     * Return the {@link ObjectStore} this component is attached to.
+     * Return the {@link LoggerRepository} this component is attached to.
      *
-     * @return Owning ObjectStore
-     * @since 0.5
+     * @return Owning LoggerRepository
+     * @since 0.7
      */
-    protected ObjectStore getLoggerRepository() {
+    protected LoggerRepository getLoggerRepository() {
         return this.repository;
     }
 
@@ -124,18 +125,6 @@ public abstract class AbstractComponent implements Component {
      */
     protected void resetErrorCount() {
         this.errorCount = 0;
-    }
-
-    static ExtendedLogger getLogger(final String name, final String resourceBundle) {
-        if (name == null) {
-            return null;
-        }
-        ExtendedLogger ret = (ExtendedLogger) componentloggers.get(name);
-        if (ret == null) {
-            ret = new ComponentLogger(name, resourceBundle);
-            componentloggers.put(name, ret);
-        }
-        return ret;
     }
 
     /**
@@ -158,8 +147,8 @@ public abstract class AbstractComponent implements Component {
             if (messageProperties != null) {
                 resource = messageProperties.getValueAsString();
             }
-            this.logger = AbstractComponent.getLogger(this.getClass().getName(), resource);
-            this.logger.setLevel(AbstractComponent.INTERNAL_LOG_LEVEL);
+            //TODO Message Properterties
+            this.logger = this.repository.getLogger(this.getClass().getName());
         }
         return this.logger;
     }
@@ -187,7 +176,8 @@ public abstract class AbstractComponent implements Component {
      * @return the value of the given property, if null defaultValue.
      */
     protected String getProperty(final String name, final String defaultValue) {
-        String value = this.manager.getProperty(name);
+        //String value = this.manager.getProperty(name);
+        String value = this.repository.getProperty(name);
         if (value == null) {
             value = defaultValue;
         } else {
@@ -204,7 +194,7 @@ public abstract class AbstractComponent implements Component {
      * @return the value of the given property, if null defaultValue.
      */
     protected int getProperty(final String name, final int defaultValue) {
-        String value = this.manager.getProperty(name);
+        String value = this.repository.getProperty(name);
         int ret;
         if (value == null) {
             ret = defaultValue;
@@ -228,7 +218,7 @@ public abstract class AbstractComponent implements Component {
      * @return the value of the given property, if null defaultValue.
      */
     protected long getProperty(final String name, final long defaultValue) {
-        String value = this.manager.getProperty(name);
+        String value = this.repository.getProperty(name);
         long ret;
         if (value == null) {
             ret = defaultValue;
@@ -252,7 +242,7 @@ public abstract class AbstractComponent implements Component {
      * @return the value of the given property, if null defaultValue.
      */
     protected boolean getProperty(final String name, final boolean defaultValue) {
-        String value = this.manager.getProperty(name);
+        String value = this.repository.getProperty(name);
         boolean ret;
         if (value == null) {
             ret = defaultValue;

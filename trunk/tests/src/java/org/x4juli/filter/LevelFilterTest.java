@@ -22,6 +22,7 @@ import org.x4juli.filter.LevelMatchFilter;
 import org.x4juli.formatter.PatternFormatter;
 import org.x4juli.global.components.AbstractJuliTestCase;
 import org.x4juli.global.helper.LoggerUtil;
+import org.x4juli.global.spi.ExtendedFormatter;
 import org.x4juli.handlers.TestHandler;
 
 /**
@@ -67,7 +68,7 @@ public class LevelFilterTest extends AbstractJuliTestCase {
         testLogger.setUseParentHandlers(false);
         LoggerUtil.removeAllHandlers(testLogger);
         PatternFormatter formatter = new PatternFormatter("%m%n");
-        testHandler.setFormatter(formatter);
+        testHandler.setFormatter((ExtendedFormatter)formatter);
         testHandler.setLevel(Level.ALL);
         LevelMatchFilter lmFilter = new LevelMatchFilter();
         lmFilter.setLevelToMatch(Level.INFO.toString());
@@ -89,7 +90,7 @@ public class LevelFilterTest extends AbstractJuliTestCase {
         testLogger.setUseParentHandlers(false);
         LoggerUtil.removeAllHandlers(testLogger);
         PatternFormatter formatter = new PatternFormatter("%m%n");
-        testHandler.setFormatter(formatter);
+        testHandler.setFormatter((ExtendedFormatter)formatter);
         testHandler.setLevel(Level.ALL);
         LevelMatchFilter lmFilter = new LevelMatchFilter();
         lmFilter.setLevelToMatch(Level.INFO.toString());
@@ -111,7 +112,7 @@ public class LevelFilterTest extends AbstractJuliTestCase {
         testLogger.setUseParentHandlers(false);
         LoggerUtil.removeAllHandlers(testLogger);
         PatternFormatter formatter = new PatternFormatter("%m%n");
-        testHandler.setFormatter(formatter);
+        testHandler.setFormatter((ExtendedFormatter)formatter);
         testLogger.addHandler((java.util.logging.Handler)testHandler);
         LevelMatchFilter lmFilter = new LevelMatchFilter();
         lmFilter.setLevelToMatch(Level.INFO.toString());

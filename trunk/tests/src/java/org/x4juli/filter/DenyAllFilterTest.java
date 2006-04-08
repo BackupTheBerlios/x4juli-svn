@@ -22,6 +22,7 @@ import org.x4juli.filter.DenyAllFilter;
 import org.x4juli.formatter.PatternFormatter;
 import org.x4juli.global.components.AbstractJuliTestCase;
 import org.x4juli.global.helper.LoggerUtil;
+import org.x4juli.global.spi.ExtendedFormatter;
 import org.x4juli.handlers.TestHandler;
 
 /**
@@ -67,7 +68,7 @@ public class DenyAllFilterTest extends AbstractJuliTestCase {
         testLogger.setUseParentHandlers(false);
         LoggerUtil.removeAllHandlers(testLogger);
         PatternFormatter formatter = new PatternFormatter("%m%n");
-        testHandler.setFormatter(formatter);
+        testHandler.setFormatter((ExtendedFormatter)formatter);
         testHandler.addFilter(new DenyAllFilter());
         testLogger.addHandler((java.util.logging.Handler)testHandler);
         testLogger.setLevel(Level.ALL);
@@ -83,7 +84,7 @@ public class DenyAllFilterTest extends AbstractJuliTestCase {
         testLogger.setUseParentHandlers(false);
         LoggerUtil.removeAllHandlers(testLogger);
         PatternFormatter formatter = new PatternFormatter("%m%n");
-        testHandler.setFormatter(formatter);
+        testHandler.setFormatter((ExtendedFormatter)formatter);
         testHandler.setFilter(new DenyAllFilter());
         testLogger.addHandler((java.util.logging.Handler)testHandler);
         testLogger.setLevel(Level.ALL);
@@ -99,7 +100,7 @@ public class DenyAllFilterTest extends AbstractJuliTestCase {
         testLogger.setUseParentHandlers(false);
         LoggerUtil.removeAllHandlers(testLogger);
         PatternFormatter formatter = new PatternFormatter("%m%n");
-        testHandler.setFormatter(formatter);
+        testHandler.setFormatter((ExtendedFormatter)formatter);
         testLogger.addHandler((java.util.logging.Handler)testHandler);
         testLogger.setFilter(new DenyAllFilter());
         testLogger.setLevel(Level.ALL);
