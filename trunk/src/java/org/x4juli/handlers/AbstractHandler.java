@@ -22,7 +22,6 @@ import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.LogRecord;
 
-import org.x4juli.NOPLogger;
 import org.x4juli.filter.WrapperFilter;
 import org.x4juli.formatter.SimpleFormatter;
 import org.x4juli.global.Constants;
@@ -37,6 +36,7 @@ import org.x4juli.global.spi.ExtendedLogger;
 import org.x4juli.global.spi.LogIllegalStateException;
 import org.x4juli.global.spi.LoggerRepository;
 import org.x4juli.global.spi.OptionHandler;
+import org.x4juli.logger.NOPLogger;
 
 /**
  * Abstract superclass of the other handlers in the package. This class provides

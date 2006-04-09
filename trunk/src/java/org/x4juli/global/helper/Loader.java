@@ -18,7 +18,7 @@ package org.x4juli.global.helper;
 import java.net.URL;
 import java.util.logging.Level;
 
-import org.x4juli.NOPLogger;
+import org.x4juli.logger.NOPLogger;
 
 /**
  * Load resources (or images) from various sources.

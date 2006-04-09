@@ -15,10 +15,10 @@
  */
 package org.x4juli;
 
-import java.util.logging.Logger;
-
+import org.x4juli.global.spi.ClassLoaderLogManager;
 import org.x4juli.global.spi.LoggerFactory;
 import org.x4juli.global.spi.LoggerRepository;
+import org.x4juli.logger.X4JuliLoggerFactory;
 
 /**
  * The LogManager to enable X4Juli.
@@ -53,7 +53,7 @@ public class X4JuliLogManager extends ClassLoaderLogManager {
     // --------------------------------------------------------- Public Methods
 
     /**
-     * @see org.x4juli.ClassLoaderLogManager#getFQCNofLogger()
+     * @see org.x4juli.global.spi.ClassLoaderLogManager#getFQCNofLogger()
      * @since 0.5
      */
     public String getFQCNofLogger() {

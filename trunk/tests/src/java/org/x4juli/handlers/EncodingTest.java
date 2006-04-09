@@ -18,12 +18,12 @@ package org.x4juli.handlers;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.x4juli.NOPLogger;
 import org.x4juli.formatter.PatternFormatter;
 import org.x4juli.global.components.AbstractJuliTestCase;
 import org.x4juli.global.helper.LoggerUtil;
 import org.x4juli.global.util.BinaryCompare;
 import org.x4juli.handlers.FileHandler;
+import org.x4juli.logger.NOPLogger;
 
 /**
  * Testcase for x4juli.

@@ -20,9 +20,9 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 
-import org.x4juli.NOPLogger;
 import org.x4juli.global.Constants;
 import org.x4juli.global.resources.MessageProperties;
+import org.x4juli.logger.NOPLogger;
 
 /**
  * The basic implementation for all x4juli components.

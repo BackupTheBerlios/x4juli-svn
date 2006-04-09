@@ -13,13 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.x4juli;
+package org.x4juli.logger;
 
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
-import org.x4juli.global.spi.AbstractExtendedLogger;
 import org.x4juli.global.spi.ExtendedLogRecord;
 
 /**

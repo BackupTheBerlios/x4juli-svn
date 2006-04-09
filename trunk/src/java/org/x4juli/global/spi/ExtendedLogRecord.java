@@ -83,7 +83,7 @@ public interface ExtendedLogRecord extends LogRecord, java.io.Serializable {
     /**
      * Sets the full qualified class name of the logger. This method is needed for wrapper classes
      * which are not able to directly inherit from
-     * {@link org.x4juli.global.spi.AbstractExtendedLogger}.
+     * {@link org.x4juli.logger.AbstractExtendedLogger}.
      * 
      * @param fqcn of the logger submitting the logrecord to the system.
      * @since 0.6

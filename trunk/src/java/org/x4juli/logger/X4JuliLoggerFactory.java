@@ -1,5 +1,5 @@
 /*
- * Copyright 2006 x4juli.org.
+ * Copyright 1999,2005 The Apache Software Foundation.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,22 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.x4juli;
+package org.x4juli.logger;
 
 import org.x4juli.global.spi.ExtendedLogger;
 import org.x4juli.global.spi.LoggerFactory;
 
 /**
- * Creates <code>org.x4juli.DefaultJDKLogger</code> instances without additional logic.
+ * Missing documentation.
+ * @todo Missing documentation.
  * @author Boris Unckel
  * @since 0.7
  */
-public final class DefaultJDKLoggerFactory implements LoggerFactory {
+public final class X4JuliLoggerFactory implements LoggerFactory {
 
     /**
      * 
      */
-    public DefaultJDKLoggerFactory() {
+    public X4JuliLoggerFactory() {
         super();
     }
 
@@ -36,8 +37,8 @@ public final class DefaultJDKLoggerFactory implements LoggerFactory {
      * {@inheritDoc}
      * @since 0.7
      */
-    public ExtendedLogger makeNewLoggerInstance(final String name, final String resourcebundleName) {
-        return new DefaultJDKLogger(name, resourcebundleName);
+    public ExtendedLogger makeNewLoggerInstance(final String name, final String resourceBundle) {
+            return new X4JuliLogger(name,resourceBundle);
     }
 
     /**
@@ -45,9 +46,9 @@ public final class DefaultJDKLoggerFactory implements LoggerFactory {
      * @since 0.7
      */
     public String getFQCNofLogger() {
-        return "org.x4juli.DefaultJDKLogger";
+        return "org.x4juli.X4JuliLogger";
     }
 
 }
 
-// EOF DefaultJDKLoggerFactory.java
+// EOF X4JuliLoggerFactory.java

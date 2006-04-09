@@ -23,12 +23,12 @@ import java.util.logging.Formatter;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
-import org.x4juli.NOPLogger;
 import org.x4juli.global.SystemUtils;
 import org.x4juli.global.helper.IOUtil;
 import org.x4juli.global.spi.ExtendedLogRecord;
 import org.x4juli.global.spi.ExtendedLogRecordImpl;
 import org.x4juli.global.spi.ThrowableInformation;
+import org.x4juli.logger.NOPLogger;
 
 /**
  * WriterHandler appends log events to a {@link java.io.Writer}.

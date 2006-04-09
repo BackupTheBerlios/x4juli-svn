@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.x4juli;
+package org.x4juli.global.spi;
 
 import java.beans.PropertyChangeListener;
 import java.io.FileInputStream;
@@ -37,12 +37,7 @@ import org.x4juli.global.Constants;
 import org.x4juli.global.LoggerClassInformation;
 import org.x4juli.global.LoggerRepositoryHolder;
 import org.x4juli.global.context.ContextFactory;
-import org.x4juli.global.spi.ExtendedLogger;
-import org.x4juli.global.spi.Hierarchy;
-import org.x4juli.global.spi.LoggerFactory;
-import org.x4juli.global.spi.LoggerRepository;
-import org.x4juli.global.spi.PropertyChangeListenerWrapper;
-import org.x4juli.global.spi.TCCLMapper;
+import org.x4juli.logger.NOPLogger;
 
 /**
  * Per classloader LogManager implementation. Based on Version 1.11 <a
@@ -87,7 +82,7 @@ public abstract class ClassLoaderLogManager extends LogManager implements Logger
      *             the caller does not have LoggingPermission("control").
      * @since 0.7
      */
-    public synchronized boolean addLogger(final Logger logger) {
+    public synchronized boolean addLogger(final java.util.logging.Logger logger) {
         checkAccess();
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         LoggerRepository repository = getClassLoaderInfo(classLoader).repository;
@@ -104,10 +99,10 @@ public abstract class ClassLoaderLogManager extends LogManager implements Logger
      * @param name The name of the logger to retrieve.
      * @return the logger corresponding to classloader and name.
      */
-    public synchronized Logger getLogger(final String name) {
+    public synchronized java.util.logging.Logger getLogger(final String name) {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         LoggerRepository repository = getClassLoaderInfo(classLoader).repository;
-        return (Logger) repository.getLogger(name);
+        return (java.util.logging.Logger) repository.getLogger(name);
     }
 
     /**
@@ -409,7 +404,7 @@ public abstract class ClassLoaderLogManager extends LogManager implements Logger
      */
     protected static final class ClassLoaderLogInfo {
 
-        final LoggerRepository repository;
+        public final LoggerRepository repository;
         private final Hashtable listenerWrapper = new Hashtable();
 
         /**

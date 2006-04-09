@@ -1,5 +1,5 @@
 /*
- * Copyright 1999,2005 The Apache Software Foundation.
+ * Copyright 2006 x4juli.org.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,36 +13,41 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.x4juli.global.spi;
+package org.x4juli.slf4j;
 
+import org.x4juli.global.spi.ExtendedLogger;
+import org.x4juli.global.spi.LoggerFactory;
 
 /**
- * Missing documentation.
- * @todo Missing documentation.
+ * Factory for Slf4jLogger inside x4juli. Not for use with SLF4J itself.
  * @author Boris Unckel
  * @since 0.7
  */
-public class ExtendedLoggerWrapper extends AbstractExtendedLogger {
+public class Slf4jLoggerFactory implements LoggerFactory {
 
-    private final java.util.logging.Logger wrappedLogger;
-    
     /**
-     * Constructor wrapping the original Logger.
-     * @param toWrap the logger to wrap.
+     * 
      */
-    public ExtendedLoggerWrapper(java.util.logging.Logger toWrap) {
-        super(toWrap.getName(), toWrap.getResourceBundleName());
-        this.wrappedLogger = toWrap;
+    public Slf4jLoggerFactory() {
+        super();
     }
 
     /**
      * {@inheritDoc}
      * @since 0.7
      */
-    public void log(ExtendedLogRecord record) {
-        this.wrappedLogger.log((java.util.logging.LogRecord) record);
+    public ExtendedLogger makeNewLoggerInstance(String name, String resourcebundleName) {
+        return new Slf4jLogger(name, resourcebundleName);
+    }
+
+    /**
+     * {@inheritDoc}
+     * @since 0.7
+     */
+    public String getFQCNofLogger() {
+        return "org.x4juli.slf4j.Slf4jLogger";
     }
 
 }
 
-// EOF ExtendedLoggerWrapper.java
+// EOF Slf4jLoggerFactory.java

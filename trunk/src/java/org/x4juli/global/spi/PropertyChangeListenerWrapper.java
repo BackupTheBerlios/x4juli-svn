@@ -18,7 +18,6 @@ package org.x4juli.global.spi;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import org.x4juli.ClassLoaderLogManager;
 
 /**
  * Wrapps an PropertyChangeListener into an LoggerRepositoryEventListener.

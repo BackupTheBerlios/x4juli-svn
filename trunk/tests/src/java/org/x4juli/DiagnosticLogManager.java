@@ -18,6 +18,7 @@ package org.x4juli;
 import java.util.logging.Logger;
 
 import org.x4juli.global.Constants;
+import org.x4juli.global.spi.ClassLoaderLogManager;
 import org.x4juli.global.spi.LoggerFactory;
 import org.x4juli.global.spi.LoggerRepository;
 
@@ -35,7 +36,7 @@ public class DiagnosticLogManager extends ClassLoaderLogManager {
     }
 
     /**
-     * @see org.x4juli.ClassLoaderLogManager#getFQCNofLogger()
+     * @see org.x4juli.global.spi.ClassLoaderLogManager#getFQCNofLogger()
      * @since 0.5
      */
     public String getFQCNofLogger() {
@@ -49,7 +50,7 @@ public class DiagnosticLogManager extends ClassLoaderLogManager {
      * have compatible use with
      * <code>java.util.logging.Logger.getLogger(String name)</code>.
      * 
-     * @see org.x4juli.ClassLoaderLogManager#getLogger(java.lang.String)
+     * @see org.x4juli.global.spi.ClassLoaderLogManager#getLogger(java.lang.String)
      * @since 0.5
      */
     public synchronized Logger getLogger(final String name) {

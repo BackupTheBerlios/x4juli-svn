@@ -23,7 +23,7 @@ import java.io.Writer;
 import java.net.Socket;
 import java.util.logging.Level;
 
-import org.x4juli.NOPLogger;
+import org.x4juli.logger.NOPLogger;
 
 /**
  * Utility class for IO Operations. Currently for null safe close without exceptions.

@@ -1,53 +1,85 @@
 /*
- * Copyright 2006 x4juli.org.
- * 
+ * Copyright 2005, x4juli.org.
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.x4juli;
+package org.x4juli.logger;
 
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
 import org.slf4j.Marker;
+import org.x4juli.X4JuliLogManager;
 import org.x4juli.global.helper.LoggerUtil;
-import org.x4juli.global.spi.AbstractExtendedLogger;
 import org.x4juli.global.spi.ExtendedLogRecord;
 import org.x4juli.global.spi.ExtendedLogRecordImpl;
 
 /**
- * Missing documentation.
- * @todo Missing documentation.
+ * This Logger offers native support for
+ * <code>org.apache.commons.logging.Log</code> and
+ * <code>org.slf4j.Logger</code>. <br/> It offers the possibility to use both
+ * mentioned loggers without the need of a wrapper class.
+ * <br/>
+ * This class is just package visible to avoid direct usage in user code.
+ *
  * @author Boris Unckel
- * @since 0.7
+ * @since 0.5
+ * @see org.x4juli.X4JuliLogManager
  */
-class Slf4jLogger extends AbstractExtendedLogger {
+class X4JuliLogger extends AbstractExtendedLogger implements org.apache.commons.logging.Log,
+        org.slf4j.Logger {
+
+    // -------------------------------------------------------------- Variables
+
+    static final Level JCL_MAPPING_TRACE = Level.FINEST;
+
+    static final Level JCL_MAPPING_DEBUG = Level.FINE;
+
+    static final Level JCL_MAPPING_INFO = Level.INFO;
+
+    static final Level JCL_MAPPING_WARN = Level.WARNING;
+
+    static final Level JCL_MAPPING_ERROR = Level.SEVERE;
+
+    static final Level JCL_MAPPING_FATAL = Level.SEVERE;
 
     // SLF4J Level have to be the same as in JCL because of
     // identical method names.
 
-    static final Level SLF4J_MAPPING_DEBUG = Level.FINE;
+    static final Level SLF4J_MAPPING_DEBUG = JCL_MAPPING_DEBUG;
 
-    static final Level SLF4J_MAPPING_INFO = Level.INFO;
+    static final Level SLF4J_MAPPING_INFO = JCL_MAPPING_INFO;
 
-    static final Level SLF4J_MAPPING_WARN = Level.WARNING;
+    static final Level SLF4J_MAPPING_WARN = JCL_MAPPING_WARN;
 
-    static final Level SLF4J_MAPPING_ERROR = Level.SEVERE;
+    static final Level SLF4J_MAPPING_ERROR = JCL_MAPPING_ERROR;
+
+    // ------------------------------------------------------------ Constructor
 
     /**
-     * @param name
-     * @param resourceBundleName
+     * Constructor for use without resourcebundle.
+     * @param name of the logger.
      */
-    public Slf4jLogger(String name, String resourceBundleName) {
+    public X4JuliLogger(final String name) {
+        super(name, null);
+    }
+
+    /**
+     * Constructor for use with an resourcebundle.
+     * @param name of the logger.
+     * @param resourceBundleName for i18n.
+     */
+    public X4JuliLogger(final String name, final String resourceBundleName) {
         super(name, resourceBundleName);
     }
 
@@ -64,7 +96,7 @@ class Slf4jLogger extends AbstractExtendedLogger {
      * @since 0.5
      */
     public boolean isDebugEnabled() {
-        return isLoggable(SLF4J_MAPPING_DEBUG);
+        return isLoggable(JCL_MAPPING_DEBUG);
     }
 
     /**
@@ -75,7 +107,7 @@ class Slf4jLogger extends AbstractExtendedLogger {
      * @since 0.5
      */
     public boolean isInfoEnabled() {
-        return isLoggable(SLF4J_MAPPING_INFO);
+        return isLoggable(JCL_MAPPING_INFO);
     }
 
     /**
@@ -86,7 +118,203 @@ class Slf4jLogger extends AbstractExtendedLogger {
      * @since 0.5
      */
     public boolean isErrorEnabled() {
-        return isLoggable(SLF4J_MAPPING_ERROR);
+        return isLoggable(JCL_MAPPING_ERROR);
+    }
+
+    // -----------------Methods only for org.apache.commons.logging.Log
+
+    /**
+     * Refers to <code>java.util.logging.Level.FINEST</code>.
+     *
+     * @see org.apache.commons.logging.Log#isTraceEnabled()
+     * @since 0.5
+     */
+    public boolean isTraceEnabled() {
+        return isLoggable(JCL_MAPPING_TRACE);
+    }
+
+    /**
+     * Refers to <code>java.util.logging.Level.WARNING</code>.
+     *
+     * @see org.apache.commons.logging.Log#isWarnEnabled()
+     * @since 0.5
+     */
+    public boolean isWarnEnabled() {
+        return isLoggable(JCL_MAPPING_WARN);
+    }
+
+    /**
+     * Refers to <code>java.util.logging.Level.SEVERE</code>.
+     *
+     * @see org.apache.commons.logging.Log#isFatalEnabled()
+     * @since 0.5
+     */
+    public boolean isFatalEnabled() {
+        return isLoggable(JCL_MAPPING_FATAL);
+    }
+
+    /**
+     * Refers to <code>java.util.logging.Level.FINEST</code>.
+     *
+     * @see org.apache.commons.logging.Log#trace(java.lang.Object)
+     * @since 0.5
+     */
+    public void trace(final Object message) {
+        if (!isLoggable(JCL_MAPPING_TRACE)) {
+            return;
+        }
+        robustLog(JCL_MAPPING_TRACE, message, null);
+    }
+
+    /**
+     * Refers to <code>java.util.logging.Level.FINEST</code>.
+     *
+     * @see org.apache.commons.logging.Log#trace(java.lang.Object,
+     *      java.lang.Throwable)
+     * @since 0.5
+     */
+    public void trace(final Object message, final Throwable t) {
+        if (!isLoggable(JCL_MAPPING_TRACE)) {
+            return;
+        }
+        robustLog(JCL_MAPPING_TRACE, message, t);
+    }
+
+    /**
+     * Refers to <code>java.util.logging.Level.FINE</code>.
+     *
+     * @see org.apache.commons.logging.Log#debug(java.lang.Object)
+     * @since 0.5
+     */
+    public void debug(final Object message) {
+        if (!isLoggable(JCL_MAPPING_DEBUG)) {
+            return;
+        }
+        robustLog(JCL_MAPPING_DEBUG, message, null);
+
+    }
+
+    /**
+     * Refers to <code>java.util.logging.Level.FINE</code>.
+     *
+     * @see org.apache.commons.logging.Log#debug(java.lang.Object,
+     *      java.lang.Throwable)
+     * @since 0.5
+     */
+    public void debug(final Object message, final Throwable t) {
+        if (!isLoggable(JCL_MAPPING_DEBUG)) {
+            return;
+        }
+        robustLog(JCL_MAPPING_DEBUG, message, t);
+    }
+
+    /**
+     * Refers to <code>java.util.logging.Level.INFO</code>.
+     *
+     * @see org.apache.commons.logging.Log#info(java.lang.Object)
+     * @since 0.5
+     */
+    public void info(final Object message) {
+        if (!isLoggable(JCL_MAPPING_INFO)) {
+            return;
+        }
+        robustLog(JCL_MAPPING_INFO, message, null);
+
+    }
+
+    /**
+     * Refers to <code>java.util.logging.Level.INFO</code>.
+     *
+     * @see org.apache.commons.logging.Log#info(java.lang.Object,
+     *      java.lang.Throwable)
+     * @since 0.5
+     */
+    public void info(final Object message, final Throwable t) {
+        if (!isLoggable(JCL_MAPPING_INFO)) {
+            return;
+        }
+        robustLog(JCL_MAPPING_INFO, message, t);
+    }
+
+    /**
+     * Refers to <code>java.util.logging.Level.WARNING</code>.
+     *
+     * @see org.apache.commons.logging.Log#warn(java.lang.Object)
+     * @since 0.5
+     */
+    public void warn(final Object message) {
+        if (!isLoggable(JCL_MAPPING_WARN)) {
+            return;
+        }
+        robustLog(JCL_MAPPING_WARN, message, null);
+    }
+
+    /**
+     * Refers to <code>java.util.logging.Level.WARNING</code>.
+     *
+     * @see org.apache.commons.logging.Log#warn(java.lang.Object,
+     *      java.lang.Throwable)
+     * @since 0.5
+     */
+    public void warn(final Object message, final Throwable t) {
+        if (!isLoggable(JCL_MAPPING_WARN)) {
+            return;
+        }
+        robustLog(JCL_MAPPING_WARN, message, t);
+    }
+
+    /**
+     * Refers to <code>java.util.logging.Level.SEVERE</code>.
+     *
+     * @see org.apache.commons.logging.Log#error(java.lang.Object)
+     * @since 0.5
+     */
+    public void error(final Object message) {
+        if (!isLoggable(JCL_MAPPING_ERROR)) {
+            return;
+        }
+        robustLog(JCL_MAPPING_ERROR, message, null);
+    }
+
+    /**
+     * Refers to <code>java.util.logging.Level.SEVERE</code>.
+     *
+     * @see org.apache.commons.logging.Log#error(java.lang.Object,
+     *      java.lang.Throwable)
+     * @since 0.5
+     */
+    public void error(final Object message, final Throwable t) {
+        if (!isLoggable(JCL_MAPPING_ERROR)) {
+            return;
+        }
+        robustLog(JCL_MAPPING_ERROR, message, t);
+    }
+
+    /**
+     * Refers to <code>java.util.logging.Level.SEVERE</code>.
+     *
+     * @see org.apache.commons.logging.Log#fatal(java.lang.Object)
+     * @since 0.5
+     */
+    public void fatal(final Object message) {
+        if (!isLoggable(JCL_MAPPING_FATAL)) {
+            return;
+        }
+        robustLog(JCL_MAPPING_FATAL, message, null);
+    }
+
+    /**
+     * Refers to <code>java.util.logging.Level.SEVERE</code>.
+     *
+     * @see org.apache.commons.logging.Log#fatal(java.lang.Object,
+     *      java.lang.Throwable)
+     * @since 0.5
+     */
+    public void fatal(final Object message, final Throwable t) {
+        if (!isLoggable(JCL_MAPPING_FATAL)) {
+            return;
+        }
+        robustLog(JCL_MAPPING_FATAL, message, t);
     }
 
     // --------------------------------------Methods only for org.slf4j.Logger
@@ -1050,4 +1278,4 @@ class Slf4jLogger extends AbstractExtendedLogger {
 
 }
 
-// EOF Slf4jLogger.java
+// EOF X4JuliLogger.java

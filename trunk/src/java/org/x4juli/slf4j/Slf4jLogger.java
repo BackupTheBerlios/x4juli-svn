@@ -1,5 +1,5 @@
 /*
- * Copyright 1999,2005 The Apache Software Foundation.
+ * Copyright 2006 x4juli.org.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,15 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.x4juli;
+package org.x4juli.slf4j;
 
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
+import org.slf4j.Marker;
 import org.x4juli.global.helper.LoggerUtil;
-import org.x4juli.global.spi.AbstractExtendedLogger;
 import org.x4juli.global.spi.ExtendedLogRecord;
 import org.x4juli.global.spi.ExtendedLogRecordImpl;
+import org.x4juli.logger.AbstractExtendedLogger;
 
 /**
  * Missing documentation.
@@ -29,31 +30,27 @@ import org.x4juli.global.spi.ExtendedLogRecordImpl;
  * @author Boris Unckel
  * @since 0.7
  */
-class JCLLogger extends AbstractExtendedLogger {
+class Slf4jLogger extends AbstractExtendedLogger {
 
-    // -------------------------------------------------------------- Variables
+    // SLF4J Level have to be the same as in JCL because of
+    // identical method names.
 
-    static final Level JCL_MAPPING_TRACE = Level.FINEST;
+    static final Level SLF4J_MAPPING_DEBUG = Level.FINE;
 
-    static final Level JCL_MAPPING_DEBUG = Level.FINE;
+    static final Level SLF4J_MAPPING_INFO = Level.INFO;
 
-    static final Level JCL_MAPPING_INFO = Level.INFO;
+    static final Level SLF4J_MAPPING_WARN = Level.WARNING;
 
-    static final Level JCL_MAPPING_WARN = Level.WARNING;
-
-    static final Level JCL_MAPPING_ERROR = Level.SEVERE;
-
-    static final Level JCL_MAPPING_FATAL = Level.SEVERE;
-
-    // ------------------------------------------------------------ Constructor
+    static final Level SLF4J_MAPPING_ERROR = Level.SEVERE;
 
     /**
      * @param name
      * @param resourceBundleName
      */
-    public JCLLogger(String name, String resourceBundleName) {
+    public Slf4jLogger(String name, String resourceBundleName) {
         super(name, resourceBundleName);
     }
+
     // --------------------------------------------------------- Public Methods
 
     // ------------------------------------------------Methods for both
@@ -67,7 +64,7 @@ class JCLLogger extends AbstractExtendedLogger {
      * @since 0.5
      */
     public boolean isDebugEnabled() {
-        return isLoggable(JCL_MAPPING_DEBUG);
+        return isLoggable(SLF4J_MAPPING_DEBUG);
     }
 
     /**
@@ -78,7 +75,7 @@ class JCLLogger extends AbstractExtendedLogger {
      * @since 0.5
      */
     public boolean isInfoEnabled() {
-        return isLoggable(JCL_MAPPING_INFO);
+        return isLoggable(SLF4J_MAPPING_INFO);
     }
 
     /**
@@ -89,204 +86,507 @@ class JCLLogger extends AbstractExtendedLogger {
      * @since 0.5
      */
     public boolean isErrorEnabled() {
-        return isLoggable(JCL_MAPPING_ERROR);
+        return isLoggable(SLF4J_MAPPING_ERROR);
     }
 
-    // -----------------Methods only for org.apache.commons.logging.Log
+    // --------------------------------------Methods only for org.slf4j.Logger
 
     /**
-     * Refers to <code>java.util.logging.Level.FINEST</code>.
+     * Refers to <code>java.util.logging.Level.FINE</code>.
      *
-     * @see org.apache.commons.logging.Log#isTraceEnabled()
-     * @since 0.5
+     * @see org.slf4j.Logger#debug(String)
+     * @since 0.6
      */
-    public boolean isTraceEnabled() {
-        return isLoggable(JCL_MAPPING_TRACE);
-    }
-
-    /**
-     * Refers to <code>java.util.logging.Level.WARNING</code>.
-     *
-     * @see org.apache.commons.logging.Log#isWarnEnabled()
-     * @since 0.5
-     */
-    public boolean isWarnEnabled() {
-        return isLoggable(JCL_MAPPING_WARN);
-    }
-
-    /**
-     * Refers to <code>java.util.logging.Level.SEVERE</code>.
-     *
-     * @see org.apache.commons.logging.Log#isFatalEnabled()
-     * @since 0.5
-     */
-    public boolean isFatalEnabled() {
-        return isLoggable(JCL_MAPPING_FATAL);
-    }
-
-    /**
-     * Refers to <code>java.util.logging.Level.FINEST</code>.
-     *
-     * @see org.apache.commons.logging.Log#trace(java.lang.Object)
-     * @since 0.5
-     */
-    public void trace(final Object message) {
-        if (!isLoggable(JCL_MAPPING_TRACE)) {
+    public void debug(final String msg) {
+        if (!isLoggable(SLF4J_MAPPING_DEBUG)) {
             return;
         }
-        robustLog(JCL_MAPPING_TRACE, message, null);
-    }
-
-    /**
-     * Refers to <code>java.util.logging.Level.FINEST</code>.
-     *
-     * @see org.apache.commons.logging.Log#trace(java.lang.Object,
-     *      java.lang.Throwable)
-     * @since 0.5
-     */
-    public void trace(final Object message, final Throwable t) {
-        if (!isLoggable(JCL_MAPPING_TRACE)) {
-            return;
-        }
-        robustLog(JCL_MAPPING_TRACE, message, t);
+        log(SLF4J_MAPPING_DEBUG, msg);
     }
 
     /**
      * Refers to <code>java.util.logging.Level.FINE</code>.
      *
-     * @see org.apache.commons.logging.Log#debug(java.lang.Object)
-     * @since 0.5
+     * @see org.slf4j.Logger#debug(String, Throwable)
+     * @since 0.6
      */
-    public void debug(final Object message) {
-        if (!isLoggable(JCL_MAPPING_DEBUG)) {
+    public void debug(final String msg, final Throwable t) {
+        if (!isLoggable(SLF4J_MAPPING_DEBUG)) {
             return;
         }
-        robustLog(JCL_MAPPING_DEBUG, message, null);
-
+        log(SLF4J_MAPPING_DEBUG, msg, t);
     }
 
     /**
      * Refers to <code>java.util.logging.Level.FINE</code>.
      *
-     * @see org.apache.commons.logging.Log#debug(java.lang.Object,
-     *      java.lang.Throwable)
-     * @since 0.5
+     * @see org.slf4j.Logger#debug(String, Object)
+     * @since 0.6
      */
-    public void debug(final Object message, final Throwable t) {
-        if (!isLoggable(JCL_MAPPING_DEBUG)) {
+    public void debug(final String format, final Object arg) {
+        if (!isLoggable(SLF4J_MAPPING_DEBUG) || format == null) {
             return;
         }
-        robustLog(JCL_MAPPING_DEBUG, message, t);
+        robustLogSlf4j(SLF4J_MAPPING_DEBUG, format, new Object[]{arg});
+    }
+
+    /**
+     * Refers to <code>java.util.logging.Level.FINE</code>.
+     *
+     * @see org.slf4j.Logger#debug(String, Object, Object)
+     * @since 0.6
+     */
+    public void debug(final String format, final Object arg1, final Object arg2) {
+        if (!isLoggable(SLF4J_MAPPING_DEBUG) || format == null) {
+            return;
+        }
+        robustLogSlf4j(SLF4J_MAPPING_DEBUG, format, new Object[]{arg1, arg2});
+    }
+
+    /**
+     * Refers to <code>java.util.logging.Level.FINE</code>.
+     * @see org.slf4j.Logger#debug(String, Object[])
+     * @since 0.7
+     */
+    public void debug(final String format, final Object[] argArray) {
+        if (!isLoggable(SLF4J_MAPPING_DEBUG) || format == null) {
+            return;
+        }
+        robustLogSlf4j(SLF4J_MAPPING_DEBUG, format, argArray);    
     }
 
     /**
      * Refers to <code>java.util.logging.Level.INFO</code>.
      *
-     * @see org.apache.commons.logging.Log#info(java.lang.Object)
-     * @since 0.5
+     * @see org.slf4j.Logger#debug(String, Throwable)
+     * @since 0.6
      */
-    public void info(final Object message) {
-        if (!isLoggable(JCL_MAPPING_INFO)) {
+    public void info(final String msg, final Throwable t) {
+        if (!isLoggable(SLF4J_MAPPING_INFO)) {
             return;
         }
-        robustLog(JCL_MAPPING_INFO, message, null);
-
+        log(SLF4J_MAPPING_INFO, msg, t);
     }
 
     /**
      * Refers to <code>java.util.logging.Level.INFO</code>.
      *
-     * @see org.apache.commons.logging.Log#info(java.lang.Object,
-     *      java.lang.Throwable)
-     * @since 0.5
+     * @see org.slf4j.Logger#info(String, Object)
+     * @since 0.6
      */
-    public void info(final Object message, final Throwable t) {
-        if (!isLoggable(JCL_MAPPING_INFO)) {
+    public void info(final String format, final Object arg) {
+        if (!isLoggable(SLF4J_MAPPING_INFO) || format == null) {
             return;
         }
-        robustLog(JCL_MAPPING_INFO, message, t);
+        robustLogSlf4j(SLF4J_MAPPING_INFO, format, new Object[]{arg});
+    }
+
+    /**
+     * Refers to <code>java.util.logging.Level.INFO</code>.
+     *
+     * @see org.slf4j.Logger#info(String, Object, Object)
+     * @since 0.6
+     */
+    public void info(final String format, final Object arg1, final Object arg2) {
+        if (!isLoggable(SLF4J_MAPPING_INFO) || format == null) {
+            return;
+        }
+        robustLogSlf4j(SLF4J_MAPPING_INFO, format, new Object[]{arg1, arg2});
+    }
+
+    /**
+     * Refers to <code>java.util.logging.Level.INFO</code>.
+     * 
+     * @see org.slf4j.Logger#info(String, Object[])
+     * @since 0.7
+     */
+    public void info(final String format, final Object[] argArray) {
+        if (!isLoggable(SLF4J_MAPPING_INFO) || format == null) {
+            return;
+        }
+        robustLogSlf4j(SLF4J_MAPPING_INFO, format, argArray);
     }
 
     /**
      * Refers to <code>java.util.logging.Level.WARNING</code>.
      *
-     * @see org.apache.commons.logging.Log#warn(java.lang.Object)
-     * @since 0.5
+     * @see org.slf4j.Logger#warn(String)
+     * @since 0.6
      */
-    public void warn(final Object message) {
-        if (!isLoggable(JCL_MAPPING_WARN)) {
+    public void warn(final String msg) {
+        if (!isLoggable(SLF4J_MAPPING_WARN)) {
             return;
         }
-        robustLog(JCL_MAPPING_WARN, message, null);
+        log(SLF4J_MAPPING_WARN, msg);
     }
 
     /**
      * Refers to <code>java.util.logging.Level.WARNING</code>.
      *
-     * @see org.apache.commons.logging.Log#warn(java.lang.Object,
-     *      java.lang.Throwable)
-     * @since 0.5
+     * @see org.slf4j.Logger#warn(String, Throwable)
+     * @since 0.6
      */
-    public void warn(final Object message, final Throwable t) {
-        if (!isLoggable(JCL_MAPPING_WARN)) {
+    public void warn(final String msg, final Throwable t) {
+        if (!isLoggable(SLF4J_MAPPING_WARN)) {
             return;
         }
-        robustLog(JCL_MAPPING_WARN, message, t);
+        log(SLF4J_MAPPING_WARN, msg, t);
+    }
+
+    /**
+     * Refers to <code>java.util.logging.Level.WARNING</code>.
+     *
+     * @see org.slf4j.Logger#warn(String, Object)
+     * @since 0.6
+     */
+    public void warn(final String format, final Object arg) {
+        if (!isLoggable(SLF4J_MAPPING_WARN) || format == null) {
+            return;
+        }
+        robustLogSlf4j(SLF4J_MAPPING_WARN, format, new Object[]{arg});
+    }
+
+    /**
+     * Refers to <code>java.util.logging.Level.WARNING</code>.
+     *
+     * @see org.slf4j.Logger#warn(String, Object, Object)
+     * @since 0.6
+     */
+    public void warn(final String format, final Object arg1, final Object arg2) {
+        if (!isLoggable(SLF4J_MAPPING_WARN) || format == null) {
+            return;
+        }
+        robustLogSlf4j(SLF4J_MAPPING_WARN, format, new Object[]{arg1, arg2});
+    }
+
+    /**
+     * Refers to <code>java.util.logging.Level.WARNING</code>.
+     * @see org.slf4j.Logger#warn(String, Object[])
+     * @since
+     */
+    public void warn(final String format, final Object[] argArray) {
+        if (!isLoggable(SLF4J_MAPPING_WARN) || format == null) {
+            return;
+        }
+        robustLogSlf4j(SLF4J_MAPPING_WARN, format, argArray);
     }
 
     /**
      * Refers to <code>java.util.logging.Level.SEVERE</code>.
      *
-     * @see org.apache.commons.logging.Log#error(java.lang.Object)
-     * @since 0.5
+     * @see org.slf4j.Logger#error(String)
+     * @since 0.6
      */
-    public void error(final Object message) {
-        if (!isLoggable(JCL_MAPPING_ERROR)) {
+    public void error(final String msg) {
+        if (!isLoggable(SLF4J_MAPPING_ERROR)) {
             return;
         }
-        robustLog(JCL_MAPPING_ERROR, message, null);
+        log(SLF4J_MAPPING_ERROR, msg);
     }
 
     /**
      * Refers to <code>java.util.logging.Level.SEVERE</code>.
      *
-     * @see org.apache.commons.logging.Log#error(java.lang.Object,
-     *      java.lang.Throwable)
-     * @since 0.5
+     * @see org.slf4j.Logger#error(String, Throwable)
+     * @since 0.6
      */
-    public void error(final Object message, final Throwable t) {
-        if (!isLoggable(JCL_MAPPING_ERROR)) {
+    public void error(final String msg, final Throwable t) {
+        if (!isLoggable(SLF4J_MAPPING_ERROR)) {
             return;
         }
-        robustLog(JCL_MAPPING_ERROR, message, t);
+        log(SLF4J_MAPPING_ERROR, msg, t);
     }
 
     /**
      * Refers to <code>java.util.logging.Level.SEVERE</code>.
      *
-     * @see org.apache.commons.logging.Log#fatal(java.lang.Object)
-     * @since 0.5
+     * @see org.slf4j.Logger#error(String, Object)
+     * @since 0.6
      */
-    public void fatal(final Object message) {
-        if (!isLoggable(JCL_MAPPING_FATAL)) {
+    public void error(final String format, final Object arg) {
+        if (!isLoggable(SLF4J_MAPPING_ERROR) || format == null) {
             return;
         }
-        robustLog(JCL_MAPPING_FATAL, message, null);
+        robustLogSlf4j(SLF4J_MAPPING_ERROR, format, new Object[]{arg});
     }
 
     /**
      * Refers to <code>java.util.logging.Level.SEVERE</code>.
      *
-     * @see org.apache.commons.logging.Log#fatal(java.lang.Object,
-     *      java.lang.Throwable)
-     * @since 0.5
+     * @see org.slf4j.Logger#error(String, Object, Object)
+     * @since 0.6
      */
-    public void fatal(final Object message, final Throwable t) {
-        if (!isLoggable(JCL_MAPPING_FATAL)) {
+    public void error(final String format, final Object arg1, final Object arg2) {
+        if (!isLoggable(SLF4J_MAPPING_ERROR) || format == null) {
             return;
         }
-        robustLog(JCL_MAPPING_FATAL, message, t);
+        robustLogSlf4j(SLF4J_MAPPING_ERROR, format, new Object[]{arg1, arg2});
     }
+
+    /**
+     * Refers to <code>java.util.logging.Level.SEVERE</code>.
+     * @see org.slf4j.Logger#error(String, Object[])
+     * @since 0.7
+     */
+    public void error(final String format, final Object[] argArray) {
+        if (!isLoggable(SLF4J_MAPPING_ERROR) || format == null) {
+            return;
+        }
+        robustLogSlf4j(SLF4J_MAPPING_ERROR, format, argArray);
+    }
+
+    /**
+     * {@inheritDoc}
+     * @since 0.7
+     */
+    public void debug(Marker marker, String format, Object arg1, Object arg2) {
+        if (!isLoggable(SLF4J_MAPPING_DEBUG) || format == null) {
+            return;
+        }
+        robustLogSlf4j(SLF4J_MAPPING_DEBUG, format, new Object[]{arg1, arg2});
+    }
+
+    /**
+     * {@inheritDoc}
+     * @since 0.7
+     */
+    public void debug(Marker marker, String format, Object arg) {
+        if (!isLoggable(SLF4J_MAPPING_DEBUG) || format == null) {
+            return;
+        }
+        robustLogSlf4j(SLF4J_MAPPING_DEBUG, format, new Object[]{arg});
+    }
+
+    /**
+     * {@inheritDoc}
+     * @since 0.7
+     */
+    public void debug(Marker marker, String format, Object[] argArray) {
+        if (!isLoggable(SLF4J_MAPPING_DEBUG) || format == null) {
+            return;
+        }
+        robustLogSlf4j(SLF4J_MAPPING_DEBUG, format, argArray);
+    }
+
+    /**
+     * {@inheritDoc}
+     * @since 0.7
+     */
+    public void debug(Marker marker, String msg, Throwable t) {
+        if (!isLoggable(SLF4J_MAPPING_DEBUG)) {
+            return;
+        }
+        log(SLF4J_MAPPING_DEBUG, msg, t);
+    }
+
+    /**
+     * {@inheritDoc}
+     * @since 0.7
+     */
+    public void debug(Marker marker, String msg) {
+        if (!isLoggable(SLF4J_MAPPING_DEBUG)) {
+            return;
+        }
+        log(SLF4J_MAPPING_DEBUG, msg);
+    }
+
+    /**
+     * {@inheritDoc}
+     * @since 0.7
+     */
+    public void error(Marker marker, String format, Object arg1, Object arg2) {
+        if (!isLoggable(SLF4J_MAPPING_ERROR) || format == null) {
+            return;
+        }
+        robustLogSlf4j(SLF4J_MAPPING_ERROR, format, new Object[]{arg1, arg2});
+    }
+
+    /**
+     * {@inheritDoc}
+     * @since 0.7
+     */
+    public void error(Marker marker, String format, Object arg) {
+        if (!isLoggable(SLF4J_MAPPING_ERROR) || format == null) {
+            return;
+        }
+        robustLogSlf4j(SLF4J_MAPPING_ERROR, format, new Object[]{arg});
+    }
+
+    /**
+     * {@inheritDoc}
+     * @since 0.7
+     */
+    public void error(Marker marker, String format, Object[] argArray) {
+        if (!isLoggable(SLF4J_MAPPING_ERROR) || format == null) {
+            return;
+        }
+        robustLogSlf4j(SLF4J_MAPPING_ERROR, format, argArray);
+    }
+
+    /**
+     * {@inheritDoc}
+     * @since 0.7
+     */
+    public void error(Marker marker, String msg, Throwable t) {
+        if (!isLoggable(SLF4J_MAPPING_ERROR)) {
+            return;
+        }
+        log(SLF4J_MAPPING_ERROR, msg, t);
+    }
+
+    /**
+     * {@inheritDoc}
+     * @since 0.7
+     */
+    public void error(Marker marker, String msg) {
+        if (!isLoggable(SLF4J_MAPPING_ERROR)) {
+            return;
+        }
+        log(SLF4J_MAPPING_ERROR, msg);
+    }
+
+    /**
+     * {@inheritDoc}
+     * @since 0.7
+     */
+    public void info(Marker marker, String format, Object arg1, Object arg2) {
+        if (!isLoggable(SLF4J_MAPPING_INFO) || format == null) {
+            return;
+        }
+        robustLogSlf4j(SLF4J_MAPPING_INFO, format, new Object[]{arg1, arg2});
+    }
+
+    /**
+     * {@inheritDoc}
+     * @since 0.7
+     */
+    public void info(Marker marker, String format, Object arg) {
+        if (!isLoggable(SLF4J_MAPPING_INFO) || format == null) {
+            return;
+        }
+        robustLogSlf4j(SLF4J_MAPPING_INFO, format, new Object[]{arg});
+    }
+
+    /**
+     * {@inheritDoc}
+     * @since 0.7
+     */
+    public void info(Marker marker, String format, Object[] argArray) {
+        if (!isLoggable(SLF4J_MAPPING_INFO) || format == null) {
+            return;
+        }
+        robustLogSlf4j(SLF4J_MAPPING_INFO, format, argArray);
+    }
+
+    /**
+     * {@inheritDoc}
+     * @since 0.7
+     */
+    public void info(Marker marker, String msg, Throwable t) {
+        if (!isLoggable(SLF4J_MAPPING_INFO)) {
+            return;
+        }
+        log(SLF4J_MAPPING_INFO, msg, t);
+    }
+
+    /**
+     * {@inheritDoc}
+     * @since 0.7
+     */
+    public void info(Marker marker, String msg) {
+        if (!isLoggable(SLF4J_MAPPING_INFO)) {
+            return;
+        }
+        log(SLF4J_MAPPING_INFO, msg);
+    }
+
+    /**
+     * {@inheritDoc}
+     * @since 0.7
+     */
+    public void warn(Marker marker, String format, Object arg1, Object arg2) {
+        if (!isLoggable(SLF4J_MAPPING_WARN) || format == null) {
+            return;
+        }
+        robustLogSlf4j(SLF4J_MAPPING_WARN, format, new Object[]{arg1, arg2});
+    }
+
+    /**
+     * {@inheritDoc}
+     * @since 0.7
+     */
+    public void warn(Marker marker, String format, Object arg) {
+        if (!isLoggable(SLF4J_MAPPING_WARN) || format == null) {
+            return;
+        }
+        robustLogSlf4j(SLF4J_MAPPING_WARN, format, new Object[]{arg});
+    }
+
+    /**
+     * {@inheritDoc}
+     * @since 0.7
+     */
+    public void warn(Marker marker, String format, Object[] argArray) {
+        if (!isLoggable(SLF4J_MAPPING_WARN) || format == null) {
+            return;
+        }
+        robustLogSlf4j(SLF4J_MAPPING_WARN, format, argArray);
+    }
+
+    /**
+     * {@inheritDoc}
+     * @since 0.7
+     */
+    public void warn(Marker marker, String msg, Throwable t) {
+        if (!isLoggable(SLF4J_MAPPING_WARN)) {
+            return;
+        }
+        log(SLF4J_MAPPING_WARN, msg, t);
+    }
+
+    /**
+     * {@inheritDoc}
+     * @since 0.7
+     */
+    public void warn(Marker marker, String msg) {
+        if (!isLoggable(SLF4J_MAPPING_WARN)) {
+            return;
+        }
+        log(SLF4J_MAPPING_WARN, msg);
+    }
+
+    /**
+     * {@inheritDoc}
+     * @since 0.7
+     */
+    public boolean isDebugEnabled(Marker marker) {
+        return isLoggable(SLF4J_MAPPING_DEBUG);
+    }
+
+    /**
+     * {@inheritDoc}
+     * @since 0.7
+     */
+    public boolean isErrorEnabled(Marker marker) {
+        return isLoggable(SLF4J_MAPPING_ERROR);
+    }
+
+    /**
+     * {@inheritDoc}
+     * @since 0.7
+     */
+    public boolean isInfoEnabled(Marker marker) {
+        return isLoggable(SLF4J_MAPPING_INFO);
+    }
+
+    /**
+     * {@inheritDoc}
+     * @since 0.7
+     */
+    public boolean isWarnEnabled(Marker marker) {
+        return isLoggable(SLF4J_MAPPING_WARN);
+    }
+
     // Following methods are overwritten to get correct location information
     // and for performance reasons (avoiding use of ExtendedLogRecordWrapper).
 
@@ -725,7 +1025,29 @@ class JCLLogger extends AbstractExtendedLogger {
         super.log(logRecord);
     }
 
+    /**
+     * Method especially for public slf4j log methods which have an object or object[]
+     * as parameter for the message formatting.
+     * @param level is not allowed to be null.
+     * @param message to format with args to complete logging.
+     * @param args for message format.
+     * @since 0.7
+     */
+    protected void robustLogSlf4j(final Level level, final String message, final Object[] args){
+        String mes = null;
+        try {
+            mes = org.slf4j.impl.MessageFormatter.arrayFormat(message, args);
+        } catch (Exception e) {
+            mes = message + " Error in formatting message["+e+"]";
+            //Temporary solution!
+            System.err.println("X4Juli: " + mes);
+            e.printStackTrace();
+        }
+        LogRecord logRecord = new ExtendedLogRecordImpl(level, mes);
+        completeLogRecord((ExtendedLogRecord)logRecord);
+        super.log(logRecord);
+    }
 
 }
 
-// EOF JCLLogger.java
+// EOF Slf4jLogger.java

@@ -1,5 +1,5 @@
 /*
- * Copyright 2006 x4juli.org.
+ * Copyright 1999,2005 The Apache Software Foundation.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,37 +13,296 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.x4juli;
+package org.x4juli.jcl;
 
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
 import org.x4juli.global.helper.LoggerUtil;
-import org.x4juli.global.spi.AbstractExtendedLogger;
 import org.x4juli.global.spi.ExtendedLogRecord;
 import org.x4juli.global.spi.ExtendedLogRecordImpl;
+import org.x4juli.logger.AbstractExtendedLogger;
 
 /**
- * Logger representing the <code>java.util.logging.Logger</code> without
- * any native implementation of other Log(ger) interfaces. Used for
- * the DefaultJDKLoggerFactory.
+ * Missing documentation.
+ * @todo Missing documentation.
  * @author Boris Unckel
  * @since 0.7
  */
-class DefaultJDKLogger extends AbstractExtendedLogger {
+class JCLLogger extends AbstractExtendedLogger implements org.apache.commons.logging.Log {
+
+    // -------------------------------------------------------------- Variables
+
+    static final Level JCL_MAPPING_TRACE = Level.FINEST;
+
+    static final Level JCL_MAPPING_DEBUG = Level.FINE;
+
+    static final Level JCL_MAPPING_INFO = Level.INFO;
+
+    static final Level JCL_MAPPING_WARN = Level.WARNING;
+
+    static final Level JCL_MAPPING_ERROR = Level.SEVERE;
+
+    static final Level JCL_MAPPING_FATAL = Level.SEVERE;
+
+    // ------------------------------------------------------------ Constructor
 
     /**
-     * @param name
-     * @param resourceBundleName
+     * Constructs a logger without resourcebundle.
+     * @param name of the logger.
      */
-    public DefaultJDKLogger(String name, String resourceBundleName) {
+    public JCLLogger(String name) {
+        super(name, null);
+    }
+    
+    /**
+     * Constructs a logger with a resourcebundle.
+     * @param name of the logger.
+     * @param resourceBundleName to get localized messages.
+     */
+    public JCLLogger(String name, String resourceBundleName) {
         super(name, resourceBundleName);
     }
+    // --------------------------------------------------------- Public Methods
+
+    // ------------------------------------------------Methods for both
+    // Interfaces
+
+    /**
+     * Refers to <code>java.util.logging.Level.FINE</code>.
+     *
+     * @see org.apache.commons.logging.Log#isDebugEnabled()
+     * @see org.slf4j.Logger#isDebugEnabled()
+     * @since 0.5
+     */
+    public boolean isDebugEnabled() {
+        return isLoggable(JCL_MAPPING_DEBUG);
+    }
+
+    /**
+     * Refers to <code>java.util.logging.Level.INFO</code>.
+     *
+     * @see org.apache.commons.logging.Log#isInfoEnabled()
+     * @see org.slf4j.Logger#isInfoEnabled()
+     * @since 0.5
+     */
+    public boolean isInfoEnabled() {
+        return isLoggable(JCL_MAPPING_INFO);
+    }
+
+    /**
+     * Refers to <code>java.util.logging.Level.SEVERE</code>.
+     *
+     * @see org.apache.commons.logging.Log#isErrorEnabled()
+     * @see org.slf4j.Logger#isErrorEnabled()
+     * @since 0.5
+     */
+    public boolean isErrorEnabled() {
+        return isLoggable(JCL_MAPPING_ERROR);
+    }
+
+    // -----------------Methods only for org.apache.commons.logging.Log
+
+    /**
+     * Refers to <code>java.util.logging.Level.FINEST</code>.
+     *
+     * @see org.apache.commons.logging.Log#isTraceEnabled()
+     * @since 0.5
+     */
+    public boolean isTraceEnabled() {
+        return isLoggable(JCL_MAPPING_TRACE);
+    }
+
+    /**
+     * Refers to <code>java.util.logging.Level.WARNING</code>.
+     *
+     * @see org.apache.commons.logging.Log#isWarnEnabled()
+     * @since 0.5
+     */
+    public boolean isWarnEnabled() {
+        return isLoggable(JCL_MAPPING_WARN);
+    }
+
+    /**
+     * Refers to <code>java.util.logging.Level.SEVERE</code>.
+     *
+     * @see org.apache.commons.logging.Log#isFatalEnabled()
+     * @since 0.5
+     */
+    public boolean isFatalEnabled() {
+        return isLoggable(JCL_MAPPING_FATAL);
+    }
+
+    /**
+     * Refers to <code>java.util.logging.Level.FINEST</code>.
+     *
+     * @see org.apache.commons.logging.Log#trace(java.lang.Object)
+     * @since 0.5
+     */
+    public void trace(final Object message) {
+        if (!isLoggable(JCL_MAPPING_TRACE)) {
+            return;
+        }
+        robustLog(JCL_MAPPING_TRACE, message, null);
+    }
+
+    /**
+     * Refers to <code>java.util.logging.Level.FINEST</code>.
+     *
+     * @see org.apache.commons.logging.Log#trace(java.lang.Object,
+     *      java.lang.Throwable)
+     * @since 0.5
+     */
+    public void trace(final Object message, final Throwable t) {
+        if (!isLoggable(JCL_MAPPING_TRACE)) {
+            return;
+        }
+        robustLog(JCL_MAPPING_TRACE, message, t);
+    }
+
+    /**
+     * Refers to <code>java.util.logging.Level.FINE</code>.
+     *
+     * @see org.apache.commons.logging.Log#debug(java.lang.Object)
+     * @since 0.5
+     */
+    public void debug(final Object message) {
+        if (!isLoggable(JCL_MAPPING_DEBUG)) {
+            return;
+        }
+        robustLog(JCL_MAPPING_DEBUG, message, null);
+
+    }
+
+    /**
+     * Refers to <code>java.util.logging.Level.FINE</code>.
+     *
+     * @see org.apache.commons.logging.Log#debug(java.lang.Object,
+     *      java.lang.Throwable)
+     * @since 0.5
+     */
+    public void debug(final Object message, final Throwable t) {
+        if (!isLoggable(JCL_MAPPING_DEBUG)) {
+            return;
+        }
+        robustLog(JCL_MAPPING_DEBUG, message, t);
+    }
+
+    /**
+     * Refers to <code>java.util.logging.Level.INFO</code>.
+     *
+     * @see org.apache.commons.logging.Log#info(java.lang.Object)
+     * @since 0.5
+     */
+    public void info(final Object message) {
+        if (!isLoggable(JCL_MAPPING_INFO)) {
+            return;
+        }
+        robustLog(JCL_MAPPING_INFO, message, null);
+
+    }
+
+    /**
+     * Refers to <code>java.util.logging.Level.INFO</code>.
+     *
+     * @see org.apache.commons.logging.Log#info(java.lang.Object,
+     *      java.lang.Throwable)
+     * @since 0.5
+     */
+    public void info(final Object message, final Throwable t) {
+        if (!isLoggable(JCL_MAPPING_INFO)) {
+            return;
+        }
+        robustLog(JCL_MAPPING_INFO, message, t);
+    }
+
+    /**
+     * Refers to <code>java.util.logging.Level.WARNING</code>.
+     *
+     * @see org.apache.commons.logging.Log#warn(java.lang.Object)
+     * @since 0.5
+     */
+    public void warn(final Object message) {
+        if (!isLoggable(JCL_MAPPING_WARN)) {
+            return;
+        }
+        robustLog(JCL_MAPPING_WARN, message, null);
+    }
+
+    /**
+     * Refers to <code>java.util.logging.Level.WARNING</code>.
+     *
+     * @see org.apache.commons.logging.Log#warn(java.lang.Object,
+     *      java.lang.Throwable)
+     * @since 0.5
+     */
+    public void warn(final Object message, final Throwable t) {
+        if (!isLoggable(JCL_MAPPING_WARN)) {
+            return;
+        }
+        robustLog(JCL_MAPPING_WARN, message, t);
+    }
+
+    /**
+     * Refers to <code>java.util.logging.Level.SEVERE</code>.
+     *
+     * @see org.apache.commons.logging.Log#error(java.lang.Object)
+     * @since 0.5
+     */
+    public void error(final Object message) {
+        if (!isLoggable(JCL_MAPPING_ERROR)) {
+            return;
+        }
+        robustLog(JCL_MAPPING_ERROR, message, null);
+    }
+
+    /**
+     * Refers to <code>java.util.logging.Level.SEVERE</code>.
+     *
+     * @see org.apache.commons.logging.Log#error(java.lang.Object,
+     *      java.lang.Throwable)
+     * @since 0.5
+     */
+    public void error(final Object message, final Throwable t) {
+        if (!isLoggable(JCL_MAPPING_ERROR)) {
+            return;
+        }
+        robustLog(JCL_MAPPING_ERROR, message, t);
+    }
+
+    /**
+     * Refers to <code>java.util.logging.Level.SEVERE</code>.
+     *
+     * @see org.apache.commons.logging.Log#fatal(java.lang.Object)
+     * @since 0.5
+     */
+    public void fatal(final Object message) {
+        if (!isLoggable(JCL_MAPPING_FATAL)) {
+            return;
+        }
+        robustLog(JCL_MAPPING_FATAL, message, null);
+    }
+
+    /**
+     * Refers to <code>java.util.logging.Level.SEVERE</code>.
+     *
+     * @see org.apache.commons.logging.Log#fatal(java.lang.Object,
+     *      java.lang.Throwable)
+     * @since 0.5
+     */
+    public void fatal(final Object message, final Throwable t) {
+        if (!isLoggable(JCL_MAPPING_FATAL)) {
+            return;
+        }
+        robustLog(JCL_MAPPING_FATAL, message, t);
+    }
+    // Following methods are overwritten to get correct location information
+    // and for performance reasons (avoiding use of ExtendedLogRecordWrapper).
 
     /**
      * {@inheritDoc}
      *
-     * @since 0.7
+     * @since 0.6
      */
     public void log(final LogRecord record) {
         if (record == null || record.getLevel() == null || !isLoggable(record.getLevel())) {
@@ -57,7 +316,7 @@ class DefaultJDKLogger extends AbstractExtendedLogger {
     /**
      * {@inheritDoc}
      *
-     * @since 0.7
+     * @since 0.6
      */
     public void log(final ExtendedLogRecord record) {
         if (record == null || record.getLevel() == null || !isLoggable(record.getLevel())) {
@@ -70,7 +329,7 @@ class DefaultJDKLogger extends AbstractExtendedLogger {
     /**
      * {@inheritDoc}
      *
-     * @since 0.7
+     * @since 0.6
      */
     public void log(final Level level, final String msg, final Object param1) {
         if (level == null || !isLoggable(level)) {
@@ -85,7 +344,7 @@ class DefaultJDKLogger extends AbstractExtendedLogger {
     /**
      * {@inheritDoc}
      *
-     * @since 0.7
+     * @since 0.6
      */
     public void log(final Level level, final String msg, final Object[] params) {
         if (level == null || !isLoggable(level)) {
@@ -100,7 +359,7 @@ class DefaultJDKLogger extends AbstractExtendedLogger {
     /**
      * {@inheritDoc}
      *
-     * @since 0.7
+     * @since 0.6
      */
     public void log(final Level level, final String msg, final Throwable thrown) {
         if (level == null || !isLoggable(level)) {
@@ -115,7 +374,7 @@ class DefaultJDKLogger extends AbstractExtendedLogger {
     /**
      * {@inheritDoc}
      *
-     * @since 0.7
+     * @since 0.6
      */
     public void log(final Level level, final String msg) {
         if (level == null || !isLoggable(level)) {
@@ -129,7 +388,7 @@ class DefaultJDKLogger extends AbstractExtendedLogger {
     /**
      * {@inheritDoc}
      *
-     * @since 0.7
+     * @since 0.6
      */
     public void logp(final Level level, final String sourceClass, final String sourceMethod,
             final String msg, final Object param1) {
@@ -147,7 +406,7 @@ class DefaultJDKLogger extends AbstractExtendedLogger {
     /**
      * {@inheritDoc}
      *
-     * @since 0.7
+     * @since 0.6
      */
     public void logp(final Level level, final String sourceClass, final String sourceMethod,
             final String msg, final Object[] params) {
@@ -165,7 +424,7 @@ class DefaultJDKLogger extends AbstractExtendedLogger {
     /**
      * {@inheritDoc}
      *
-     * @since 0.7
+     * @since 0.6
      */
     public void logp(final Level level, final String sourceClass, final String sourceMethod,
             final String msg, final Throwable thrown) {
@@ -183,7 +442,7 @@ class DefaultJDKLogger extends AbstractExtendedLogger {
     /**
      * {@inheritDoc}
      *
-     * @since 0.7
+     * @since 0.6
      */
     public void logp(final Level level, final String sourceClass, final String sourceMethod,
             final String msg) {
@@ -200,7 +459,7 @@ class DefaultJDKLogger extends AbstractExtendedLogger {
     /**
      * {@inheritDoc}
      *
-     * @since 0.7
+     * @since 0.6
      */
     public void logrb(final Level level, final String sourceClass, final String sourceMethod,
             final String bundleName, final String msg, final Object param1) {
@@ -218,7 +477,7 @@ class DefaultJDKLogger extends AbstractExtendedLogger {
     /**
      * {@inheritDoc}
      *
-     * @since 0.7
+     * @since 0.6
      */
     public void logrb(final Level level, final String sourceClass, final String sourceMethod,
             final String bundleName, final String msg, final Object[] params) {
@@ -237,7 +496,7 @@ class DefaultJDKLogger extends AbstractExtendedLogger {
     /**
      * {@inheritDoc}
      *
-     * @since 0.7
+     * @since 0.6
      */
     public void logrb(final Level level, final String sourceClass, final String sourceMethod,
             final String bundleName, final String msg, final Throwable thrown) {
@@ -256,7 +515,7 @@ class DefaultJDKLogger extends AbstractExtendedLogger {
     /**
      * {@inheritDoc}
      *
-     * @since 0.7
+     * @since 0.6
      */
     public void logrb(final Level level, final String sourceClass, final String sourceMethod,
             final String bundleName, final String msg) {
@@ -274,7 +533,7 @@ class DefaultJDKLogger extends AbstractExtendedLogger {
     /**
      * {@inheritDoc}
      *
-     * @since 0.7
+     * @since 0.6
      */
     public void finest(final String msg) {
         if (!isLoggable(Level.FINEST)) {
@@ -286,7 +545,7 @@ class DefaultJDKLogger extends AbstractExtendedLogger {
     /**
      * {@inheritDoc}
      *
-     * @since 0.7
+     * @since 0.6
      */
     public void finer(final String msg) {
         if (!isLoggable(Level.FINER)) {
@@ -298,7 +557,7 @@ class DefaultJDKLogger extends AbstractExtendedLogger {
     /**
      * {@inheritDoc}
      *
-     * @since 0.7
+     * @since 0.6
      */
     public void fine(final String msg) {
         if (!isLoggable(Level.FINE)) {
@@ -310,7 +569,7 @@ class DefaultJDKLogger extends AbstractExtendedLogger {
     /**
      * {@inheritDoc}
      *
-     * @since 0.7
+     * @since 0.6
      */
     public void info(final String msg) {
         if (!isLoggable(Level.INFO)) {
@@ -322,7 +581,7 @@ class DefaultJDKLogger extends AbstractExtendedLogger {
     /**
      * {@inheritDoc}
      *
-     * @since 0.7
+     * @since 0.6
      */
     public void config(final String msg) {
         if (!isLoggable(Level.CONFIG)) {
@@ -334,7 +593,7 @@ class DefaultJDKLogger extends AbstractExtendedLogger {
     /**
      * {@inheritDoc}
      *
-     * @since 0.7
+     * @since 0.6
      */
     public void warning(final String msg) {
         if (!isLoggable(Level.WARNING)) {
@@ -346,7 +605,7 @@ class DefaultJDKLogger extends AbstractExtendedLogger {
     /**
      * {@inheritDoc}
      *
-     * @since 0.7
+     * @since 0.6
      */
     public void severe(final String msg) {
         if (!isLoggable(Level.SEVERE)) {
@@ -358,7 +617,7 @@ class DefaultJDKLogger extends AbstractExtendedLogger {
     /**
      * {@inheritDoc}
      *
-     * @since 0.7
+     * @since 0.6
      */
     public void entering(final String sourceClass, final String sourceMethod) {
         if (!isLoggable(Level.FINER)) {
@@ -370,7 +629,7 @@ class DefaultJDKLogger extends AbstractExtendedLogger {
     /**
      * {@inheritDoc}
      *
-     * @since 0.7
+     * @since
      */
     public void entering(final String sourceClass, final String sourceMethod, final Object param1) {
         if (!isLoggable(Level.FINER)) {
@@ -382,7 +641,7 @@ class DefaultJDKLogger extends AbstractExtendedLogger {
     /**
      * {@inheritDoc}
      *
-     * @since 0.7
+     * @since 0.6
      */
     public void entering(final String sourceClass, final String sourceMethod,
                          final Object[] params) {
@@ -408,7 +667,7 @@ class DefaultJDKLogger extends AbstractExtendedLogger {
     /**
      * {@inheritDoc}
      *
-     * @since 0.7
+     * @since 0.6
      */
     public void exiting(final String sourceClass, final String sourceMethod) {
         if (!isLoggable(Level.FINER)) {
@@ -420,7 +679,7 @@ class DefaultJDKLogger extends AbstractExtendedLogger {
     /**
      * {@inheritDoc}
      *
-     * @since 0.7
+     * @since 0.6
      */
     public void exiting(final String sourceClass, final String sourceMethod, final Object result) {
         if (!isLoggable(Level.FINER)) {
@@ -432,7 +691,7 @@ class DefaultJDKLogger extends AbstractExtendedLogger {
     /**
      * {@inheritDoc}
      *
-     * @since 0.7
+     * @since 0.6
      */
     public void throwing(final String sourceClass, final String sourceMethod,
                          final Throwable thrown) {
@@ -448,7 +707,34 @@ class DefaultJDKLogger extends AbstractExtendedLogger {
     }
 
     // ------------------------------------------------------ Protected Methods
+    
+    /**
+     * Method especially for public log methods which have an object (instead of
+     * an String) as message.
+     * @param level is not allowed to be null.
+     * @param message object to create String to log.
+     * @param t optional throwable to log, may be null.
+     * @since 0.7
+     */
+    protected void robustLog(final Level level, final Object message, final Throwable t){
+        String mes = null;
+        try {
+            mes = String.valueOf(message);
+        } catch (Exception e) {
+            mes = "Error in creating message["+e+"]";
+            //Temporary solution!
+            System.err.println("X4Juli: " + mes);
+            e.printStackTrace();
+        }
+        LogRecord logRecord = new ExtendedLogRecordImpl(level, mes);
+        if (t != null) {
+            logRecord.setThrown(t);
+        }
+        completeLogRecord((ExtendedLogRecord)logRecord);
+        super.log(logRecord);
+    }
+
 
 }
 
-// EOF DefaultJDKLogger.java
+// EOF JCLLogger.java

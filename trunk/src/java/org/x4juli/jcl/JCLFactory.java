@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.x4juli;
+package org.x4juli.jcl;
 
 import java.util.Hashtable;
 import java.util.Map;
@@ -23,7 +23,6 @@ import java.util.logging.Logger;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogConfigurationException;
 import org.apache.commons.logging.LogFactory;
-import org.apache.commons.logging.impl.Jdk14Logger;
 
 /**
  * A implementation of <code>org.apache.commons.logging.LogFactory</code>.
@@ -36,12 +35,12 @@ import org.apache.commons.logging.impl.Jdk14Logger;
  * <br/>
  * 2) Put commons-logging.jar on appropriate place on the classpath
  * <br/>
- * 3a) Use a system property -Dorg.apache.commons.logging.LogFactory=org.x4juli.JCLFactory
+ * 3a) Use a system property -Dorg.apache.commons.logging.LogFactory=org.x4juli.jcl.JCLFactory
  * <br/>
  * or
  * <br/>
  * 3b) Use a config file commons-logging.properties on appropriate place on the classpath which
- * includes  org.apache.commons.logging.LogFactory=org.x4juli.JCLFactory
+ * includes  org.apache.commons.logging.LogFactory=org.x4juli.jcl.JCLFactory
  * 
  * @author Boris Unckel
  * @since 0.6
@@ -57,7 +56,7 @@ public class JCLFactory extends LogFactory {
             System.err.println("JCLFactory: Error getting LogManager.");
             System.err.println("JCLFactory: You have got system parameters or classpath or logging config problems.");
             t.printStackTrace();
-            throw new LogConfigurationException("java.util.logging or x4juli setup is wrong. Check system parameters, classpath and logging.properties",t);
+            throw new LogConfigurationException("java.util.logging or x4juli setup is wrong. Check system parameters, classpath and x4juli config",t);
         }
     }
 
@@ -128,7 +127,7 @@ public class JCLFactory extends LogFactory {
         }
         Log instance = (Log) this.instances.get(name);
         if (instance == null) {
-            instance = new Jdk14Logger(name);
+            instance = new JCLLogger(name);
             this.instances.put(name, instance);
         }
         return (instance);

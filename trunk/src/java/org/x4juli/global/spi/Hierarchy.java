@@ -18,11 +18,11 @@ package org.x4juli.global.spi;
 import java.util.List;
 import java.util.Map;
 
-import org.x4juli.DefaultJDKLoggerFactory;
-import org.x4juli.NOPLogger;
 import org.x4juli.global.helper.LoggerUtil;
 import org.x4juli.global.plugins.PluginRegistry;
 import org.x4juli.global.scheduler.Scheduler;
+import org.x4juli.logger.DefaultJDKLoggerFactory;
+import org.x4juli.logger.NOPLogger;
 
 import java.util.ArrayList;
 import java.util.Enumeration;

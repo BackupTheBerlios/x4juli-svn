@@ -22,7 +22,6 @@ import java.util.logging.ConsoleHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.x4juli.NOPLogger;
 import org.x4juli.formatter.PatternFormatter;
 import org.x4juli.global.components.AbstractJuliTestCase;
 import org.x4juli.global.helper.LoggerUtil;
@@ -30,6 +29,7 @@ import org.x4juli.global.spi.ExtendedFormatter;
 import org.x4juli.global.util.Compare;
 import org.x4juli.handlers.RollingFileHandler;
 import org.x4juli.handlers.rolling.TimeBasedRollingPolicy;
+import org.x4juli.logger.NOPLogger;
 
 /**
  * Testcase for x4juli.
