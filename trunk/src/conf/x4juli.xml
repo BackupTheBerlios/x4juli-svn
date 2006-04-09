@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE x4juli:configuration >
 
-<x4juli:configuration xmlns:x4juli='http://org.x4juli/' debug="false">
+<x4juli:configuration xmlns:x4juli='http://org.x4juli/' debug="true">
 
 	<handler name="STDOUT" class="org.x4juli.handlers.ConsoleHandler">
            <formatter class="org.x4juli.formatter.PatternFormatter">
