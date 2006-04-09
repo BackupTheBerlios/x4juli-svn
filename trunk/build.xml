@@ -221,6 +221,7 @@
     <copy file="LICENSE.txt" todir="${build.home}/classes/META-INF" />
     <copy file="NOTICE.txt" todir="${build.home}/classes/META-INF" />
     <copy file="SLF4JLICENSE.txt" todir="${build.home}/classes/META-INF" />
+    <copy file="${conf.home}/x4juli-default.xml" todir="${build.home}/classes" />
     <jar destfile="${build.home}/${component.name}-${component.version}.jar"
        basedir="${build.home}/classes"
        index="true">
@@ -257,6 +258,7 @@
       <include name="org/x4juli/**" />
       <include name="org/slf4j/**" />
       <include name="org/apache/**" />
+   	  <include name="x4juli-default.xml" />
       <include name="META-INF/LICENSE.txt" />
       <include name="META-INF/NOTICE.txt" />
       <include name="META-INF/SLF4JLICENSE.txt" />
