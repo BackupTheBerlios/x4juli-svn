@@ -24,8 +24,8 @@ import org.x4juli.formatter.pattern.FormattingInfo;
 import org.x4juli.formatter.pattern.IntegerPatternConverter;
 import org.x4juli.formatter.pattern.PatternConverter;
 import org.x4juli.formatter.pattern.PatternParser;
-import org.x4juli.global.components.AbstractComponent;
 import org.x4juli.global.resources.MessageProperties;
+import org.x4juli.global.spi.AbstractComponent;
 import org.x4juli.global.spi.OptionHandler;
 import org.x4juli.handlers.MessageText;
 

@@ -17,7 +17,7 @@ package org.x4juli.handlers.rolling;
 
 import java.util.logging.Handler;
 
-import org.x4juli.global.components.AbstractComponent;
+import org.x4juli.global.spi.AbstractComponent;
 import org.x4juli.global.spi.ExtendedFilter;
 import org.x4juli.global.spi.ExtendedLogRecord;
 

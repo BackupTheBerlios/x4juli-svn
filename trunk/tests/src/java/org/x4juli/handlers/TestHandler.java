@@ -20,7 +20,6 @@ import java.io.StringWriter;
 import java.util.logging.LogRecord;
 
 import org.x4juli.global.SystemUtils;
-import org.x4juli.global.components.AbstractHandler;
 import org.x4juli.global.spi.ExtendedLogRecord;
 import org.x4juli.global.spi.ThrowableInformation;
 

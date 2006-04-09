@@ -33,7 +33,6 @@ import org.x4juli.formatter.pattern.PatternConverter;
 import org.x4juli.formatter.pattern.PatternParser;
 import org.x4juli.global.LoggerRepositoryHolder;
 import org.x4juli.global.SystemUtils;
-import org.x4juli.global.components.AbstractFormatter;
 import org.x4juli.global.helper.Transform;
 import org.x4juli.global.spi.ExtendedLogRecord;
 import org.x4juli.global.spi.ThrowableInformation;

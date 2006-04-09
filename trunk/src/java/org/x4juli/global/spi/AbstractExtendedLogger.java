@@ -13,20 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.x4juli.global.components;
+package org.x4juli.global.spi;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Handler;
 import java.util.logging.Logger;
 
-import org.x4juli.global.spi.ExtendedHandler;
-import org.x4juli.global.spi.ExtendedLogRecord;
-import org.x4juli.global.spi.ExtendedLogger;
-import org.x4juli.global.spi.HandlerAttachable;
-import org.x4juli.global.spi.LogSecurityException;
-import org.x4juli.global.spi.LoggerRepository;
-import org.x4juli.global.spi.SpiSecurity;
 
 /**
  * Basic implementation for implementing directly a ExtendedLogger.

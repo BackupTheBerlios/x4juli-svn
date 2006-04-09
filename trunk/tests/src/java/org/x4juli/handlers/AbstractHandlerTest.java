@@ -15,7 +15,6 @@
  */
 package org.x4juli.handlers;
 
-import org.x4juli.global.components.AbstractHandler;
 import org.x4juli.global.components.AbstractJuliTestCase;
 
 

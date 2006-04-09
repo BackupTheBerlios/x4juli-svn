@@ -17,7 +17,7 @@ package org.x4juli.handlers.rolling.helper;
 
 import java.io.IOException;
 
-import org.x4juli.global.components.AbstractComponent;
+import org.x4juli.global.spi.AbstractComponent;
 
 /**
  * Abstract base class for implementations of Action.

@@ -19,7 +19,6 @@ package org.x4juli.handlers;
 import java.io.CharArrayWriter;
 
 import org.x4juli.formatter.DummyFormatter;
-import org.x4juli.global.components.AbstractHandler;
 import org.x4juli.global.spi.ExtendedFormatter;
 import org.x4juli.handlers.WriterHandler;
 

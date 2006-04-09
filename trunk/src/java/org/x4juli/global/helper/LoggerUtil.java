@@ -24,7 +24,7 @@ import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
 import org.x4juli.formatter.SimpleFormatter;
-import org.x4juli.global.components.AbstractComponent;
+import org.x4juli.global.spi.AbstractComponent;
 import org.x4juli.global.spi.ExtendedLogRecord;
 import org.x4juli.global.spi.ExtendedLogRecordWrapper;
 import org.x4juli.global.spi.ExtendedLogger;

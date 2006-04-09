@@ -18,8 +18,8 @@ package org.x4juli.performance;
 
 import java.util.logging.LogRecord;
 
-import org.x4juli.global.components.AbstractHandler;
 import org.x4juli.global.spi.ExtendedLogRecord;
+import org.x4juli.handlers.AbstractHandler;
 
 
 /**

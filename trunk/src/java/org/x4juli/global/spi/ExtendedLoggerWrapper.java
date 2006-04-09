@@ -15,7 +15,6 @@
  */
 package org.x4juli.global.spi;
 
-import org.x4juli.global.components.AbstractExtendedLogger;
 
 /**
  * Missing documentation.

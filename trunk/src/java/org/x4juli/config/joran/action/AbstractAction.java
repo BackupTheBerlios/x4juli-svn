@@ -18,7 +18,7 @@ package org.x4juli.config.joran.action;
 import org.x4juli.config.joran.spi.ActionException;
 import org.x4juli.config.joran.spi.ExecutionContext;
 import org.x4juli.config.joran.spi.Interpreter;
-import org.x4juli.global.components.AbstractComponent;
+import org.x4juli.global.spi.AbstractComponent;
 import org.xml.sax.Attributes;
 import org.xml.sax.Locator;
 

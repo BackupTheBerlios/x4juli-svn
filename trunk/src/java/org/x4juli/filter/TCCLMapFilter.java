@@ -15,7 +15,6 @@
  */
 package org.x4juli.filter;
 
-import org.x4juli.global.components.AbstractFilter;
 import org.x4juli.global.context.ContextFactory;
 import org.x4juli.global.spi.ExtendedFilter;
 import org.x4juli.global.spi.ExtendedLogRecord;

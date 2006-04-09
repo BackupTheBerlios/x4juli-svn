@@ -18,7 +18,6 @@ package org.x4juli.handlers;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.x4juli.global.components.AbstractHandler;
 import org.x4juli.global.spi.ExtendedLogRecord;
 
 /**

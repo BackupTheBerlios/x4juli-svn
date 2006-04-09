@@ -17,7 +17,6 @@ package org.x4juli.global.spi;
 
 import java.util.logging.Level;
 
-import org.x4juli.global.components.AbstractExtendedLogRecord;
 
 
 /**

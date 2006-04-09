@@ -19,7 +19,6 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
-import org.x4juli.global.components.AbstractExtendedLogRecord;
 import org.x4juli.global.spi.location.LocationInfo;
 
 /**

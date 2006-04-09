@@ -19,7 +19,6 @@ import java.util.logging.Filter;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
-import org.x4juli.global.components.AbstractFilter;
 import org.x4juli.global.resources.MessageProperties;
 import org.x4juli.global.spi.ExtendedFilter;
 import org.x4juli.global.spi.ExtendedLogRecord;

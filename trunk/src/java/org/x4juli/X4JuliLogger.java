@@ -19,8 +19,8 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
 import org.slf4j.Marker;
-import org.x4juli.global.components.AbstractExtendedLogger;
 import org.x4juli.global.helper.LoggerUtil;
+import org.x4juli.global.spi.AbstractExtendedLogger;
 import org.x4juli.global.spi.ExtendedLogRecord;
 import org.x4juli.global.spi.ExtendedLogRecordImpl;
 

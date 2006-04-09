@@ -27,7 +27,6 @@ import org.x4juli.formatter.pattern.LiteralPatternConverter;
 import org.x4juli.formatter.pattern.LogRecordPatternConverter;
 import org.x4juli.formatter.pattern.PatternParser;
 import org.x4juli.global.LoggerRepositoryHolder;
-import org.x4juli.global.components.AbstractFormatter;
 import org.x4juli.global.helper.OptionConverter;
 import org.x4juli.global.resources.MessageProperties;
 import org.x4juli.global.spi.ExtendedLogRecord;

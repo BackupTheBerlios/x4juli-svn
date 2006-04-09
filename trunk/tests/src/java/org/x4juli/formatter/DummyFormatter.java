@@ -16,7 +16,6 @@
 
 package org.x4juli.formatter;
 
-import org.x4juli.global.components.AbstractFormatter;
 import org.x4juli.global.spi.ExtendedLogRecord;
 
 

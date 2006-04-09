@@ -24,9 +24,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 
-import org.x4juli.global.components.AbstractComponent;
 import org.x4juli.global.helper.Loader;
 import org.x4juli.global.resources.MessageProperties;
+import org.x4juli.global.spi.AbstractComponent;
 import org.x4juli.global.spi.ExtendedLogRecord;
 import org.x4juli.global.spi.ExtendedLogRecordImpl;
 

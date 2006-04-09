@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.x4juli.global.components;
+package org.x4juli.global.spi;
 
 import java.util.Collections;
 import java.util.Hashtable;
@@ -26,8 +26,6 @@ import java.util.logging.LogRecord;
 
 import org.x4juli.global.LoggerClassInformation;
 import org.x4juli.global.context.ContextFactory;
-import org.x4juli.global.spi.ExtendedLogRecord;
-import org.x4juli.global.spi.ThrowableInformation;
 import org.x4juli.global.spi.location.LocationInfo;
 
 /**

@@ -34,7 +34,7 @@ public interface ExtendedHandler extends Handler, Component {
     String getFullQualifiedClassName();
 
     /**
-     * @see org.x4juli.global.components.AbstractHandler#publish(LogRecord)
+     * @see org.x4juli.handlers.AbstractHandler#publish(LogRecord)
      * @param record to check and write in the log.
      * @since 0.5
      */

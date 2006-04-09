@@ -15,8 +15,8 @@
  */
 package org.x4juli.formatter.pattern;
 
-import org.x4juli.global.components.AbstractComponent;
 import org.x4juli.global.resources.MessageProperties;
+import org.x4juli.global.spi.AbstractComponent;
 
 /**
  * <p>

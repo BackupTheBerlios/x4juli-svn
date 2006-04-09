@@ -15,7 +15,6 @@
  */
 package org.x4juli.filter;
 
-import org.x4juli.global.components.AbstractFilter;
 import org.x4juli.global.spi.ExtendedFilter;
 import org.x4juli.global.spi.ExtendedLogRecord;
 
@@ -57,7 +56,7 @@ public class StringMatchFilter extends AbstractFilter {
     // --------------------------------------------------------- Public Methods
 
     /**
-     * @see org.x4juli.global.components.AbstractFilter#decide(org.x4juli.global.spi.ExtendedLogRecord)
+     * @see org.x4juli.filter.AbstractFilter#decide(org.x4juli.global.spi.ExtendedLogRecord)
      * @since 0.5
      */
     public int decide(final ExtendedLogRecord record) {

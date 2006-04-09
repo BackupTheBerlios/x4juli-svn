@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.x4juli.global.components;
+package org.x4juli.global.spi;
 
 import java.util.Hashtable;
 import java.util.Map;
@@ -23,11 +23,6 @@ import java.util.logging.LogManager;
 import org.x4juli.NOPLogger;
 import org.x4juli.global.Constants;
 import org.x4juli.global.resources.MessageProperties;
-import org.x4juli.global.spi.Component;
-import org.x4juli.global.spi.ExtendedLogger;
-import org.x4juli.global.spi.LogIllegalStateException;
-import org.x4juli.global.spi.LoggerRepository;
-import org.x4juli.global.spi.MessageText;
 
 /**
  * The basic implementation for all x4juli components.

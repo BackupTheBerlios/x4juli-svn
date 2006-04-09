@@ -18,7 +18,6 @@ package org.x4juli.formatter;
 import java.io.StringWriter;
 
 import org.x4juli.global.SystemUtils;
-import org.x4juli.global.components.AbstractFormatter;
 import org.x4juli.global.spi.ExtendedLogRecord;
 
 /**

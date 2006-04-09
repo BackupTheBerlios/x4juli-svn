@@ -26,8 +26,8 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.x4juli.global.components.AbstractComponent;
 import org.x4juli.global.helper.OptionConverter;
+import org.x4juli.global.spi.AbstractComponent;
 import org.x4juli.global.spi.ExtendedHandler;
 
 /**

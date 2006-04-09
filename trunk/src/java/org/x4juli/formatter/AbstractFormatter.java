@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.x4juli.global.components;
+package org.x4juli.formatter;
 
 import java.util.logging.Formatter;
 import java.util.logging.Level;
@@ -21,7 +21,6 @@ import java.util.logging.LogManager;
 import java.util.logging.LogRecord;
 
 import org.x4juli.NOPLogger;
-import org.x4juli.formatter.MessageText;
 import org.x4juli.formatter.helper.FormatterUtil;
 import org.x4juli.global.Constants;
 import org.x4juli.global.helper.LoggerUtil;

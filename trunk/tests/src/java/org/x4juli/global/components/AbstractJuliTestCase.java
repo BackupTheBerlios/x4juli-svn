@@ -22,8 +22,8 @@ import java.util.logging.LogManager;
 import junit.framework.TestCase;
 
 import org.x4juli.NOPLogger;
-import org.x4juli.global.components.AbstractComponent;
 import org.x4juli.global.resources.MessageProperties;
+import org.x4juli.global.spi.AbstractComponent;
 import org.x4juli.global.spi.Component;
 import org.x4juli.global.spi.ExtendedLogger;
 import org.x4juli.global.spi.LogIllegalStateException;

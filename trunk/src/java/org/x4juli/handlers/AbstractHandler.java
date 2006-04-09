@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.x4juli.global.components;
+package org.x4juli.handlers;
 
 import java.util.logging.Filter;
 import java.util.logging.Formatter;
@@ -37,7 +37,6 @@ import org.x4juli.global.spi.ExtendedLogger;
 import org.x4juli.global.spi.LogIllegalStateException;
 import org.x4juli.global.spi.LoggerRepository;
 import org.x4juli.global.spi.OptionHandler;
-import org.x4juli.handlers.MessageText;
 
 /**
  * Abstract superclass of the other handlers in the package. This class provides

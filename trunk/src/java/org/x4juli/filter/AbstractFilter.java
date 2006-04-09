@@ -13,11 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.x4juli.global.components;
+package org.x4juli.filter;
 
 import java.util.logging.LogRecord;
 
 import org.x4juli.global.helper.LoggerUtil;
+import org.x4juli.global.spi.AbstractComponent;
 import org.x4juli.global.spi.ExtendedFilter;
 import org.x4juli.global.spi.ExtendedLogRecord;
 

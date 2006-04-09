@@ -19,7 +19,7 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
-import org.x4juli.global.components.AbstractExtendedLogger;
+import org.x4juli.global.spi.AbstractExtendedLogger;
 import org.x4juli.global.spi.ExtendedLogRecord;
 
 /**
