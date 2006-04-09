@@ -24,6 +24,7 @@ import org.x4juli.global.helper.Loader;
 import org.x4juli.global.helper.OptionConverter;
 import org.x4juli.global.spi.ErrorItem;
 import org.x4juli.global.spi.ExtendedLogger;
+import org.x4juli.global.spi.LevelAttachable;
 import org.xml.sax.Attributes;
 
 /**
@@ -53,23 +54,23 @@ public class LevelAction extends AbstractAction {
             throws ActionException {
         Object o = ec.peekObject();
 
-        if (!(o instanceof ExtendedLogger)) {
-            getLogger().warning("Could not find a logger at the top of execution stack.");
+        if (!(o instanceof LevelAttachable)) {
+            getLogger().warning("Could not find a LevelAttachable at the top of execution stack.");
             inError = true;
             ec.addError(new ErrorItem(
-                    "For element <level>, could not find a logger at the top of execution stack."));
+                    "For element <level>, could not find a LevelAttachable at the top of execution stack."));
 
             return;
         }
 
-        ExtendedLogger l = (ExtendedLogger) o;
+        LevelAttachable l = (LevelAttachable) o;
 
-        String loggerName = l.getName();
+        String levelAttachableName = l.getName();
 
         String levelStr = attributes.getValue(ActionConst.VALUE_ATTR);
         if (getLogger().isLoggable(Level.FINER)) {
             getLogger().finer(
-                    "Encapsulating logger name is [" + loggerName + "], levelvalue is  ["
+                    "Encapsulating logger name is [" + levelAttachableName + "], levelvalue is  ["
                             + levelStr + "].");
         }
         if (ActionConst.INHERITED.equalsIgnoreCase(levelStr)
@@ -99,7 +100,7 @@ public class LevelAction extends AbstractAction {
             }
         }
         if (getLogger().isLoggable(Level.FINER)) {
-            getLogger().finer(loggerName + " level set to " + l.getLevel());
+            getLogger().finer(levelAttachableName + " level set to " + l.getLevel());
         }
     }
 
