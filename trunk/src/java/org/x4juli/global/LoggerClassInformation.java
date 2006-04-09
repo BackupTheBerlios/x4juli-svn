@@ -23,8 +23,6 @@ public interface LoggerClassInformation {
 
     /**
      * Returns the full qualified class name of the logger.
-     * Must correspond to getLoggerClass, but should not be
-     * created dynamicly.
      * @return class name of the logger.
      */
     String getFQCNofLogger();

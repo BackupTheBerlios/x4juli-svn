@@ -5,7 +5,7 @@
 
 	<handler name="STDOUT" class="org.x4juli.handlers.ConsoleHandler">
            <formatter class="org.x4juli.formatter.PatternFormatter">
-              <param name="ConversionPattern" value="%d %-5p [%t] %C{2} (%F:%L) - %m%n"/>
+              <param name="ConversionPattern" value="[%d{ISO8601}]-[%p][%c]%m[%l]%n"/>
            </formatter>
           <param name="follow" value="true"/>
           <param name="immediateFlush" value="true"/>

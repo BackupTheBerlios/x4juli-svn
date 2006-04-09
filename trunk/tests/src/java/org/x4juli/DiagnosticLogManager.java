@@ -63,7 +63,7 @@ public class DiagnosticLogManager extends ClassLoaderLogManager {
      * {@inheritDoc}
      * @since 0.7
      */
-    protected LoggerFactory getLoggerFactory() {
+    protected LoggerFactory getLoggerFactory(final ClassLoader classLoader) {
         // TODO Auto-generated method stub
         return null;
     }

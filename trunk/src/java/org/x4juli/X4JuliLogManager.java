@@ -18,7 +18,7 @@ package org.x4juli;
 import org.x4juli.global.spi.ClassLoaderLogManager;
 import org.x4juli.global.spi.LoggerFactory;
 import org.x4juli.global.spi.LoggerRepository;
-import org.x4juli.logger.X4JuliLoggerFactory;
+import org.x4juli.logger.DefaultJDKLoggerFactory;
 
 /**
  * The LogManager to enable X4Juli.
@@ -67,8 +67,41 @@ public class X4JuliLogManager extends ClassLoaderLogManager {
      * {@inheritDoc}
      * @since 0.7
      */
-    protected LoggerFactory getLoggerFactory() {
-        return new X4JuliLoggerFactory();
+    protected LoggerFactory getLoggerFactory(final ClassLoader classLoader) {
+        boolean jclAvailable = false;
+        boolean slf4jAvailable = false;
+        LoggerFactory factory = new DefaultJDKLoggerFactory();
+        try {
+            classLoader.loadClass("org.apache.commons.logging.Log");
+            jclAvailable = true;
+        } catch (ClassNotFoundException e) {
+            jclAvailable = false;
+        }
+        try {
+            classLoader.loadClass("org.slf4j.Logger");
+            slf4jAvailable = true;
+        } catch (ClassNotFoundException e) {
+            slf4jAvailable = false;
+        }
+        try {
+            if(jclAvailable && slf4jAvailable) {
+                Class x4juliFactoryClass = classLoader.loadClass("org.x4juli.logger.X4JuliLoggerFactory");
+                factory = (LoggerFactory) x4juliFactoryClass.newInstance();
+            }
+            else if(jclAvailable) {
+                Class jclFactoryClass = classLoader.loadClass("org.x4juli.jcl.JCLLoggerFactory");
+                factory = (LoggerFactory) jclFactoryClass.newInstance();
+            }
+            else if(slf4jAvailable) {
+                Class slf4jFactoryClass = classLoader.loadClass("org.x4juli.slf4j.Slf4jLoggerFactory");
+                factory = (LoggerFactory) slf4jFactoryClass.newInstance();
+            }
+        } catch (Exception e) {
+            //TODO sysout entfernen
+            e.printStackTrace();
+        } 
+        return factory;
+        
     }
 
     // ------------------------------------------------------ Protected Methods

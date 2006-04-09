@@ -283,7 +283,7 @@ public abstract class ClassLoaderLogManager extends LogManager implements Logger
             }
         }
 
-        LoggerFactory loggerFactory = getLoggerFactory();
+        LoggerFactory loggerFactory = getLoggerFactory(classLoader);
         ExtendedLogger localRootLogger = loggerFactory.makeNewLoggerInstance("", null); 
         if (is == null) {
             // Retrieve the root logger of the parent classloader instead
@@ -370,9 +370,11 @@ public abstract class ClassLoaderLogManager extends LogManager implements Logger
     
     /**
      * Retrieves the actual LoggerFactory.
+     * @param classLoader to lookup for the factory.
      * @return the loggerFactory to use for the LoggerRepository.
+     * @since 0.7
      */
-    protected abstract LoggerFactory getLoggerFactory();
+    protected abstract LoggerFactory getLoggerFactory(ClassLoader classLoader);
     
     /**
      * System property replacement in the given string.

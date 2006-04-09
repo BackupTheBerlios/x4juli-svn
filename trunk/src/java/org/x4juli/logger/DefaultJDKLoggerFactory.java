@@ -45,7 +45,7 @@ public final class DefaultJDKLoggerFactory implements LoggerFactory {
      * @since 0.7
      */
     public String getFQCNofLogger() {
-        return "org.x4juli.DefaultJDKLogger";
+        return "org.x4juli.logger.DefaultJDKLogger";
     }
 
 }

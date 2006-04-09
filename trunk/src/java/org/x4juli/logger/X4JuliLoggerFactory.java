@@ -46,7 +46,7 @@ public final class X4JuliLoggerFactory implements LoggerFactory {
      * @since 0.7
      */
     public String getFQCNofLogger() {
-        return "org.x4juli.X4JuliLogger";
+        return "org.x4juli.logger.X4JuliLogger";
     }
 
 }
