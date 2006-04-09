@@ -45,10 +45,18 @@ public class ListHandler extends AbstractHandler {
     private List list = new ArrayList();
 
     /**
-     * Constructs a list appender.
+     * Default constructor, does not configure or activateOptions.
      */
     public ListHandler() {
         super();
+    }
+
+    /**
+     * Utility constructor, does not configure or activateOptions.
+     * @param handlerName of this instance.
+     */
+    public ListHandler(String handlerName) {
+        super(handlerName);
     }
 
     /**

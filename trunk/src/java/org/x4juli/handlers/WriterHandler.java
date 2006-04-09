@@ -111,23 +111,16 @@ public class WriterHandler extends AbstractHandler {
     // ----------------------------------------------------------- Constructors
 
     /**
-     * Default Constructor instantiation used for configuration by file. This
-     * automaticaly activatesOptions(). Avoid in programmatically use.
-     * <p>
-     * Calls @link{AbstractHandler#AbstractHandler()}.
-     * </p>
-     *
-     * @since 0.5
+     * Default constructor, does not configure or activateOptions.
+     * @since 0.7
      */
     public WriterHandler() {
         super();
     }
 
     /**
-     * Utility Constructor - sets the formatter to null. Does not call
-     * activateOptions().
-     *
-     * @param handlerName of the current instance.
+     * Utility constructor, does not configure or activateOptions.
+     * @param handlerName of this instance.
      * @since 0.5
      */
     public WriterHandler(String handlerName) {
@@ -293,47 +286,6 @@ public class WriterHandler extends AbstractHandler {
         if (errors == 0) {
             super.activateOptions();
         }
-    }
-
-    /**
-     * {@inheritDoc}
-     * @since 0.5
-     */
-    public void configure() {
-        super.configure();
-        // Flush
-        final String className = this.getClass().getName();
-        ClassLoader cl = Thread.currentThread().getContextClassLoader();
-
-        // Name of the handler
-        String key = className + ".autoflush";
-        setImmediateFlush(getProperty(key, true));
-
-        // Encoding
-        key = className + ".encoding";
-        try {
-            setEncoding(getProperty(key, "UTF-8"));
-        } catch (Exception e) {
-            try {
-                setEncoding(null);
-            } catch (Exception e2) {
-                // Ignored Exception, to recognize it, use IDE Debugger Breakpoint in NOPLogger
-                NOPLogger.NOP_LOGGER.log(Level.FINEST,"Ignored exception",e2);
-            } 
-        }
-        // Writer
-//        if (this.writer != null) {
-            key = className + ".writer";
-            String writerName = getProperty(key, null);
-            if (writerName != null) {
-                try {
-                    setWriter((Writer) cl.loadClass(writerName).newInstance());
-                } catch (Exception e) {
-                    // Ignored Exception, to recognize it, use IDE Debugger Breakpoint in NOPLogger
-                    NOPLogger.NOP_LOGGER.log(Level.FINEST,"Ignored exception",e);
-                }
-            }
-//        }
     }
 
     /**

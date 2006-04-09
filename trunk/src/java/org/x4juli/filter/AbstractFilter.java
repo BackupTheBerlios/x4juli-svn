@@ -44,6 +44,13 @@ public abstract class AbstractFilter extends AbstractComponent implements Extend
 
     // ----------------------------------------------------------- Constructors
 
+    /**
+     * Default constructor, does not activateOptions. 
+     */
+    public AbstractFilter() {
+        super();
+    }
+
     // --------------------------------------------------------- Public Methods
 
     /**

@@ -59,6 +59,13 @@ public class AndFilter extends AbstractFilter {
 
     // ----------------------------------------------------------- Constructors
 
+    /**
+     * Default constructor, does not activateOptions. 
+     */
+    public AndFilter() {
+        super();
+    }
+
     // --------------------------------------------------------- Public Methods
 
     /**

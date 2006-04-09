@@ -44,7 +44,7 @@ public class SimpleFormatter extends AbstractFormatter {
     // ----------------------------------------------------------- Constructors
 
     /**
-     * Default Constructor
+     * Default Constructor. No need to activateOptions.
      */
     public SimpleFormatter() {
         //NOP

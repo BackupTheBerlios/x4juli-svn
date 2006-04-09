@@ -22,7 +22,7 @@ import java.util.logging.LogRecord;
  * @since 0.5
  * @author Boris Unckel
  */
-public interface ExtendedHandler extends Handler, Component {
+public interface ExtendedHandler extends Handler {
 
     /**
      * Determine performant the FullQualifiedClassName. Subclasses should

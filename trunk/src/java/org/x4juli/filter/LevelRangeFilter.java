@@ -55,6 +55,13 @@ public class LevelRangeFilter extends AbstractFilter {
 
     // ----------------------------------------------------------- Constructors
 
+    /**
+     * Default constructor, does not activateOptions. 
+     */
+    public LevelRangeFilter() {
+        super();
+    }
+
     // --------------------------------------------------------- Public Methods
 
     /**

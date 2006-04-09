@@ -29,7 +29,7 @@ public class InvalidFilterException extends RuntimeException {
     private static final long serialVersionUID = 2224505115632309371L;
 
     /**
-     * Default Constructor.
+     * Default constructor, does not activateOptions. 
      */
     public InvalidFilterException() {
         super();

@@ -136,11 +136,9 @@ public abstract class AbstractHandler extends Handler
     protected String name;
 
     /**
-     * The extendedFormatter remains null if an
-     * <code>java.util.Logging.Formatter</code> is set. Then the formatter of
-     * the super class is used instead.
+     * The default formatter is <code>org.x4juli.formatter.SimpleFormatter</code>.
      */
-    protected ExtendedFormatter extFormatter = null;
+    protected ExtendedFormatter extFormatter = new SimpleFormatter();
 
     /**
      * The component logger.
@@ -161,22 +159,16 @@ public abstract class AbstractHandler extends Handler
     // ----------------------------------------------------------- Constructors
 
     /**
-     * Default Constructor instantiation used for configuration by file. This
-     * automatically activatesOptions(). Avoid in programmatically use.
-     *
+     * Default Constructor, does not configure or activate.
      * @since 0.5
      */
     protected AbstractHandler() {
-        if (!this.active) {
-//TODO BEREINIGEN!!!
-            //            configure();
-//            activateOptions();
-        }
+        //NOP
     }
 
     /**
      * Utility Constructor. All properties must be set programmatically. Finally
-     * you need to call actiavtesOptions().
+     * you need to call activateOptions().
      *
      * @param handlerName of the current instance.
      * @since 0.5
@@ -189,64 +181,16 @@ public abstract class AbstractHandler extends Handler
 
     /**
      * {@inheritDoc}
-     * <br/> Subclasses have not set active to true, but call super as
-     * last statement!
-     *
      * @since 0.5
      */
     public void activateOptions() {
+        if(this.name == null) {
+            throw new LogIllegalStateException(
+                    "Every handler must have a name. Name of["+this.getClass().getName()
+                  + "] is null");
+        }
         this.active = true;
         this.closed = false;
-    }
-
-    /**
-     * Configure all properties of the object. Subclasses should call
-     * super.configure() to ensure proper configuration.
-     *
-     * @since 0.5
-     */
-    public void configure() {
-        String className = this.getClass().getName();
-        ClassLoader cl = Thread.currentThread().getContextClassLoader();
-
-        //Name of the handler
-        String key = this.getClass().getName() + ".name";
-        String handlerName = getProperty(key, null);
-        if (handlerName == null) {
-            throw new IllegalArgumentException("Any handler must have a name, key[" + key
-                    + "] missing");
-        }
-        setName(handlerName);
-
-        // Level
-        key = className + ".level";
-        setLevel(Level.parse(getProperty(key, "" + Level.ALL)));
-        // Formatter
-        key = className + ".formatter";
-        String formatterName = getProperty(key, null);
-        if (formatterName != null) {
-            try {
-                setFormatter((Formatter) cl.loadClass(formatterName).newInstance());
-            } catch (Exception e) {
-                // Ignore Exception, to recognize it, use IDE Debugger Breakpoint in NOPLogger
-                NOPLogger.NOP_LOGGER.log(Level.FINEST, "Ignored exception", e);
-            }
-        } else {
-            setFormatter((ExtendedFormatter)new SimpleFormatter());
-        }
-
-        // Filter
-        key = className + ".filter";
-        String filterName = getProperty(key, null);
-        if (filterName != null) {
-            try {
-                setFilter((Filter) cl.loadClass(filterName).newInstance());
-            } catch (Exception e) {
-                // Ignore Exception, to recognize it, use IDE Debugger Breakpoint in NOPLogger
-                NOPLogger.NOP_LOGGER.log(Level.FINEST, "Ignored exception", e);
-            }
-        }
-
     }
 
     /**

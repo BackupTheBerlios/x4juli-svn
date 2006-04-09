@@ -117,18 +117,16 @@ public class FileHandler extends WriterHandler {
     // ----------------------------------------------------------- Constructors
 
     /**
-     * Default Constructor instantiation used for configuration by file. This
-     * automaticaly activatesOptions(). Avoid in programmatically use.
+     * Default constructor, does not configure or activateOptions.
+     * @since 0.7
      */
     public FileHandler() {
         super();
     }
 
     /**
-     * Utility Constructor. All properties must be set programmatically. Finally
-     * you need to call actiavtesOptions().
-     *
-     * @param handlerName of the current instance.
+     * Utility constructor, does not configure or activateOptions.
+     * @param handlerName of this instance.
      * @since 0.5
      */
     public FileHandler(String handlerName) {
@@ -208,41 +206,6 @@ public class FileHandler extends WriterHandler {
             super.activateOptions();
         }
 
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @since 0.5
-     */
-    public void configure() {
-        super.configure();
-        final String className = this.getClass().getName();
-
-        // File append
-        String key = className + ".append";
-        setAppend(getProperty(key, false));
-
-        // File name
-        key = className + ".filename";
-        String fileNameValue = getProperty(key, null);
-        final String defaultFileName = Constants.DEFAULT_LOG_FILE + "-" + getName() + ".log";
-        if(fileNameValue != null){
-            setFile(fileNameValue);
-        } else {
-            getLogger().log(Level.WARNING,
-                    MessageText.No_output_stream_or_file_set_for_the_handler_using_default,
-                    new Object[]{this.name,defaultFileName});
-            setFile(defaultFileName);
-        }
-
-        // Buffered IO
-        key = className + ".bufferedIO";
-        setBufferedIO(getProperty(key,false));
-
-        // Buffersize
-        key = className + ".buffersize";
-        setBufferSize(getProperty(key,DEFAULT_BUFFER_SIZE));
     }
 
     /**

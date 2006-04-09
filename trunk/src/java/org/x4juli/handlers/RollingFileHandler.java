@@ -113,18 +113,16 @@ public final class RollingFileHandler extends FileHandler {
     // ----------------------------------------------------------- Constructors
 
     /**
-     * Default Constructor instantiation used for configuration by file. This
-     * automatically activatesOptions(). Avoid in programmatically use.
+     * Default constructor, does not configure or activateOptions.
+     * @since 0.7
      */
     public RollingFileHandler() {
         super();
     }
 
     /**
-     * Utility Constructor. All properties must be set programmatically.
-     * Finally you need to call actiavtesOptions().
-     * @param handlerName
-     *            of the current instance.
+     * Utility constructor, does not configure or activateOptions.
+     * @param handlerName of this instance.
      * @since 0.5
      */
     public RollingFileHandler(String handlerName) {
@@ -201,51 +199,6 @@ public final class RollingFileHandler extends FileHandler {
                 getLogger().log(Level.WARNING, MessageText.Exception_is, ex);
             }
         }
-    }
-
-    /**
-     * {@inheritDoc}
-     * @since 0.5
-     */
-    public void configure() {
-        super.configure();
-        
-        final String classname = this.getClass().getName(); 
-        String key = classname + ".triggeringPolicy";
-        TriggeringPolicy tempTriggeringPolicy = null;
-        String triggeringPolicyClassName = getProperty(key, null);
-        if(triggeringPolicyClassName != null){
-            try {
-                Class triggeringPolicyClass = Loader.loadClass(triggeringPolicyClassName);
-                tempTriggeringPolicy = (TriggeringPolicy) triggeringPolicyClass.newInstance();
-            } catch (Exception e) {
-                getLogger().log(Level.WARNING, MessageText.Please_set_a_TriggeringPolicy_for_the_RollingFileHandler,this.name);
-                tempTriggeringPolicy = NOPTriggeringPolicy.NOP_TRIGGERING_POLICY;
-            }
-        } 
-        if(tempTriggeringPolicy == null){
-            getLogger().log(Level.WARNING, MessageText.Please_set_a_TriggeringPolicy_for_the_RollingFileHandler,this.name);
-            tempTriggeringPolicy = NOPTriggeringPolicy.NOP_TRIGGERING_POLICY;
-        }
-        this.triggeringPolicy = tempTriggeringPolicy;
-        
-        key = classname + ".rollingPolicy";
-        String rollingPolicyClassName = getProperty(key, null);
-        RollingPolicy tempRollingPolicy = null;
-        if(rollingPolicyClassName != null){
-            try {
-                Class rollingPolicyClass = Loader.loadClass(rollingPolicyClassName);
-                tempRollingPolicy = (RollingPolicy) rollingPolicyClass.newInstance();
-            } catch (Exception e) {
-                getLogger().log(Level.WARNING, MessageText.Please_set_a_rolling_policy,this.name);
-                tempRollingPolicy = NOPRollingPolicy.NOP_ROLLING_POLICY;
-            }
-        }
-        if(tempRollingPolicy == null) {
-            getLogger().log(Level.WARNING, MessageText.Please_set_a_rolling_policy,this.name);
-            tempRollingPolicy = NOPRollingPolicy.NOP_ROLLING_POLICY;
-        }
-        this.rollingPolicy = tempRollingPolicy;
     }
 
     /**

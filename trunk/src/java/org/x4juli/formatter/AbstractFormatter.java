@@ -53,11 +53,6 @@ public abstract class AbstractFormatter extends Formatter implements Component, 
     protected LoggerRepository repository;
 
     /**
-     * LogManager for easy access.
-     */
-    // protected final LogManager manager = LogManager.getLogManager();
-
-    /**
      * Formatter ignores throwables in output or not.
      */
     protected boolean ignoresThrowable = true;
@@ -71,7 +66,8 @@ public abstract class AbstractFormatter extends Formatter implements Component, 
     // --------------------------------------------------------- Public Methods
 
     /**
-     * Default.
+     * Default constructor, does not configure or activateOptions.
+     * @since 0.7
      */
     public AbstractFormatter() {
         super();

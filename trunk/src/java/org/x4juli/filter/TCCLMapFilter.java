@@ -18,6 +18,7 @@ package org.x4juli.filter;
 import org.x4juli.global.context.ContextFactory;
 import org.x4juli.global.spi.ExtendedFilter;
 import org.x4juli.global.spi.ExtendedLogRecord;
+import org.x4juli.global.spi.LogIllegalStateException;
 import org.x4juli.global.spi.TCCLMapper;
 
 /**
@@ -39,13 +40,15 @@ public class TCCLMapFilter extends AbstractFilter {
     
     TCCLMapper mapper = ContextFactory.getThreadContextClassLoaderMapper();
 
+    // ----------------------------------------------------------- Constructors
     /**
      * 
      */
     public TCCLMapFilter() {
         super();
-        configure();
     }
+
+    // --------------------------------------------------------- Public Methods
 
     /**
      * {@inheritDoc}
@@ -87,23 +90,19 @@ public class TCCLMapFilter extends AbstractFilter {
      * Sets the TCCL Identifier.
      * @param tcclToMatch the tcclToMatch to set
      */
-    public void setTcclToMatch(String tcclToMatch) {
+    public void setClassloaderId(String tcclToMatch) {
         this.tcclToMatch = tcclToMatch;
     }
 
     /**
+     * {@inheritDoc}
      * @since 0.7
      */
-    public void configure() {
-        final String className = this.getClass().getName();
-
-        // ClassLoader ID
-        String key = className + ".classloaderid";
-        setTcclToMatch(getProperty(key, null));
-        
-        // Accept On Match
-        key = className + ".acceptonmatch";
-        this.acceptOnMatch = getProperty(key, true);
+    public void activateOptions() {
+        if(this.tcclToMatch == null) {
+            throw new LogIllegalStateException("The filter is not valid without an id. id is null");
+        }
+        super.activateOptions();
     }
 
 }

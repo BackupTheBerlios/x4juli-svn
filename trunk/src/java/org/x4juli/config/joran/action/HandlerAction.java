@@ -22,6 +22,7 @@ import org.x4juli.config.joran.spi.ActionException;
 import org.x4juli.config.joran.spi.ExecutionContext;
 import org.x4juli.global.helper.Option;
 import org.x4juli.global.helper.OptionConverter;
+import org.x4juli.global.spi.Component;
 import org.x4juli.global.spi.ErrorItem;
 import org.x4juli.global.spi.ExtendedHandler;
 import org.x4juli.global.spi.LoggerRepository;
@@ -75,7 +76,7 @@ public class HandlerAction extends AbstractAction {
                     ExtendedHandler.class, null);
 
             LoggerRepository repo = (LoggerRepository) ec.getObjectStack().get(0);
-            handler.setLoggerRepository(repo);
+            ((Component)handler).setLoggerRepository(repo);
 
             String handlerName = attributes.getValue(NAME_ATTRIBUTE);
 

@@ -91,6 +91,7 @@ public final class FormatterUtil {
             if (parameters == null || parameters.length == 0) {
                 // No parameters. Just return format string.
                 // First default case.
+                record.setFormattedMessage(format);
                 return format;
             }
             // Is this a java.text style format?

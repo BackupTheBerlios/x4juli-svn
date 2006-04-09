@@ -26,10 +26,10 @@ import org.x4juli.formatter.pattern.FormattingInfo;
 import org.x4juli.formatter.pattern.LiteralPatternConverter;
 import org.x4juli.formatter.pattern.LogRecordPatternConverter;
 import org.x4juli.formatter.pattern.PatternParser;
-import org.x4juli.global.LoggerRepositoryHolder;
 import org.x4juli.global.helper.OptionConverter;
 import org.x4juli.global.resources.MessageProperties;
 import org.x4juli.global.spi.ExtendedLogRecord;
+import org.x4juli.global.spi.LoggerRepository;
 
 /**
  * <p>
@@ -519,7 +519,7 @@ public class PatternFormatter extends AbstractFormatter {
 
     /**
      * Customized pattern conversion rules are stored under this key in the
-     * {@link ObjectStore} object store.
+     * {@link LoggerRepository} object store.
      */
     public static final String PATTERN_RULE_REGISTRY = "PATTERN_RULE_REGISTRY";
 
@@ -554,15 +554,18 @@ public class PatternFormatter extends AbstractFormatter {
      * Constructs a PatternFormatter using the DEFAULT_CONVERSION_PATTERN.
      *
      * The default pattern just produces the application supplied message.
+     * Does not activateOptions.
+     * @since 0.5
      */
     public PatternFormatter() {
-//        configure();
-//        setLoggerRepository(((LoggerRepositoryHolder) this.manager).getLoggerRepository());
-//        activateOptions();
+        this.conversionPattern = DEFAULT_CONVERSION_PATTERN;
     }
 
     /**
      * Constructs a PatternLayout using the supplied conversion pattern.
+     * Does activateOptions.
+     * @param pattern to use for formatting.
+     * @since 0.5
      */
     public PatternFormatter(String pattern) {
         this.conversionPattern = pattern;
@@ -597,6 +600,7 @@ public class PatternFormatter extends AbstractFormatter {
      * Set the <b>ConversionPattern</b> option. This is the string which
      * controls formatting and consists of a mix of literal content and
      * conversion specifiers.
+     * @param conversionPattern to use for formatting.
      */
     public void setConversionPattern(final String conversionPattern) {
         this.conversionPattern = OptionConverter.convertSpecialChars(conversionPattern);
@@ -665,19 +669,4 @@ public class PatternFormatter extends AbstractFormatter {
 
     // -------------------------------------------------------- Private Methods
 
-    /**
-     * Configure from <code>LogManager</code> properties.
-     */
-    private void configure() {
-        final String className = PatternFormatter.class.getName();
-        // Retrieve pattern
-        final String key = className + ".pattern";
-        String patternValue = getProperty(key, null); 
-        if(patternValue != null){
-            this.conversionPattern=patternValue;
-        } else {
-            getLogger().log(Level.WARNING, "No .pattern config provided. Fallback to Default["+PatternFormatter.DEFAULT_CONVERSION_PATTERN+"]");
-            this.conversionPattern = PatternFormatter.DEFAULT_CONVERSION_PATTERN;
-        }
-    }
 }

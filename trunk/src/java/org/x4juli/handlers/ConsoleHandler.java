@@ -76,39 +76,23 @@ public class ConsoleHandler extends WriterHandler {
     // ----------------------------------------------------------- Constructors
 
     /**
-     * 
+     * Default constructor, does not configure or activateOptions.
+     * @since 0.7
      */
     public ConsoleHandler() {
         super();
     }
 
     /**
-     * @param handlerName
+     * Utility constructor, does not configure or activateOptions.
+     * @param handlerName of this instance.
+     * @since 0.7
      */
     public ConsoleHandler(String handlerName) {
         super(handlerName);
     }
 
     // --------------------------------------------------------- Public Methods
-
-    /**
-     * {@inheritDoc}
-     * 
-     * @since 0.6
-     */
-    public void configure() {
-        super.configure();
-        final String className = this.getClass().getName();
-
-        // File append
-        String key = className + ".follow";
-        setFollow(getProperty(key, false));
-
-        // File name
-        key = className + ".target";
-        String targetValue = getProperty(key, ConsoleHandler.SYSTEM_OUT);
-        setTarget(targetValue);
-    }
 
     /**
      * {@inheritDoc}

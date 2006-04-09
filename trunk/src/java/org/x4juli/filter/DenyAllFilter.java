@@ -42,6 +42,13 @@ public class DenyAllFilter extends AbstractFilter {
 
     // ----------------------------------------------------------- Constructors
 
+    /**
+     * Default constructor, does not activateOptions. 
+     */
+    public DenyAllFilter() {
+        super();
+    }
+
     // --------------------------------------------------------- Public Methods
 
     /**

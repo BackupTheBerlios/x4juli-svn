@@ -99,14 +99,18 @@ public class HTMLFormatter extends AbstractFormatter {
      * <code>PatternFormatter.DEFAULT_CONVERSION_PATTERN</code>.
      *
      * The default pattern just produces the application supplied message.
+     * Does not activateOptions.
+     * @since 0.5
      */
     public HTMLFormatter() {
-        this(PatternFormatter.DEFAULT_CONVERSION_PATTERN);
+        this.pattern = PatternFormatter.DEFAULT_CONVERSION_PATTERN;
     }
 
     /**
      * Constructs a PatternLayout using the supplied conversion pattern.
+     * Does activateOpations.
      * @param pattern to format logrecords.
+     * @since 0.5
      */
     public HTMLFormatter(final String pattern) {
         this.pattern = pattern;

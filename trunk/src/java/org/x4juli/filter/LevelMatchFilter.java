@@ -52,6 +52,13 @@ public class LevelMatchFilter extends AbstractFilter {
 
     // ----------------------------------------------------------- Constructors
 
+    /**
+     * Default constructor, does not activateOptions. 
+     */
+    public LevelMatchFilter() {
+        super();
+    }
+
     // --------------------------------------------------------- Public Methods
 
     /**

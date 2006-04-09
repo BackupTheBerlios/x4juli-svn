@@ -53,6 +53,13 @@ public class StringMatchFilter extends AbstractFilter {
 
     // ----------------------------------------------------------- Constructors
 
+    /**
+     * Default constructor, does not activateOptions. 
+     */
+    public StringMatchFilter() {
+        super();
+    }
+
     // --------------------------------------------------------- Public Methods
 
     /**
