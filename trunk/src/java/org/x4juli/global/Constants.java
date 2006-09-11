@@ -160,6 +160,17 @@ public final class Constants {
     public static final String TEMP_LIST_HANDLER_NAME = "TEMP_LIST_HANDLER";
     public static final String TEMP_CONSOLE_HANDLER_NAME = "TEMP_CONSOLE_HANDLER";
 
+    public static final String CONFIG_FILE_PROPERTY = "java.util.logging.config.file";
+    
+    public static final String LOGMANAGER_PROPERTY = "java.util.logging.logmanager";
+    
+    public static final String CONFIG_FILE_XML = "x4juli.xml";
+    
+    public static final String CONFIG_FILE_DEFAULT_XML = "x4juli-default.xml";
+    
+    public static final String CONFIG_FILE_PROPERTIES = "logging.properties";
+    
+    public static final String CONFIGURATOR_PROPERTY = "org.x4juli.configurator";
     
     /**
      * A random object for generating seeds.

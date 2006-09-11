@@ -76,20 +76,24 @@ public class ConsoleHandler extends WriterHandler {
     // ----------------------------------------------------------- Constructors
 
     /**
-     * Default constructor, does not configure or activateOptions.
+     * Default constructor, does just configure the instance level to Level.INFO.
+     * Does not activateOptions.
      * @since 0.7
      */
     public ConsoleHandler() {
         super();
+        this.setLevel(Level.INFO);
     }
 
     /**
-     * Utility constructor, does not configure or activateOptions.
+     * Utility constructor, does just configure the instance level to Level.INFO.
+     * Does not activateOptions.
      * @param handlerName of this instance.
      * @since 0.7
      */
     public ConsoleHandler(String handlerName) {
         super(handlerName);
+        this.setLevel(Level.INFO);
     }
 
     // --------------------------------------------------------- Public Methods

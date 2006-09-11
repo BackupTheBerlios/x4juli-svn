@@ -43,6 +43,13 @@ import org.xml.sax.Attributes;
 public class NewRuleAction extends AbstractAction {
 
     /**
+     * @param inherited tells the action to skip due to inherited config or not.
+     */
+    public NewRuleAction(boolean inherited) {
+        super(inherited);
+    }
+
+    /**
      * {@inheritDoc}
      * 
      * @since 0.7

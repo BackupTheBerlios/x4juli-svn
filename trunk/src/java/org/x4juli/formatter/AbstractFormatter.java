@@ -199,8 +199,7 @@ public abstract class AbstractFormatter extends Formatter implements Component, 
             if (messageProperties != null) {
                 resource = messageProperties.getValueAsString();
             }
-            //TODO Message Properterties
-            this.logger = this.repository.getLogger(this.getClass().getName());
+            this.logger = this.repository.getLogger(this.getClass().getName(), resource);
         }
         return this.logger;
     }

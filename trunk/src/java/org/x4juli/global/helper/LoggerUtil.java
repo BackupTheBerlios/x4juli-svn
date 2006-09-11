@@ -25,14 +25,16 @@ import java.util.logging.Logger;
 
 import org.x4juli.formatter.SimpleFormatter;
 import org.x4juli.global.spi.AbstractComponent;
+import org.x4juli.global.spi.ExtendedHandler;
 import org.x4juli.global.spi.ExtendedLogRecord;
 import org.x4juli.global.spi.ExtendedLogRecordWrapper;
 import org.x4juli.global.spi.ExtendedLogger;
 import org.x4juli.global.spi.OptionHandler;
+import org.x4juli.handlers.WrapperHandler;
 
 /**
  * @author Boris Unckel
- *
+ * 
  */
 public final class LoggerUtil extends AbstractComponent {
 
@@ -45,67 +47,100 @@ public final class LoggerUtil extends AbstractComponent {
      * No instanciation wanted
      */
     private LoggerUtil() {
-        //NOP
+        // NOP
     }
 
     // --------------------------------------------------------- Public Methods
 
     /**
      * Wraps an LogRecord into an ExtendedLogRecord.
+     * 
      * @param record to wrap.
-     * @return an ExtendedLogRecord with the same content, maybe null if record is null.
+     * @return an ExtendedLogRecord with the same content, maybe null if record is null, ClassCast
+     *         if record already is a ExtendedLogRecord.
      */
-    public static ExtendedLogRecord wrapLogRecord(final LogRecord record){
-        if(record == null){
+    public static ExtendedLogRecord wrapLogRecord(final LogRecord record) {
+        if (record == null) {
             return null;
         }
-        if(record instanceof ExtendedLogRecord){
+        if (record instanceof ExtendedLogRecord) {
             return (ExtendedLogRecord) record;
         }
         ExtendedLogRecord ret = new ExtendedLogRecordWrapper(record);
         return ret;
     }
-    
+
+    /**
+     * Wraps an Handler into an ExtendedHandler.
+     *
+     * @param handler to wrap.
+     * @param handlerName name of the handler, if null, name will be created.
+     * @return a ExtendedHandler, null if handler is null, ClassCast if handler already is a
+     *         ExtendedHandler.
+     */
+    public static ExtendedHandler wrapHandler(final Handler handler, final String handlerName) {
+        if (handler == null) {
+            return null;
+        }
+        if (handler instanceof ExtendedHandler) {
+            return (ExtendedHandler) handler;
+        }
+        String name = handlerName;
+        if (handlerName == null) {
+            StringBuffer buf = new StringBuffer(handler.getClass().getName());
+            buf.append(":");
+            buf.append(handler.hashCode());
+            name = buf.toString();
+        }
+        ExtendedHandler ret = new WrapperHandler(handler, name);
+        return ret;
+    }
+
     /**
      * Removes all handlers of an existing logger.
+     * 
      * @param logger to remove the handlers from.
      * @since 0.5
      */
     public static void removeAllHandlers(final Logger logger) {
         Handler[] allHandler = logger.getHandlers();
-//        getInternalLogger().log(Level.FINEST, "logger handler count[{0}]", new Integer(allHandler.length));
+        // getInternalLogger().log(Level.FINEST, "logger handler count[{0}]", new
+        // Integer(allHandler.length));
         for (int i = 0; i < allHandler.length; i++) {
             Handler handler = allHandler[i];
             logger.removeHandler(handler);
         }
-//        if (getInternalLogger().isLoggable(Level.FINEST)) {
-//            allHandler = logger.getHandlers();
-//            getInternalLogger().log(Level.FINEST, "logger handler after remove count[{0}]",
-//                    new Integer(allHandler.length));
-//        }
+        // if (getInternalLogger().isLoggable(Level.FINEST)) {
+        // allHandler = logger.getHandlers();
+        // getInternalLogger().log(Level.FINEST, "logger handler after remove count[{0}]",
+        // new Integer(allHandler.length));
+        // }
     }
 
     /**
      * Removes all handlers of an existing logger.
+     * 
      * @param logger to remove the handlers from.
      * @since 0.5
      */
     public static void removeAllHandlers(final ExtendedLogger logger) {
         Handler[] allHandler = logger.getHandlers();
-//        getInternalLogger().log(Level.FINEST, "logger handler count[{0}]", new Integer(allHandler.length));
+        // getInternalLogger().log(Level.FINEST, "logger handler count[{0}]", new
+        // Integer(allHandler.length));
         for (int i = 0; i < allHandler.length; i++) {
             Handler handler = allHandler[i];
             logger.removeHandler(handler);
         }
-//        if (getInternalLogger().isLoggable(Level.FINEST)) {
-//            allHandler = logger.getHandlers();
-//            getInternalLogger().log(Level.FINEST, "logger handler after remove count[{0}]",
-//                    new Integer(allHandler.length));
-//        }
+        // if (getInternalLogger().isLoggable(Level.FINEST)) {
+        // allHandler = logger.getHandlers();
+        // getInternalLogger().log(Level.FINEST, "logger handler after remove count[{0}]",
+        // new Integer(allHandler.length));
+        // }
     }
 
     /**
      * Retrieves a new logger and configures it with the following options.
+     * 
      * @see #createLogger(String, Formatter, Handler, Filter, Level, boolean)
      * @see #configureLogger(Logger, Formatter, Handler, Filter, Level, boolean)
      * @since 0.5
@@ -118,6 +153,7 @@ public final class LoggerUtil extends AbstractComponent {
 
     /**
      * Retrieves a new logger and configures it with the following options.
+     * 
      * @see #createLogger(String, Formatter, Handler, Filter, Level, boolean)
      * @see #configureLogger(Logger, Formatter, Handler, Filter, Level, boolean)
      * @since 0.5
@@ -129,6 +165,7 @@ public final class LoggerUtil extends AbstractComponent {
 
     /**
      * Retrieves a new logger and configures it with the following options.
+     * 
      * @see #createLogger(String, Formatter, Handler, Filter, Level, boolean)
      * @see #configureLogger(Logger, Formatter, Handler, Filter, Level, boolean)
      * @since 0.5
@@ -140,6 +177,7 @@ public final class LoggerUtil extends AbstractComponent {
 
     /**
      * Retrieves a new logger and configures it with the following options.
+     * 
      * @see #createLogger(String, Formatter, Handler, Filter, Level, boolean)
      * @see #configureLogger(Logger, Formatter, Handler, Filter, Level, boolean)
      * @since 0.5
@@ -152,6 +190,7 @@ public final class LoggerUtil extends AbstractComponent {
 
     /**
      * Retrieves a new logger and configures it with the following options.
+     * 
      * @see #createLogger(String, Formatter, Handler, Filter, Level, boolean)
      * @see #configureLogger(Logger, Formatter, Handler, Filter, Level, boolean)
      * @since 0.5
@@ -164,6 +203,7 @@ public final class LoggerUtil extends AbstractComponent {
 
     /**
      * Retrieves a new logger and configures it with the following options.
+     * 
      * @see #createLogger(String, Formatter, Handler, Filter, Level, boolean)
      * @see #configureLogger(Logger, Formatter, Handler, Filter, Level, boolean)
      * @since 0.5
@@ -176,6 +216,7 @@ public final class LoggerUtil extends AbstractComponent {
 
     /**
      * Retrieves a new logger and configures it with the following options.
+     * 
      * @param logName of the retrieved logger.
      * @param formatter to use with the handler.
      * @param handler to use with the logger.
@@ -194,6 +235,7 @@ public final class LoggerUtil extends AbstractComponent {
 
     /**
      * Configures the logger. Details:<br/>
+     * 
      * @see #configureLogger(Logger, Formatter, Handler, Filter, Level, boolean)
      * @since 0.5
      */
@@ -203,6 +245,7 @@ public final class LoggerUtil extends AbstractComponent {
 
     /**
      * Configures the logger. Details:<br/>
+     * 
      * @see #configureLogger(Logger, Formatter, Handler, Filter, Level, boolean)
      * @since 0.5
      */
@@ -212,6 +255,7 @@ public final class LoggerUtil extends AbstractComponent {
 
     /**
      * Configures the logger. Details:<br/>
+     * 
      * @see #configureLogger(Logger, Formatter, Handler, Filter, Level, boolean)
      * @since 0.5
      */
@@ -222,6 +266,7 @@ public final class LoggerUtil extends AbstractComponent {
 
     /**
      * Configures the logger. Details:<br/>
+     * 
      * @see #configureLogger(Logger, Formatter, Handler, Filter, Level, boolean)
      * @since 0.5
      */
@@ -232,6 +277,7 @@ public final class LoggerUtil extends AbstractComponent {
 
     /**
      * Configures the logger. Details:<br/>
+     * 
      * @see #configureLogger(Logger, Formatter, Handler, Filter, Level, boolean)
      * @since 0.5
      */
@@ -242,9 +288,10 @@ public final class LoggerUtil extends AbstractComponent {
 
     /**
      * Configures a new logger with the following options.
+     * 
      * @param logger to configure.
-     * @param formatter to use with the appender,
-     *        activate options is called, SimpleFormatter is default.
+     * @param formatter to use with the appender, activate options is called, SimpleFormatter is
+     *            default.
      * @param handler to use with the logger, ConsoleHandler is default.
      * @param filter to use with the handler, null is default.
      * @param level to use with logger and handler, Level.ALL is default.
@@ -274,6 +321,7 @@ public final class LoggerUtil extends AbstractComponent {
 
     /**
      * Retrieves the internal logger.
+     * 
      * @return internal Logger for this class
      * @since 0.5
      */

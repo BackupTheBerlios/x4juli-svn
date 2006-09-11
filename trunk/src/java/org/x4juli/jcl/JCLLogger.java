@@ -309,6 +309,9 @@ class JCLLogger extends AbstractExtendedLogger implements org.apache.commons.log
             return;
         }
         ExtendedLogRecord lr = LoggerUtil.wrapLogRecord(record);
+        if(lr.getFQCNofLogger() == null) {
+            lr.setFQCNofLogger(FQCNofLogger);
+        }
         lr.getNDC();
         super.log((LogRecord)lr);
     }
@@ -321,6 +324,9 @@ class JCLLogger extends AbstractExtendedLogger implements org.apache.commons.log
     public void log(final ExtendedLogRecord record) {
         if (record == null || record.getLevel() == null || !isLoggable(record.getLevel())) {
             return;
+        }
+        if(record.getFQCNofLogger() == null) {
+            record.setFQCNofLogger(FQCNofLogger);
         }
         record.getNDC();
         super.log((LogRecord) record);

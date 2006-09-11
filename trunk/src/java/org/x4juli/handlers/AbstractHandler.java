@@ -159,15 +159,17 @@ public abstract class AbstractHandler extends Handler
     // ----------------------------------------------------------- Constructors
 
     /**
-     * Default Constructor, does not configure or activate.
+     * Default Constructor, does just configure the instance level to Level.ALL.
+     * Finally you need to call activateOptions().
      * @since 0.5
      */
     protected AbstractHandler() {
-        //NOP
+        setLevel(Level.ALL);
     }
 
     /**
-     * Utility Constructor. All properties must be set programmatically. Finally
+     * Utility Constructor, does just configure the instance level to Level.ALL.
+     * All properties must be set programmatically. Finally
      * you need to call activateOptions().
      *
      * @param handlerName of the current instance.
@@ -175,6 +177,7 @@ public abstract class AbstractHandler extends Handler
      */
     protected AbstractHandler(final String handlerName) {
         this.name = handlerName;
+        setLevel(Level.ALL);
     }
 
     // --------------------------------------------------------- Public Methods
@@ -326,7 +329,7 @@ public abstract class AbstractHandler extends Handler
      * @return headFilter
      * @since 0.5
      */
-    public Filter getFilter() {
+    public final Filter getFilter() {
         return this.headFilter;
     }
 
@@ -519,9 +522,8 @@ public abstract class AbstractHandler extends Handler
             if (messageProperties != null) {
                 resource = messageProperties.getValueAsString();
             }
-            //TODO Message Properterties
             String temp = this.getClass().getName();
-            this. logger = this.repository.getLogger(temp);
+            this. logger = this.repository.getLogger(temp, resource);
         }
         return this.logger;
     }

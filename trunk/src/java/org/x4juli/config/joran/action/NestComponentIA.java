@@ -53,6 +53,13 @@ public class NestComponentIA extends ImplicitAction {
     private Stack actionDataStack = new Stack();
 
     /**
+     * @param inherited tells the action to skip due to inherited config or not.
+     */
+    public NestComponentIA(boolean inherited) {
+        super(inherited);
+    }
+
+    /**
      * {@inheritDoc}
      * 
      * @since 0.7

@@ -46,12 +46,22 @@ import org.xml.sax.Attributes;
 public class LevelAction extends AbstractAction {
 
     /**
+     * @param inherited tells the action to skip due to inherited config or not.
+     */
+    public LevelAction(boolean inherited) {
+        super(inherited);
+    }
+
+    /**
      * {@inheritDoc}
      * 
      * @since 0.7
      */
     public void begin(ExecutionContext ec, String name, Attributes attributes)
             throws ActionException {
+        if(isInheritedMode()) {
+            return;
+        }
         Object o = ec.peekObject();
 
         if (!(o instanceof LevelAttachable)) {
@@ -70,7 +80,7 @@ public class LevelAction extends AbstractAction {
         String levelStr = attributes.getValue(ActionConst.VALUE_ATTR);
         if (getLogger().isLoggable(Level.FINER)) {
             getLogger().finer(
-                    "Encapsulating logger name is [" + levelAttachableName + "], levelvalue is  ["
+                    "Encapsulating object name is [" + levelAttachableName + "], levelvalue is  ["
                             + levelStr + "].");
         }
         if (ActionConst.INHERITED.equalsIgnoreCase(levelStr)

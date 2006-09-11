@@ -79,6 +79,18 @@ public interface ExtendedFilter extends Filter, OptionHandler {
      * @since 0.5
      */
     ExtendedFilter getNext();
+    
+    /**
+     * Set the name of the filter.
+     * @param name of the filter.
+     */
+    public void setName(String name);
+    
+    /**
+     * Returns the name of the filter.
+     * @return name of the filter, maybe null if not head of a chain.
+     */
+    public String getName();
 
 
 }

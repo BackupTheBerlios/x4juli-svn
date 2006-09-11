@@ -29,6 +29,14 @@ import org.x4juli.global.spi.LoggerRepository;
 public class RepositoryPropertyAction extends PropertyAction {
 
     /**
+     *
+     * @param inherited tells the action to skip due to inherited config or not.
+     */
+    public RepositoryPropertyAction(boolean inherited) {
+        super(inherited);
+    }
+
+    /**
      * {@inheritDoc}
      * @since 0.7
      */

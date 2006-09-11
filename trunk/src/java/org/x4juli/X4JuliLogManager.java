@@ -53,17 +53,6 @@ public class X4JuliLogManager extends ClassLoaderLogManager {
     // --------------------------------------------------------- Public Methods
 
     /**
-     * @see org.x4juli.global.spi.ClassLoaderLogManager#getFQCNofLogger()
-     * @since 0.5
-     */
-    public String getFQCNofLogger() {
-        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        LoggerRepository repository = getClassLoaderInfo(classLoader).repository;
-        LoggerFactory loggerFactory = repository.getLoggerFactory();
-        return loggerFactory.getFQCNofLogger();
-    }
-
-    /**
      * {@inheritDoc}
      * @since 0.7
      */

@@ -22,7 +22,7 @@ package org.x4juli.global.spi;
  * @author Boris Unckel
  * @since 0.6
  */
-public interface ExtendedLogger extends Logger, LevelAttachable {
+public interface ExtendedLogger extends Logger, LevelAttachable, HandlerAttachable {
 
     /**
      * Logs a ExtendedLogRecord.

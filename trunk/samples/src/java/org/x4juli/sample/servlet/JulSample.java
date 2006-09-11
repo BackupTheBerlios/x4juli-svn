@@ -16,6 +16,7 @@
 package org.x4juli.sample.servlet;
 
 import java.io.IOException;
+import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -54,8 +55,19 @@ public class JulSample extends javax.servlet.http.HttpServlet implements
 		System.err.println("JulSample: Starting with sample, mode java.util.logging.Logger System.err");
 		super.log("JulSample: Using method javax.servlet.GenericServlet.log(String msg)");
 		System.out.println("JulSample: Using class "+LOG.getClass().getName());
-		
-		LOG.entering(JulSample.class.getName(),"doGet",new Object[]{request, response});
+        System.out.println("JulSample: Using logger "+LOG);
+        Handler[] myHandler = Logger.getLogger("org.x4juli").getHandlers();
+		for (int i = 0; i < myHandler.length; i++) {
+            Handler handler = myHandler[i];
+            System.out.println("JulSample org.x4juli: " + handler);
+        }
+        myHandler = Logger.getLogger("org.x4juli.sample").getHandlers();
+        for (int i = 0; i < myHandler.length; i++) {
+            Handler handler = myHandler[i];
+            System.out.println("JulSample org.x4juli.sample: " + handler);
+        }
+
+        LOG.entering(JulSample.class.getName(),"doGet",new Object[]{request, response});
 		
 		LOG.log(Level.FINEST, "JulSample: Using method LOG.log(Level.FINEST, String msg)");
 		LOG.log(Level.INFO, "JulSample: Using method LOG.log(Level.INFO, String msg)");

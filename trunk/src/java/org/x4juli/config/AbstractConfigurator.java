@@ -17,6 +17,7 @@ package org.x4juli.config;
 
 import java.util.List;
 import java.util.logging.Handler;
+import java.util.logging.Level;
 
 import org.x4juli.formatter.PatternFormatter;
 import org.x4juli.global.Constants;
@@ -48,11 +49,11 @@ public abstract class AbstractConfigurator implements Configurator {
     /**
      * Defining this value makes x4juli print x4juli-internal debug statements.
      * <p> 
-     * The value of this string is <b>log4j.debug</b>.
+     * The value of this string is <b>x4juli.debug</b>.
      * 
      * <p>Note that the search for all option names is case sensitive.  
      * */ 
-     public static final String DEBUG_KEY = "org.x4juli.debug";
+     //public static final String DEBUG_KEY = "org.x4juli.debug";
 
      protected ExtendedLogger getLogger(LoggerRepository repository) {
          return repository.getLogger(this.getClass().getName());
@@ -79,7 +80,8 @@ public abstract class AbstractConfigurator implements Configurator {
          handler.setName(Constants.TEMP_LIST_HANDLER_NAME);
          handler.activateOptions();
          ll.addHandler((Handler)handler);
-         ll.setUseParentHandlers(false);
+         ll.setLevel(Level.WARNING);
+         //ll.setUseParentHandlers(true);
        }
        
        /**
@@ -93,21 +95,16 @@ public abstract class AbstractConfigurator implements Configurator {
 
          ExtendedLogger ll = repository.getLogger(Constants.X4JULI_PACKAGE_NAME);
          
-         // FIXME: What happens if the users wanted to set the additivity flag
-         // for "org.apahce.log4j" to false in the config file? We are now 
-         // potentially overriding her wishes but I don't see any other way.
-         ll.setUseParentHandlers(true);
-         
-         ExtendedHandler[] myHandler = (ExtendedHandler[]) ll.getHandlers();
-         ListHandler listAppender = null;
+         Handler[] myHandler = ll.getHandlers();
+         ListHandler listHandler = null;
          for (int i = 0; i < myHandler.length; i++) {
-            ExtendedHandler handler = myHandler[i];
+            ExtendedHandler handler = (ExtendedHandler) myHandler[i];
             if(handler.getName().equals(Constants.TEMP_LIST_HANDLER_NAME)){
-                listAppender = (ListHandler) handler;
+                listHandler = (ListHandler) handler;
             }
         }
          
-         if(listAppender == null) {
+         if(listHandler == null) {
            String errMsg = "Could not find appender "+Constants.TEMP_LIST_HANDLER_NAME;
            getLogger(repository).severe(errMsg);
            addError(new ErrorItem(errMsg));
@@ -129,7 +126,7 @@ public abstract class AbstractConfigurator implements Configurator {
 //         ll.removeAppender(listAppender);
        }
        
-       static public void attachTemporaryConsoleAppender(final LoggerRepository repository) {
+       public static void attachTemporaryConsoleAppender(final LoggerRepository repository) {
          ExtendedLogger ll = repository.getLogger(Constants.X4JULI_PACKAGE_NAME);
          
          ConsoleHandler handler = new ConsoleHandler();
@@ -138,17 +135,19 @@ public abstract class AbstractConfigurator implements Configurator {
          handler.setFormatter((ExtendedFormatter)myFormatter);
          handler.setName(Constants.TEMP_CONSOLE_HANDLER_NAME);
          handler.setImmediateFlush(true);
+         handler.setLevel(Level.ALL);
          handler.activateOptions();
-         ll.addHandler(handler);
+         ll.addHandler((ExtendedHandler)handler);
+         ll.setLevel(Level.ALL);
        }
 
-       static public void detachTemporaryConsoleAppender(final LoggerRepository repository, final List errorList) {
+       public static void detachTemporaryConsoleAppender(final LoggerRepository repository, final List errorList) {
 
          ExtendedLogger ll = repository.getLogger(Constants.X4JULI_PACKAGE_NAME);
-         ExtendedHandler[] myHandler = (ExtendedHandler[]) ll.getHandlers();
+         Handler[] myHandler = ll.getHandlers();
          ConsoleHandler consoleHandler = null;
          for (int i = 0; i < myHandler.length; i++) {
-            ExtendedHandler handler = myHandler[i];
+            ExtendedHandler handler = (ExtendedHandler) myHandler[i];
             if(handler.getName().equals(Constants.TEMP_CONSOLE_HANDLER_NAME)){
                 consoleHandler = (ConsoleHandler) handler;
             }
@@ -160,7 +159,7 @@ public abstract class AbstractConfigurator implements Configurator {
            return;
          }
          consoleHandler.close();
-         ll.removeHandler(consoleHandler);
+         ll.removeHandler((ExtendedHandler)consoleHandler);
        }
        
        /**

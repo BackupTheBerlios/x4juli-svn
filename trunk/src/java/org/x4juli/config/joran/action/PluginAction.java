@@ -48,6 +48,13 @@ public class PluginAction extends AbstractAction {
     private Plugin plugin;
 
     /**
+     * @param inherited tells the action to skip due to inherited config or not.
+     */
+    public PluginAction(boolean inherited) {
+        super(inherited);
+    }
+
+    /**
      * {@inheritDoc}
      * 
      * @since 0.7

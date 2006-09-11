@@ -600,6 +600,9 @@ class Slf4jLogger extends AbstractExtendedLogger {
             return;
         }
         ExtendedLogRecord lr = LoggerUtil.wrapLogRecord(record);
+        if(lr.getFQCNofLogger() == null) {
+            lr.setFQCNofLogger(FQCNofLogger);
+        }
         lr.getNDC();
         super.log((LogRecord)lr);
     }
@@ -612,6 +615,9 @@ class Slf4jLogger extends AbstractExtendedLogger {
     public void log(final ExtendedLogRecord record) {
         if (record == null || record.getLevel() == null || !isLoggable(record.getLevel())) {
             return;
+        }
+        if(record.getFQCNofLogger() == null) {
+            record.setFQCNofLogger(FQCNofLogger);
         }
         record.getNDC();
         super.log((LogRecord) record);

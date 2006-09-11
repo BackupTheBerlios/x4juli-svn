@@ -38,6 +38,13 @@ import org.x4juli.config.joran.spi.ExecutionContext;
 public class SubstitutionPropertyAction extends PropertyAction {
 
     /**
+     * @param inherited tells the action to skip due to inherited config or not.
+     */
+    public SubstitutionPropertyAction(boolean inherited) {
+        super(inherited);
+    }
+
+    /**
      * {@inheritDoc}
      * 
      * @since 0.7

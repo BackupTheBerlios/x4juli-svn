@@ -18,6 +18,7 @@ package org.x4juli.config.joran.spi;
 import org.x4juli.global.spi.ErrorItem;
 import org.x4juli.global.spi.ExtendedLogger;
 import org.x4juli.global.spi.LoggerRepository;
+import org.x4juli.logger.NOPLogger;
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.InputSource;
@@ -171,9 +172,7 @@ public final class JoranDocument extends DefaultHandler {
         if (repository != null) {
             return repository.getLogger(this.getClass().getName());
         } else {
-            // TODO Standard Logger
-            // return SimpleULogger.getLogger(this.getClass().getName());
-            return null;
+            return NOPLogger.NOP_LOGGER;
         }
     }
 
@@ -200,6 +199,7 @@ public final class JoranDocument extends DefaultHandler {
                 replayLocation.setColumnNumber(location.getColumnNumber());
                 replayLocation.setLineNumber(location.getLineNumber());
                 replayLocation.setSystemId(location.getSystemId());
+                //System.err.println("LineNumber["+location.getLineNumber()+"] PublicId["+location.getPublicId()+"] SystemId["+location.getSystemId()+"]");
             }
         }
     }

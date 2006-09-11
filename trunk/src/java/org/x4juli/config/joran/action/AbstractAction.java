@@ -49,12 +49,16 @@ public abstract class AbstractAction extends AbstractComponent implements Action
      */
     protected boolean inError = false;
     
+    private boolean inheritedMode = false;
+    
     /**
      * Default, NOP Constructor.
+     * @param inherited tells the action to skip due to inherited config or not.
      * @since 0.7
      */
-    public AbstractAction() {
+    public AbstractAction(final boolean inherited) {
         super();
+        this.inheritedMode = inherited;
     }
 
     /**
@@ -81,6 +85,22 @@ public abstract class AbstractAction extends AbstractComponent implements Action
             return locator.getLineNumber();
         }
         return -1;
+    }
+
+    /**
+     * {@inheritDoc}
+     * @since 0.7
+     */
+    public boolean isInheritedMode() {
+        return this.inheritedMode;
+    }
+
+    /**
+     * {@inheritDoc}
+     * @since 0.7
+     */
+    public void setInheritedMode(boolean inherited) {
+        this.inheritedMode = inherited;
     }
 
 }

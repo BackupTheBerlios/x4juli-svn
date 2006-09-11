@@ -54,8 +54,9 @@ public interface Configurator {
      * @since 0.7
      * @param url The URL to parse
      * @param repository The repository to operate upon.
+     * @param parentLoggerRepository the repository to inherit from. Null if directly configured.
      */
-    void doConfigure(URL url, LoggerRepository repository);
+    void doConfigure(URL url, LoggerRepository repository, LoggerRepository parentLoggerRepository);
 
     /**
      * Use an InputStream as a source for configuration and set up x4juli accordingly.
@@ -66,8 +67,9 @@ public interface Configurator {
      * 
      * @param stream The input stream to use for configuration data.
      * @param repository The repository to operate upon.
+     * @param parentLoggerRepository the repository to inherit from. Null if directly configured.
      */
-    void doConfigure(InputStream stream, LoggerRepository repository);
+    void doConfigure(InputStream stream, LoggerRepository repository, LoggerRepository parentLoggerRepository);
 
 }
 

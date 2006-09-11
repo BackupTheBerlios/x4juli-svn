@@ -44,7 +44,16 @@ import org.xml.sax.Attributes;
  * @since 0.7
  */
 public class FormatterAction extends AbstractAction {
+
     ExtendedFormatter formatter;
+
+    /**
+     * @param inherited tells the action to skip due to inherited config or not.
+     */
+    public FormatterAction(boolean inherited) {
+        super(inherited);
+    }
+
     /**
      * {@inheritDoc}
      * 
@@ -52,30 +61,29 @@ public class FormatterAction extends AbstractAction {
      */
     public void begin(ExecutionContext ec, String name, Attributes attributes)
             throws ActionException {
+        if (isInheritedMode()) {
+            return;
+        }
         // Let us forget about previous errors (in this object)
         inError = false;
 
         String className = attributes.getValue(CLASS_ATTRIBUTE);
         try {
-          getLogger().finer(
-            "About to instantiate layout of type [" + className + "]");
+            getLogger().finer("About to instantiate layout of type [" + className + "]");
 
-        
-          formatter = (ExtendedFormatter)
-            OptionConverter.instantiateByClassName(
-              className, org.x4juli.global.spi.ExtendedFormatter.class, null);
+            formatter = (ExtendedFormatter) OptionConverter.instantiateByClassName(className,
+                    org.x4juli.global.spi.ExtendedFormatter.class, null);
 
-          LoggerRepository repo = (LoggerRepository) ec.getObjectStack().get(0);
-          formatter.setLoggerRepository(repo);
+            LoggerRepository repo = (LoggerRepository) ec.getObjectStack().get(0);
+            formatter.setLoggerRepository(repo);
 
-          getLogger().finer("Pushing layout on top of the object stack.");
-          ec.pushObject(formatter);
+            getLogger().finer("Pushing layout on top of the object stack.");
+            ec.pushObject(formatter);
         } catch (Exception oops) {
-          inError = true;
-          getLogger().log(Level.SEVERE,
-            "Could not create an Layout. Reported error follows.", oops);
-          ec.addError(
-            new ErrorItem("Could not create layout of type " + className + "]."));
+            inError = true;
+            getLogger().log(Level.SEVERE, "Could not create an Layout. Reported error follows.",
+                    oops);
+            ec.addError(new ErrorItem("Could not create layout of type " + className + "]."));
         }
     }
 
@@ -87,31 +95,33 @@ public class FormatterAction extends AbstractAction {
     public void end(ExecutionContext ec, String name) throws ActionException {
         if (inError) {
             return;
-          }
+        }
+        if (isInheritedMode()) {
+            return;
+        }
 
-          if (formatter instanceof OptionHandler) {
+        if (formatter instanceof OptionHandler) {
             ((OptionHandler) formatter).activateOptions();
-          }
+        }
 
-          Object o = ec.peekObject();
+        Object o = ec.peekObject();
 
-          if (o != formatter) {
+        if (o != formatter) {
             getLogger().warning(
-              "The object on the top the of the stack is not the layout pushed earlier.");
-          } else {
+                    "The object on the top the of the stack is not the layout pushed earlier.");
+        } else {
             getLogger().finer("Popping layout from the object stack");
             ec.popObject();
 
             try {
-              getLogger().finer(
-                "About to set the layout of the containing appender.");
-              ExtendedHandler handler = (ExtendedHandler) ec.peekObject();
-              handler.setFormatter(formatter);
+                getLogger().finer("About to set the layout of the containing appender.");
+                ExtendedHandler handler = (ExtendedHandler) ec.peekObject();
+                handler.setFormatter(formatter);
             } catch (Exception ex) {
-              getLogger().log(Level.SEVERE,
-                "Could not set the layout for containing appender.", ex);
+                getLogger().log(Level.SEVERE, "Could not set the layout for containing appender.",
+                        ex);
             }
-          }
+        }
     }
 
 }

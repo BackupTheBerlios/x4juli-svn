@@ -34,6 +34,13 @@ public class RootLoggerAction extends AbstractAction {
     ExtendedLogger root;
 
     /**
+     * @param inherited tells the action to skip due to inherited config or not.
+     */
+    public RootLoggerAction(boolean inherited) {
+        super(inherited);
+    }
+
+    /**
      * {@inheritDoc}
      * 
      * @since 0.7

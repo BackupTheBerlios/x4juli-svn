@@ -46,10 +46,30 @@ public interface Action {
      *
      * The return value indicates whether child elements should be processed. If
      * the returned value is 'false', then child elements are ignored.
+     * @since 0.7
      */
     void begin(ExecutionContext ec, String name, Attributes attributes) throws ActionException;
 
+    /**
+     * @param ec
+     * @param name
+     * @throws ActionException
+     * @since 0.7
+     */
     void end(ExecutionContext ec, String name) throws ActionException;
+    
+    /**
+     * Indicates, whether the action should skip or not due to inherited configuration.
+     * @return inherited mode flag.
+     */
+    boolean isInheritedMode();
+    
+    /**
+     * Sets the mode of the action to skip due to inherited configuration.
+     * @param inherited mode flag.
+     * @since 0.7
+     */
+    void  setInheritedMode(boolean inherited);
 }
 
 // EOF Action.java

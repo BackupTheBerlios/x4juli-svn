@@ -98,6 +98,14 @@ public interface LoggerRepository {
     public ExtendedLogger getLogger(String name);
 
     /**
+     * @param name
+     * @param resourcebundleName
+     * @return
+     * @since 0.7
+     */
+    public ExtendedLogger getLogger(String name, String resourcebundleName);
+
+    /**
      * Method to satisfy the <code>java.util.logging.LogManager</code>
      * with getLoggerNames().
      * @return enumeration containing all names as String.
@@ -249,6 +257,17 @@ public interface LoggerRepository {
      * @param value
      */
     public void putObject(String key, Object value);
+    
+    /**
+     * Shows if the configuration of this LoggerRepository is inherited
+     * from a parent LoggerRepository.
+     * <br/>
+     * There is no reference to the parent, to avoid memory leaks.
+     * <br/>
+     * The configuration has to make sure that any objects are configured
+     * correctly, not the LoggerRepository.
+     */
+    public boolean isInherited();
 
 }
 

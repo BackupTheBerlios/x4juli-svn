@@ -41,6 +41,13 @@ import org.xml.sax.Attributes;
 public abstract class ImplicitAction extends AbstractAction {
 
     /**
+     * @param inherited tells the action to skip due to inherited config or not.
+     */
+    public ImplicitAction(boolean inherited) {
+        super(inherited);
+    }
+
+    /**
      * Check whether this implicit action is apprioriate in the current context.
      * 
      * 

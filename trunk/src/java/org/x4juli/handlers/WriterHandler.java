@@ -162,9 +162,6 @@ public class WriterHandler extends AbstractHandler {
      * {@inheritDoc}
      */
     public void flush() {
-        if (this.closed) {
-            return;
-        }
         if (this.writer != null) {
             try {
                 this.writer.flush();

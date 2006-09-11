@@ -18,7 +18,6 @@ package org.x4juli.global.spi;
 import java.util.List;
 import java.util.Map;
 
-import org.x4juli.global.helper.LoggerUtil;
 import org.x4juli.global.plugins.PluginRegistry;
 import org.x4juli.global.scheduler.Scheduler;
 import org.x4juli.logger.DefaultJDKLoggerFactory;
@@ -50,6 +49,7 @@ import java.util.logging.Level;
 public class Hierarchy implements LoggerRepository {
 
     private LoggerFactory defaultFactory;
+
     private LoggerFactory loggerFactory = null;
 
     private ArrayList repositoryEventListeners;
@@ -84,7 +84,9 @@ public class Hierarchy implements LoggerRepository {
     boolean emittedNoResourceBundleWarning = false;
 
     boolean pristine = true;
-    
+
+    boolean inheritedHierachy;
+
     /**
      * Create a new logger hierarchy.
      * 
@@ -98,13 +100,31 @@ public class Hierarchy implements LoggerRepository {
         this.root = root;
         this.objectMap = new HashMap();
         this.security = new SpiSecurity();
-        // Enable all level levels by default.
-        // setThreshold(Level.ALL);
-        // this.root.setHierarchy(this);
+        this.inheritedHierachy = false;
+        this.root.setLoggerRepository((LoggerRepository) this, this.security);
         // rendererMap = new RendererMap();
         // rendererMap.setLoggerRepository(this);
         properties = new Hashtable();
         defaultFactory = new DefaultJDKLoggerFactory();
+    }
+
+    public void dump() {
+        synchronized (ht) {
+            Enumeration thekeys = ht.keys();
+            StringBuffer buf = new StringBuffer("Hierarchy[");
+            buf.append(name);
+            buf.append("] Root[");
+            buf.append(getRootLogger());
+            buf.append("]: ");
+            while (thekeys.hasMoreElements()) {
+                Object key = thekeys.nextElement();
+                Object value = ht.get(key);
+                buf.append("[" + key + "=" + value + "]");
+            }
+            buf.append("End dump");
+            System.out.println(buf.toString());
+            System.out.flush();
+        }
     }
 
     /**
@@ -151,11 +171,14 @@ public class Hierarchy implements LoggerRepository {
 
     /**
      * {@inheritDoc}
+     * 
      * @since 0.7
      */
     public void setLoggerFactory(final LoggerFactory logFactory) {
-        if(this.loggerFactory != null) {
-            throw new LogIllegalStateException("LoggerFactory is not allowed to be set twice. Current["+loggerFactory.getClass().getName()+"]");
+        if (this.loggerFactory != null) {
+            throw new LogIllegalStateException(
+                    "LoggerFactory is not allowed to be set twice. Current["
+                            + loggerFactory.getClass().getName() + "]");
         }
         this.loggerFactory = logFactory;
     }
@@ -188,10 +211,11 @@ public class Hierarchy implements LoggerRepository {
 
     /**
      * {@inheritDoc}
+     * 
      * @since 0.7
      */
     public LoggerFactory getLoggerFactory() {
-        if(loggerFactory != null) {
+        if (loggerFactory != null) {
             return loggerFactory;
         }
         return defaultFactory;
@@ -309,12 +333,16 @@ public class Hierarchy implements LoggerRepository {
         return this.errorList;
     }
 
+    public ExtendedLogger getLogger(final String loggername) {
+        return getLogger(loggername, null);
+    }
+
     /**
      * {@inheritDoc}
      * 
      * @since 0.7
      */
-    public ExtendedLogger getLogger(final String loggername) {
+    public ExtendedLogger getLogger(final String loggername, final String resourceBundleName) {
         // System.out.println("getInstance("+name+") called.");
         LoggerKey key = new LoggerKey(loggername);
 
@@ -327,17 +355,19 @@ public class Hierarchy implements LoggerRepository {
             Object o = ht.get(key);
 
             if (o == null) {
-                getMyLogger().finer(
-                        "Creating new logger [" + name + "] in repository [" + getName() + "].");
-                logger = getLoggerFactory().makeNewLoggerInstance(loggername, null);
+                // Self logging of other methods of Hierarchy is wanted, but
+                // in getLogger(...) impossible
+                // getMyLogger().finer(
+                // "Creating new logger [" + name + "] in repository [" + getName() + "].");
+                logger = getLoggerFactory().makeNewLoggerInstance(loggername, resourceBundleName);
                 logger.setLoggerRepository(this, security);
                 ht.put(key, logger);
                 updateParents(logger);
                 return logger;
             } else if (o instanceof ExtendedLogger) {
-                getMyLogger().finer(
-                        "Returning existing logger [" + loggername + "] in repository [" + getName()
-                                + "].");
+                // getMyLogger().finer(
+                // "Returning existing logger [" + loggername + "] in repository ["
+                // + getName() + "].");
                 return (ExtendedLogger) o;
             } else if (o instanceof LogNode) {
                 // System.out.println("("+name+") ht.get(this) returned ProvisionNode");
@@ -356,20 +386,19 @@ public class Hierarchy implements LoggerRepository {
     }
 
     /**
-     * The call of this method should be avoided, but it is
-     * needed for the <code>java.util.logging.LogManager.addLogger(Logger)</code>
-     * method.
+     * The call of this method should be avoided, but it is needed for the
+     * <code>java.util.logging.LogManager.addLogger(Logger)</code> method.
+     * 
      * @param logger to add.
-     * @return true if the logger did not exist before and was added, false if it already
-     * exists.
+     * @return true if the logger did not exist before and was added, false if it already exists.
      */
     public boolean addLogger(final java.util.logging.Logger logger) {
         String loggername = logger.getName();
         if (loggername == null) {
-            throw new LogIllegalParamter("Name of the logger may not be null");
+            throw new LogIllegalParamter("Name of the logger should not be null");
         }
         ExtendedLogger localLogger = null;
-        if(logger instanceof ExtendedLogger) {
+        if (logger instanceof ExtendedLogger) {
             localLogger = (ExtendedLogger) logger;
         } else {
             return false;
@@ -377,7 +406,7 @@ public class Hierarchy implements LoggerRepository {
         LoggerKey key = new LoggerKey(loggername);
         synchronized (ht) {
             Object o = ht.get(key);
-            if (o == null){
+            if (o == null) {
                 localLogger.setLoggerRepository(this, security);
                 ht.put(key, localLogger);
                 updateParents(localLogger);
@@ -526,33 +555,6 @@ public class Hierarchy implements LoggerRepository {
      * 
      * @since 0.7
      */
-    public void resetConfiguration() {
-        getRootLogger().setLevel(Level.FINEST);
-
-        shutdown(true); // nested locks are OK
-
-        Iterator cats = getCurrentLoggers();
-
-        while (cats.hasNext()) {
-            Logger c = (Logger) cats.next();
-            c.setLevel(null);
-            c.setUseParentHandlers(true);
-        }
-
-        // inform the listeners that the configuration has been reset
-        ArrayList list = copyListenerList(repositoryEventListeners);
-        int size = list.size();
-
-        for (int i = 0; i < size; i++) {
-            ((LoggerRepositoryEventListener) list.get(i)).configurationResetEvent(this);
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     * 
-     * @since 0.7
-     */
     public void setName(final String repoName) {
         if (name == null) {
             name = repoName;
@@ -586,16 +588,75 @@ public class Hierarchy implements LoggerRepository {
      * @since 0.7
      */
     public void shutdown() {
+        getMyLogger().log(Level.INFO, "Shutting down repository["+getName()+"]");
+        //System.out.println("Shutting down repository["+getName()+"]");
         shutdown(false);
     }
 
+    /**
+     * {@inheritDoc}
+     * 
+     * @since 0.7
+     */
+    public void resetConfiguration() {
+        getMyLogger().log(Level.FINE, "Resetting configuration of repository["+getName()+"]");
+        getRootLogger().setLevel(Level.ALL);
+
+        shutdown(true); // nested locks are OK
+
+        Iterator cats = getCurrentLoggers();
+
+        while (cats.hasNext()) {
+            Logger c = (Logger) cats.next();
+            c.setLevel(null);
+            c.setUseParentHandlers(true);
+        }
+
+        setInherited(false);
+
+        // inform the listeners that the configuration has been reset
+        ArrayList list = copyListenerList(repositoryEventListeners);
+        int size = list.size();
+
+        for (int i = 0; i < size; i++) {
+            ((LoggerRepositoryEventListener) list.get(i)).configurationResetEvent(this);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     * 
+     * @since 0.7
+     */
+    public boolean isInherited() {
+        return this.inheritedHierachy;
+    }
+
+    /**
+     * {@inheritDoc}
+     * @since 0.7
+     */
+    public String toString() {
+        if(getName() != null) {
+            return getName();
+        }
+        return super.toString();
+    }
+
+    /**
+     * Sets the inherited attributed. This method is not visible in the interface LoggerRepository
+     * 
+     * @param inherited from another repository.
+     */
+    public void setInherited(final boolean inherited) {
+        this.inheritedHierachy = inherited;
+    }
+
     private ExtendedLogger getMyLogger() {
-        //TODO BEREINIGEN!
-        return NOPLogger.NOP_LOGGER;
-//        if (myLogger == null) {
-//            myLogger = getLogger(this.getClass().getName());
-//        }
-//        return myLogger;
+        if (myLogger == null) {
+            myLogger = getLogger(this.getClass().getName());
+        }
+        return myLogger;
     }
 
     /**
@@ -616,6 +677,13 @@ public class Hierarchy implements LoggerRepository {
         return listCopy;
     }
 
+    /**
+     * The shutdown behaviour depends on the isInherited() flag. If the repository is inherited, the
+     * shutdown will just flush() all current handlers. If the repository is not inherited, it will
+     * close all current handlers.
+     * 
+     * @param doingReset if true fire shutdown events.
+     */
     private void shutdown(boolean doingReset) {
 
         // stop this repo's scheduler if it has one
@@ -635,33 +703,46 @@ public class Hierarchy implements LoggerRepository {
             }
         }
 
-        ExtendedLogger myroot = getRootLogger();
-
-        // begin by closing nested appenders
-        // TODO Korrekte Logik fehlt hier!!!
-        // myroot.closeNestedAppenders();
-        //
         synchronized (ht) {
+            HandlerAttachable myroot = getRootLogger();
             Iterator iterLogger = this.getCurrentLoggers();
-
-            // while (iterLogger.hasNext()) {
-            // ExtendedLogger c = (ExtendedLogger) iterLogger.next();
-            // c.closeNestedAppenders();
-            // }
-
-            // then, remove all appenders
-            LoggerUtil.removeAllHandlers(myroot);
-            iterLogger = this.getCurrentLoggers();
-
+            List rootHandlerList = myroot.getAllHandlers();
+            // First all non root loggers are removed. This allows
+            // the maximum of output in an LogManager shutdown hook phase,
+            // based on a configured root logger of the System ClassLoader
             while (iterLogger.hasNext()) {
-                ExtendedLogger c = (ExtendedLogger) iterLogger.next();
-                LoggerUtil.removeAllHandlers(c);
+                HandlerAttachable currentLogger = (HandlerAttachable) iterLogger.next();
+                List currentHandlerList = currentLogger.getAllHandlers();
+                if (currentHandlerList == null || currentHandlerList.size() == 0) {
+                    continue;
+                }
+                Iterator iterHandler = currentHandlerList.iterator();
+                while (iterHandler.hasNext()) {
+                    ExtendedHandler currentHandler = (ExtendedHandler) iterHandler.next();
+                    if (!rootHandlerList.contains(currentHandler)) {
+                        if (this.isInherited()) {
+                            currentHandler.flush();
+                        } else {
+                            System.out.println("Closing Handler["+currentHandler.getName()+"]");
+                            currentHandler.close();
+                        }
+                        currentLogger.removeHandler(currentHandler);
+                    }
+                }
             }
 
+            Iterator iterRootHandler = rootHandlerList.iterator();
+            while (iterRootHandler.hasNext()) {
+                ExtendedHandler currentHandler = (ExtendedHandler) iterRootHandler.next();
+                if (this.isInherited()) {
+                    currentHandler.flush();
+                } else {
+                    System.out.println("Closing Handler["+currentHandler.getName()+"]");
+                    currentHandler.close();
+                }
+                myroot.removeHandler(currentHandler);
+            }
         }
-        //
-        // // log4j self configure
-        // IntializationUtil.log4jInternalConfiguration(this);
     }
 
     private final void updateChildren(final LogNode pn, final ExtendedLogger logger) {

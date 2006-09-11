@@ -44,11 +44,13 @@ import org.xml.sax.Attributes;
  */
 public class HandlerRefAction extends AbstractAction {
 
+
     /**
-     * 
+     *
+     * @param inherited tells the action to skip due to inherited config or not.
      */
-    public HandlerRefAction() {
-        super();
+    public HandlerRefAction(boolean inherited) {
+        super(inherited);
     }
 
     /**
@@ -58,6 +60,9 @@ public class HandlerRefAction extends AbstractAction {
      */
     public void begin(ExecutionContext ec, String name, Attributes attributes)
             throws ActionException {
+        if(isInheritedMode()) {
+            return;
+        }
         // Let us forget about previous errors (in this object)
         inError = false;
 
@@ -67,7 +72,7 @@ public class HandlerRefAction extends AbstractAction {
 
         if (!(o instanceof HandlerAttachable)) {
           String errMsg =
-            "Could not find an AppenderAttachable at the top of execution stack. Near <"
+            "Could not find an HandlerAttachable at the top of execution stack. Near <"
             + name + "> line " + getLineNumber(ec);
 
           getLogger().warning(errMsg);
@@ -83,7 +88,7 @@ public class HandlerRefAction extends AbstractAction {
 
         if (Option.isEmpty(appenderName)) {
           // print a meaningful error message and return
-          String errMsg = "Missing appender ref attribute in <appender-ref> tag.";
+          String errMsg = "Missing handler ref attribute in <appender-ref> tag.";
 
           getLogger().warning(errMsg);
           inError = true;
@@ -92,12 +97,12 @@ public class HandlerRefAction extends AbstractAction {
           return;
         }
 
-        HashMap appenderBag =
+        HashMap handlerBag =
           (HashMap) ec.getObjectMap().get(ActionConst.HANDLER_BAG);
-        ExtendedHandler handler = (ExtendedHandler) appenderBag.get(appenderName);
+        ExtendedHandler handler = (ExtendedHandler) handlerBag.get(appenderName);
 
         if (handler == null) {
-          String msg = "Could not find an appender named ["+appenderName+
+          String msg = "Could not find an handler named ["+appenderName+
           "]. Did you define it below in the config file?";
           getLogger().warning(msg);
           //TODO Korrektes Logging

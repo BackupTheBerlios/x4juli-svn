@@ -50,6 +50,7 @@ class DefaultJDKLogger extends AbstractExtendedLogger {
         }
         ExtendedLogRecord lr = LoggerUtil.wrapLogRecord(record);
         lr.getNDC();
+        lr.setFQCNofLogger(FQCNofLogger);
         super.log((LogRecord)lr);
     }
 
@@ -63,6 +64,9 @@ class DefaultJDKLogger extends AbstractExtendedLogger {
             return;
         }
         record.getNDC();
+        if(record.getFQCNofLogger() == null) {
+            record.setFQCNofLogger(FQCNofLogger);
+        }
         super.log((LogRecord) record);
     }
 

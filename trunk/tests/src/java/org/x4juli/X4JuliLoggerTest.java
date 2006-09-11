@@ -24,7 +24,6 @@ import junit.framework.TestSuite;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.x4juli.global.LoggerClassInformation;
 import org.x4juli.global.SystemUtils;
 import org.x4juli.global.spi.ThrowableInformation;
 

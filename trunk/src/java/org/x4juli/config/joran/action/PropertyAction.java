@@ -52,6 +52,14 @@ public abstract class PropertyAction extends AbstractAction {
     public abstract void setProperty(ExecutionContext ec, String key, String value);
 
     /**
+     *
+     * @param inherited tells the action to skip due to inherited config or not.
+     */
+    public PropertyAction(boolean inherited) {
+        super(inherited);
+    }
+
+    /**
      * {@inheritDoc}
      * 
      * @since 0.7

@@ -19,8 +19,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Filter;
+import java.util.logging.Handler;
 import java.util.logging.Level;
 
 import javax.xml.parsers.SAXParser;
@@ -29,7 +32,11 @@ import javax.xml.parsers.SAXParserFactory;
 import org.x4juli.config.AbstractConfigurator;
 import org.x4juli.config.joran.action.*;
 import org.x4juli.config.joran.spi.*;
+import org.x4juli.global.spi.Component;
 import org.x4juli.global.spi.ErrorItem;
+import org.x4juli.global.spi.ExtendedFilter;
+import org.x4juli.global.spi.ExtendedHandler;
+import org.x4juli.global.spi.ExtendedLogger;
 import org.x4juli.global.spi.LoggerRepository;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -75,13 +82,15 @@ public class JoranConfigurator extends AbstractConfigurator {
      * 
      * @since 0.7
      */
-    public void doConfigure(final URL url, final LoggerRepository repository) {
+    public void doConfigure(final URL url, final LoggerRepository repository,
+            final LoggerRepository parentLoggerRepository) {
         ParseAction action = new ParseAction() {
-            public void parse(final SAXParser parser, final DefaultHandler handler) throws SAXException, IOException {
+            public void parse(final SAXParser parser, final DefaultHandler handler)
+                    throws SAXException, IOException {
                 parser.parse(url.toString(), handler);
             }
         };
-        doConfigure(action, repository);
+        doConfigure(action, repository, parentLoggerRepository);
     }
 
     /**
@@ -89,23 +98,29 @@ public class JoranConfigurator extends AbstractConfigurator {
      * 
      * @since 0.7
      */
-    public void doConfigure(final InputStream stream, final LoggerRepository repository) {
+    public void doConfigure(final InputStream stream, final LoggerRepository repository,
+            final LoggerRepository parentLoggerRepository) {
         ParseAction action = new ParseAction() {
-            public void parse(final SAXParser parser, final DefaultHandler handler) throws SAXException, IOException {
+            public void parse(final SAXParser parser, final DefaultHandler handler)
+                    throws SAXException, IOException {
                 parser.parse(stream, handler);
             }
         };
-        doConfigure(action, repository);
+        doConfigure(action, repository, parentLoggerRepository);
     }
 
-    protected void doConfigure(final ParseAction action, final LoggerRepository repository) {
+    protected void doConfigure(final ParseAction action, final LoggerRepository repository,
+            final LoggerRepository parentLoggerRepository) {
         // This line is needed here because there is logging from inside this method.
         this.repository = repository;
         selfInitialize(this.repository);
 
-        ExecutionContext ec = joranInterpreter.getExecutionContext();
+        ExecutionContext ec = getExecutionContext();
         List errorList = ec.getErrorList();
 
+        if (parentLoggerRepository != null) {
+            inheritConfig(parentLoggerRepository);
+        }
         SAXParser saxParser = null;
         try {
             SAXParserFactory spf = SAXParserFactory.newInstance();
@@ -150,40 +165,227 @@ public class JoranConfigurator extends AbstractConfigurator {
 
     }
 
-    protected void selfInitialize(final LoggerRepository repository) {
-        RuleStore rs = new SimpleRuleStore(repository);
-        rs.addRule(new Pattern("configuration"), new ConfigurationAction());
-        rs.addRule(new Pattern("configuration/substitutionProperty"),
-                new SubstitutionPropertyAction());
-        rs.addRule(new Pattern("configuration/repositoryProperty"), new RepositoryPropertyAction());
-        rs.addRule(new Pattern("configuration/conversionRule"), new ConversionRuleAction());
-        rs.addRule(new Pattern("configuration/plugin"), new PluginAction());
-        rs.addRule(new Pattern("configuration/logger"), new LoggerAction());
-        rs.addRule(new Pattern("configuration/logger/level"), new LevelAction());
-        rs.addRule(new Pattern("configuration/root"), new RootLoggerAction());
-        rs.addRule(new Pattern("configuration/root/level"), new LevelAction());
-        rs.addRule(new Pattern("configuration/logger/handler-ref"), new HandlerRefAction());
-        rs.addRule(new Pattern("configuration/root/handler-ref"), new HandlerRefAction());
-        rs.addRule(new Pattern("configuration/handler"), new HandlerAction());
-        rs.addRule(new Pattern("configuration/handler/handler-ref"), new HandlerRefAction());
-        rs.addRule(new Pattern("configuration/handler/formatter"), new FormatterAction());
-        rs.addRule(new Pattern("configuration/handler/level"), new LevelAction());
+    /**
+     * @param repositoryToInit
+     */
+    protected void selfInitialize(final LoggerRepository repositoryToInit) {
+        final boolean isInherited = repositoryToInit.isInherited();
+        RuleStore rs = new SimpleRuleStore(repositoryToInit);
+        Component theAction = new ConfigurationAction(isInherited);
+        theAction.setLoggerRepository(repositoryToInit);
+        rs.addRule(new Pattern("configuration"), (Action) theAction);
+
+        theAction = new ParamAction(false);
+        theAction.setLoggerRepository(repositoryToInit);
+        rs.addRule(new Pattern("configuration/param"), (Action) theAction);
+
+        theAction = new SubstitutionPropertyAction(isInherited);
+        theAction.setLoggerRepository(repositoryToInit);
+        rs.addRule(new Pattern("configuration/substitutionProperty"), (Action) theAction);
+
+        theAction = new ParamAction(false);
+        theAction.setLoggerRepository(repositoryToInit);
+        rs.addRule(new Pattern("configuration/substitutionProperty/param"), (Action) theAction);
+
+        theAction = new RepositoryPropertyAction(false);
+        theAction.setLoggerRepository(repositoryToInit);
+        rs.addRule(new Pattern("configuration/repositoryProperty"), (Action) theAction);
+
+        theAction = new ParamAction(false);
+        theAction.setLoggerRepository(repositoryToInit);
+        rs.addRule(new Pattern("configuration/repositoryProperty/param"), (Action) theAction);
+
+        theAction = new ConversionRuleAction(false);
+        theAction.setLoggerRepository(repositoryToInit);
+        rs.addRule(new Pattern("configuration/conversionRule"), (Action) theAction);
+
+        theAction = new ParamAction(false);
+        theAction.setLoggerRepository(repositoryToInit);
+        rs.addRule(new Pattern("configuration/conversionRule/param"), (Action) theAction);
+
+        theAction = new PluginAction(false);
+        theAction.setLoggerRepository(repositoryToInit);
+        rs.addRule(new Pattern("configuration/plugin"), (Action) theAction);
+
+        theAction = new ParamAction(false);
+        theAction.setLoggerRepository(repositoryToInit);
+        rs.addRule(new Pattern("configuration/plugin/param"), (Action) theAction);
+
+        theAction = new RootLoggerAction(false);
+        theAction.setLoggerRepository(repositoryToInit);
+        rs.addRule(new Pattern("configuration/root"), (Action) theAction);
+
+        theAction = new ParamAction(false);
+        theAction.setLoggerRepository(repositoryToInit);
+        rs.addRule(new Pattern("configuration/root/param"), (Action) theAction);
+
+        theAction = new LevelAction(false);
+        theAction.setLoggerRepository(repositoryToInit);
+        rs.addRule(new Pattern("configuration/root/level"), (Action) theAction);
+
+        theAction = new HandlerRefAction(false);
+        theAction.setLoggerRepository(repositoryToInit);
+        rs.addRule(new Pattern("configuration/root/handler-ref"), (Action) theAction);
+
+        theAction = new LoggerAction(false);
+        theAction.setLoggerRepository(repositoryToInit);
+        rs.addRule(new Pattern("configuration/logger"), (Action) theAction);
+
+        theAction = new ParamAction(false);
+        theAction.setLoggerRepository(repositoryToInit);
+        rs.addRule(new Pattern("configuration/logger/param"), (Action) theAction);
+
+        theAction = new LevelAction(false);
+        theAction.setLoggerRepository(repositoryToInit);
+        rs.addRule(new Pattern("configuration/logger/level"), (Action) theAction);
+
+        theAction = new HandlerRefAction(false);
+        theAction.setLoggerRepository(repositoryToInit);
+        rs.addRule(new Pattern("configuration/logger/handler-ref"), (Action) theAction);
+
+        theAction = new HandlerAction(isInherited);
+        theAction.setLoggerRepository(repositoryToInit);
+        rs.addRule(new Pattern("configuration/handler"), (Action) theAction);
+
+        theAction = new ParamAction(isInherited);
+        theAction.setLoggerRepository(repositoryToInit);
+        rs.addRule(new Pattern("configuration/handler/param"), (Action) theAction);
+
+        theAction = new HandlerRefAction(isInherited);
+        theAction.setLoggerRepository(repositoryToInit);
+        rs.addRule(new Pattern("configuration/handler/handler-ref"), (Action) theAction);
+
+        theAction = new FormatterAction(isInherited);
+        theAction.setLoggerRepository(repositoryToInit);
+        rs.addRule(new Pattern("configuration/handler/formatter"), (Action) theAction);
+
+        theAction = new ParamAction(isInherited);
+        theAction.setLoggerRepository(repositoryToInit);
+        rs.addRule(new Pattern("configuration/handler/formatter/param"), (Action) theAction);
+
+        theAction = new LevelAction(isInherited);
+        theAction.setLoggerRepository(repositoryToInit);
+        rs.addRule(new Pattern("configuration/handler/level"), (Action) theAction);
         // rs.addRule(
         // new Pattern("configuration/jndiSubstitutionProperty"),
         // new JndiSubstitutionPropertyAction());
-        rs.addRule(new Pattern("configuration/newRule"), new NewRuleAction());
-        rs.addRule(new Pattern("*/param"), new ParamAction());
+        // TODO Solution for instantiating new Rules.
+        // rs.addRule(new Pattern("configuration/newRule"), new NewRuleAction(isInherited));
 
         joranInterpreter = new Interpreter(rs);
-        joranInterpreter.setLoggerRepository(repository);
+        joranInterpreter.setLoggerRepository(repositoryToInit);
 
         // The following line adds the capability to parse nested components
-        joranInterpreter.addImplicitAction(new NestComponentIA());
-        ExecutionContext ec = joranInterpreter.getExecutionContext();
+        theAction = new NestComponentIA(false);
+        theAction.setLoggerRepository(repositoryToInit);
+        joranInterpreter.addImplicitAction((ImplicitAction) theAction);
+        ExecutionContext ec = getExecutionContext();
 
         Map omap = ec.getObjectMap();
         omap.put(ActionConst.HANDLER_BAG, new HashMap());
         omap.put(ActionConst.FILTER_CHAIN_BAG, new HashMap());
+    }
+
+    /**
+     * Inherits the config from the parent loggerrepository to the current configuration objects.
+     * Currently handlers and filters are "reused", the loggers are created by the configuration
+     * file. This is a expensive operation, it is much better to configure the LoggerRepository
+     * directly.
+     * 
+     * @param source to inherit from.
+     * @param ec to obtain the destination objects.
+     */
+    private void inheritConfig(final LoggerRepository source) {
+        // ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        // String hashCode = "null";
+        // if (classLoader != null) {
+        // hashCode = String.valueOf(classLoader.hashCode());
+        // }
+        // System.out.println("Inheriting config for ClassLoader[" + hashCode + "]");
+        ExecutionContext ec = getExecutionContext();
+
+        // Create temporary maps for the copy
+        HashMap sourceHandlerMap = new HashMap();
+        HashMap sourceFilterMap = new HashMap();
+
+        // Copy root logger handler and filter
+        // Copy the handlers of the logger (if one exits)
+        ExtendedLogger logger = source.getRootLogger();
+
+        // Copy the filter of the logger (if one exists)
+        ExtendedFilter filter = (ExtendedFilter) logger.getFilter();
+        if ((filter != null) && (filter.getName() != null)
+                && (!sourceFilterMap.containsKey(filter.getName()))) {
+            String filtername = filter.getName();
+            sourceFilterMap.put(filtername, filter);
+        }
+        // Copy the handlers of the logger (if one exits)
+        Handler[] handlers = logger.getHandlers();
+        if (handlers != null && handlers.length != 0) {
+            for (int i = 0; i < handlers.length; i++) {
+                ExtendedHandler handler = (ExtendedHandler) handlers[i];
+                String handlername = handler.getName();
+                if (!sourceHandlerMap.containsKey(handlername)) {
+                    // System.out.println("Copy [" + handlername + "] to sourceHandlerMap");
+                    sourceHandlerMap.put(handlername, handler);
+                }
+                filter = (ExtendedFilter) handler.getFilter();
+                if ((filter != null) && (filter.getName() != null)
+                        && (!sourceFilterMap.containsKey(filter.getName()))) {
+                    String filtername = filter.getName();
+                    sourceFilterMap.put(filtername, filter);
+                }
+            }
+        }
+
+        // Iterate over all loggers to obtain their filters and handlers
+        Iterator loggerIter = source.getCurrentLoggers();
+        while (loggerIter.hasNext()) {
+            logger = (ExtendedLogger) loggerIter.next();
+
+            // Copy the filter of the logger (if one exists)
+            filter = (ExtendedFilter) logger.getFilter();
+            if ((filter != null) && (filter.getName() != null)
+                    && (!sourceFilterMap.containsKey(filter.getName()))) {
+                String filtername = filter.getName();
+                sourceFilterMap.put(filtername, filter);
+            }
+            // Copy the handlers of the logger (if one exits)
+            handlers = logger.getHandlers();
+            if (handlers == null || handlers.length == 0) {
+                continue;
+            }
+            for (int i = 0; i < handlers.length; i++) {
+                ExtendedHandler handler = (ExtendedHandler) handlers[i];
+                String handlername = handler.getName();
+                if (!sourceHandlerMap.containsKey(handlername)) {
+                    // System.out.println("Copy [" + handlername + "] to sourceHandlerMap");
+                    sourceHandlerMap.put(handlername, handler);
+                }
+                filter = (ExtendedFilter) handler.getFilter();
+                if ((filter != null) && (filter.getName() != null)
+                        && (!sourceFilterMap.containsKey(filter.getName()))) {
+                    String filtername = filter.getName();
+                    sourceFilterMap.put(filtername, filter);
+                }
+            }
+        }
+
+        // Fill destination bag with their inherited handlers
+        if (!sourceHandlerMap.isEmpty()) {
+            // System.out.println("!sourceHandlerMap.isEmpty() Size[" + sourceHandlerMap.size() +
+            // "]");
+            HashMap destMap = (HashMap) ec.getObjectMap().get(ActionConst.HANDLER_BAG);
+            destMap.clear();
+            destMap.putAll(sourceHandlerMap);
+        }
+
+        // Fill destination bag with their inherited filters
+        if (!sourceFilterMap.isEmpty()) {
+            HashMap destMap = (HashMap) ec.getObjectMap().get(ActionConst.FILTER_CHAIN_BAG);
+            destMap.clear();
+            destMap.putAll(sourceFilterMap);
+        }
     }
 
     protected interface ParseAction {

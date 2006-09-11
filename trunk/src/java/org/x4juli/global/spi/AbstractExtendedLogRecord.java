@@ -24,7 +24,6 @@ import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.LogRecord;
 
-import org.x4juli.global.LoggerClassInformation;
 import org.x4juli.global.context.ContextFactory;
 import org.x4juli.global.spi.location.LocationInfo;
 
@@ -59,8 +58,7 @@ public abstract class AbstractExtendedLogRecord extends LogRecord implements Ext
     /**
      * The full qualified class name of the logger which submitted the logrecord.
      */
-    private String fqcnOfLogger = ((LoggerClassInformation) LogManager.getLogManager())
-            .getFQCNofLogger();
+    private String fqcnOfLogger = null;
 
     /**
      * The nested diagnostic context (NDC) of logging event.

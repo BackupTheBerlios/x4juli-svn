@@ -37,6 +37,13 @@ import org.xml.sax.Attributes;
 public class LoggerAction extends AbstractAction {
 
     /**
+     * @param inherited tells the action to skip due to inherited config or not.
+     */
+    public LoggerAction(boolean inherited) {
+        super(inherited);
+    }
+
+    /**
      * {@inheritDoc}
      * @since 0.7
      */

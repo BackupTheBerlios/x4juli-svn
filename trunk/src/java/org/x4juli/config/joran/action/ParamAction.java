@@ -21,6 +21,7 @@ import org.x4juli.config.PropertySetter;
 import org.x4juli.config.joran.spi.ActionException;
 import org.x4juli.config.joran.spi.ExecutionContext;
 import org.x4juli.global.spi.ErrorItem;
+import org.x4juli.global.spi.LoggerRepository;
 import org.xml.sax.Attributes;
 
 /**
@@ -42,7 +43,14 @@ import org.xml.sax.Attributes;
 public class ParamAction extends AbstractAction {
     private static final String NO_NAME = "No name attribute in <param> element";
 
-    private static final String NO_VALUE = "No name attribute in <param> element";
+    private static final String NO_VALUE = "No value attribute in <param> element";
+
+    /**
+     * @param inherited tells the action to skip due to inherited config or not.
+     */
+    public ParamAction(boolean inherited) {
+        super(inherited);
+    }
 
     /**
      * {@inheritDoc}
@@ -51,6 +59,9 @@ public class ParamAction extends AbstractAction {
      */
     public void begin(final ExecutionContext ec, final String name, final Attributes attributes)
             throws ActionException {
+        if(isInheritedMode()) {
+            return;
+        }
         String lname = attributes.getValue(NAME_ATTRIBUTE);
         String value = attributes.getValue(VALUE_ATTRIBUTE);
 
@@ -70,9 +81,12 @@ public class ParamAction extends AbstractAction {
 
         // remove both leading and trailing spaces
         value = value.trim();
-
+        
+        LoggerRepository repo = (LoggerRepository) ec.getObjectStack().get(0);
+        
         Object o = ec.peekObject();
         PropertySetter propSetter = new PropertySetter(o);
+        propSetter.setLoggerRepository(repo);
         value = ec.subst(value);
 
         // allow for variable substitution for name as well

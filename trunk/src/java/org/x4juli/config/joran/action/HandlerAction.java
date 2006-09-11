@@ -50,10 +50,11 @@ public class HandlerAction extends AbstractAction {
     private ExtendedHandler handler;
 
     /**
+     * @param inherited tells the action to skip due to inherited config or not.
      * 
      */
-    public HandlerAction() {
-        super();
+    public HandlerAction(final boolean inherited) {
+        super(inherited);
     }
 
     /**
@@ -63,6 +64,9 @@ public class HandlerAction extends AbstractAction {
      */
     public void begin(ExecutionContext ec, String name, Attributes attributes)
             throws ActionException {
+        if(isInheritedMode()) {
+            return;
+        }
         String className = attributes.getValue(CLASS_ATTRIBUTE);
 
         // We are just beginning, reset variables
@@ -70,16 +74,15 @@ public class HandlerAction extends AbstractAction {
         inError = false;
 
         try {
+            // No need to do something, handlers are already there.
             getLogger().log(Level.FINER, "About to instantiate appender of type [{0}]", className);
-
             handler = (ExtendedHandler) OptionConverter.instantiateByClassName(className,
                     ExtendedHandler.class, null);
 
             LoggerRepository repo = (LoggerRepository) ec.getObjectStack().get(0);
-            ((Component)handler).setLoggerRepository(repo);
+            ((Component) handler).setLoggerRepository(repo);
 
             String handlerName = attributes.getValue(NAME_ATTRIBUTE);
-
             if (Option.isEmpty(handlerName)) {
                 getLogger()
                         .warning("No handler name given for handler of type " + className + "].");
@@ -91,8 +94,7 @@ public class HandlerAction extends AbstractAction {
             // The execution context contains a bag which contains the handler
             // created thus far.
             HashMap handlerBag = (HashMap) ec.getObjectMap().get(ActionConst.HANDLER_BAG);
-
-            // add the handler just created to the appender bag.
+            // add the handler just created to the handler bag.
             handlerBag.put(handlerName, handler);
 
             getLogger().finer("Pushing appender on to the object stack.");
@@ -114,6 +116,9 @@ public class HandlerAction extends AbstractAction {
      */
     public void end(ExecutionContext ec, String name) throws ActionException {
         if (inError) {
+            return;
+        }
+        if(isInheritedMode()) {
             return;
         }
 

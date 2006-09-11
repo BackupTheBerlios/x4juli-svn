@@ -41,6 +41,8 @@ public abstract class AbstractFilter extends AbstractComponent implements Extend
      * Points to the next filter in the filter chain.
      */
     private ExtendedFilter next;
+    
+    private String name;
 
     // ----------------------------------------------------------- Constructors
 
@@ -49,6 +51,7 @@ public abstract class AbstractFilter extends AbstractComponent implements Extend
      */
     public AbstractFilter() {
         super();
+        name = null;
     }
 
     // --------------------------------------------------------- Public Methods
@@ -106,6 +109,22 @@ public abstract class AbstractFilter extends AbstractComponent implements Extend
         default:
             return false;
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     * @since 0.7
+     */
+    public String getName() {
+        return this.name;
+    }
+
+    /**
+     * {@inheritDoc}
+     * @since 0.7
+     */
+    public void setName(final String filtername) {
+        this.name = filtername;
     }
 
 }

@@ -1,0 +1,27 @@
+<!-- SiteSearch Google -->
+<FORM method=GET action="http://www.google.com/search">
+<input type=hidden name=ie value=UTF-8>
+<input type=hidden name=oe value=UTF-8>
+<TABLE bgcolor="#FFFFFF"><tr><td>
+<A HREF="http://www.google.com/">
+<IMG SRC="http://www.google.com/logos/Logo_40wht.gif" 
+border="0" ALT="Google"></A>
+</td>
+<td>
+<INPUT TYPE=text name=q size=31 maxlength=255 value="">
+<INPUT type=submit name=btnG VALUE="Google Search">
+<font size=-1>
+<input type=hidden name=domains value="YOUR DOMAIN NAME"><br><input type=radio name=sitesearch value=""> WWW <input type=radio name=sitesearch value="YOUR DOMAIN NAME" checked> YOUR DOMAIN NAME <br>
+</font>
+</td></tr></TABLE>
+</FORM>
+<!-- SiteSearch Google -->
+
+<!-- Google Analytics-->
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-274488-1";
+urchinTracker();
+</script>
+<!-- Google Analytics-->
